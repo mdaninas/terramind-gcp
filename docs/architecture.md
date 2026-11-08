@@ -1,6 +1,7 @@
 # Architecture decisions
 
-Offline analysis is implemented and verified locally. Cloud integrations are planned.
+Offline analysis is implemented and verified locally. The isolated GCP foundation
+and private Cloud Run liveness API are deployed, with real authentication checks.
 See the [roadmap](roadmap.md).
 
 ## Dependency direction
@@ -10,9 +11,10 @@ immutable typed contracts. The report builder runs policies and derives the maxi
 severity. It owns findings; later model/retrieval adapters can add advisory text
 through separate contracts without replacing findings.
 
-No cloud SDK, FastAPI server, credentials lookup, external subprocess or network
-client is part of the offline analysis path. Pydantic is the sole direct runtime
-dependency. This keeps a fresh local demonstration small and reproducible.
+No cloud SDK, HTTP server, credentials lookup, external subprocess or network
+client is part of the offline analysis path. Pydantic is the sole base runtime
+dependency; FastAPI and Uvicorn are optional API dependencies. This keeps a
+runtime-only offline installation small and reproducible.
 
 ## Local privacy boundary (ADR 001)
 
@@ -53,10 +55,27 @@ samples. Pydantic additionally checks numeric port ranges and alias uniqueness.
 Both output formats derive from the same report. Markdown includes only trusted
 templates and allowlisted facts, avoiding injection from raw resource strings.
 
-## Future adapters
+## HTTP and cloud foundation
 
-Planned adapters include authenticated Cloud Run/FastAPI hosting, Terraform
-infrastructure, Firestore retrieval, Gemini explanations, report persistence,
-private presentation and GitHub Actions deployment with Workload Identity Federation.
-The corresponding packages and directories will be added when implemented, avoiding empty
-scaffolding that suggests functionality exists today.
+The packaged API adapter exposes `/health` and the container probe `/healthz`;
+`apps/api/main.py` is a thin source-tree
+entry point. Cloud Run owns authentication. The local server binds to loopback,
+while the non-root container listens on Cloud Run's assigned port. Content-free
+structured logs replace raw URL access logs. No analysis endpoints or data adapters
+are exposed yet.
+
+Terraform separates state bootstrap from the dev environment. Modules manage
+identity, image storage, synthetic runbooks, a named Firestore database and private
+Cloud Run. A null image prepares the supporting resources first; a verified digest
+then enables the service. Mock-provider plan tests validate security defaults without
+contacting GCP. These tests cannot establish deployed IAM or index readiness.
+
+The runtime has no data roles until an implemented adapter needs them. Ingestion
+uses a separate identity with database-conditioned permissions and bucket-scoped
+object access. The GitHub identity can publish images and update the existing
+service, with trust restricted to exact repository and owner IDs, main, a protected
+environment and the manual deployment workflow. It has no Terraform-state access.
+
+Planned adapters include Firestore retrieval, Gemini explanations, report
+persistence, private presentation and the deployment workflow. See
+[deployment setup](setup-gcp.md) and [security exceptions](security-exceptions.md).

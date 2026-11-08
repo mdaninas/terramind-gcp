@@ -1,0 +1,5 @@
+# Optional: copy to backend.tf only after the dedicated project's state bucket exists.
+# Export a private local state backup before final project deletion.
+terraform {
+  backend "gcs" {}
+}

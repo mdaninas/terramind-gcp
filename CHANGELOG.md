@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased
+
+- Added a FastAPI liveness service, safe structured request telemetry and a
+  non-root container definition with a restricted build context.
+- Added separate Terraform state bootstrap and modular cloud configuration for
+  private Cloud Run, Artifact Registry, Firestore vectors and TTL, synthetic
+  runbook storage, scoped service identities, federation and server-error alerts.
+- Added credential-free infrastructure checks, mock-provider tests, pinned
+  provider lockfiles, deployment guidance and explicit security exceptions.
+- Added an optional dedicated-project root with billing alerts that count usage
+  before credits, audit configuration and protected project deletion.
+- Verified the approved Cloud Run deployment: `/health` returns authenticated
+  200 and anonymous 403; private buckets and the ready Firestore index were checked.
+- Retained `/healthz` for internal probes and added the external `/health` alias
+  for Cloud Run's reserved-path compatibility. Federation exchange remains untested.
+
 ## 0.1.0 - 2026-11-08
 
 - Added a Python offline CLI, bounded local normalization, strict schema v1.0 and

@@ -24,3 +24,9 @@ tfplan*
 credentials*.json
 *service-account*.json
 artifacts/
+backend.hcl
+*.tfbackend
+crash.log
+crash.*.log
+terraform/bootstrap/backend.tf
+terraform/project/backend.tf

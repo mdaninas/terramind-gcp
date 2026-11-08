@@ -1,0 +1,11 @@
+# Synthetic project settings. Copy to terraform.tfvars before an approved deployment.
+project_id           = "terramind-demo"
+project_number       = "123456789012"
+region               = "us-central1"
+github_repository    = "mdaninas/terramind-gcp"
+github_repository_id = "1450398693"
+github_owner_id      = "156415805"
+github_environment   = "development"
+invoker_members      = ["user:operator@example.invalid"]
+# Start without Cloud Run so the repository can exist before the first image push.
+container_image = null

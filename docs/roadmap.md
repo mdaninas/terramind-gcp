@@ -1,12 +1,12 @@
 # Roadmap
 
-The offline analyzer is available. Planned work includes cloud hosting, retrieval,
-AI explanations and secure delivery.
+The offline analyzer is verified locally. The GCP foundation and private liveness
+service are deployed, with authenticated access and anonymous rejection verified.
 
 | Area | Scope | Status |
 | --- | --- | --- |
 | Offline analysis | Local normalization, deterministic risk rules, JSON and Markdown reports | Implemented and verified locally |
-| Cloud foundation | Terraform foundation and private Cloud Run health service | Planned |
+| Cloud foundation | Terraform foundation and private Cloud Run health service | Deployed and verified; federation exchange remains untested |
 | Retrieval and explanations | Synthetic runbooks, Firestore vector retrieval and Gemini explanations | Planned |
 | API and delivery | Analysis API, private report page and GitHub Actions deployment | Planned |
 | Release verification | End-to-end evaluation, walkthrough and deployment documentation | Planned |
@@ -22,13 +22,16 @@ finishes in under two seconds. See the [evaluation](evaluation.md) for measured 
 
 ## Cloud foundation
 
-Add a separate Terraform state bootstrap and modules for Artifact Registry, private
-Cloud Run, Firestore, synthetic-runbook storage, IAM, Workload Identity Federation
-and observability. Package a minimal FastAPI health service.
+Separate Terraform state bootstrap and modules are provided for Artifact Registry,
+private Cloud Run, Firestore, synthetic-runbook storage, IAM, Workload Identity
+Federation and observability. A minimal FastAPI health service is packaged.
+Formatting, validation, mock plans and security scans are available locally.
 
 Acceptance criteria: Terraform formatting, validation and security scans pass;
 an authenticated deployed request succeeds; unauthenticated requests fail; storage
-buckets remain private. Deployment checks require an approved, configured GCP project.
+buckets remain private. These checks passed in an approved dedicated project.
+The vector index is READY and the expiry policy is ACTIVE. See
+[verification evidence](cloud-foundation-verification.md) and [setup instructions](setup-gcp.md).
 
 ## Retrieval and explanations
 

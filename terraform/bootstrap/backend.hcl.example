@@ -1,0 +1,2 @@
+bucket = "terramind-demo-unique-state"
+prefix = "terramind/bootstrap"

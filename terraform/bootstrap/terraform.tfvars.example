@@ -1,0 +1,5 @@
+# Synthetic example. Copy to terraform.tfvars and supply approved values.
+project_id             = "terramind-demo"
+region                 = "us-central1"
+state_bucket_name      = "terramind-demo-unique-state"
+state_operator_members = ["user:operator@example.invalid"]

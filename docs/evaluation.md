@@ -1,11 +1,13 @@
 # Local evaluation
 
-Evaluated on 2026-11-08 using Python 3.12.13 on Windows. These results cover the
-offline analyzer. Cloud deployment, model quality and retrieval have not been evaluated.
+Local checks were rerun on 2026-11-09 using Python 3.12.13 on Windows. Cloud
+verification used a dedicated GCP project and Cloud Shell. These results cover
+the offline analyzer and cloud foundation; model quality and retrieval have not
+been evaluated.
 
 | Check | Result |
 | --- | --- |
-| Automated tests | 154 passed |
+| Automated Python tests | 168 passed |
 | Normalization and policy coverage, including branches | 97.58% |
 | Four policy rule functions | 100% coverage |
 | Required synthetic scenarios | All eight expectations passed |
@@ -16,11 +18,25 @@ offline analyzer. Cloud deployment, model quality and retrieval have not been ev
 | Isolated runtime-only demo | Passed |
 | Dependency audit | No known vulnerabilities reported |
 | Source archive and wheel | Built successfully |
+| API adapter coverage, measured separately | 94.92% |
+| Actual local Uvicorn HTTP request | `/healthz` returned 200 with the expected JSON |
+| Terraform 1.17.1 formatting and validation | All three configuration roots passed |
+| Terraform mock-provider tests | Ten passed; no cloud calls or apply |
+| Checkov 3.4.3 Terraform scan | 17 passed, zero failed, four documented exceptions |
+| Checkov 3.4.3 Dockerfile scan | 48 passed, zero failed, zero skipped |
+| Container build and execution | Cloud Shell Linux amd64 build passed; hardened container returned HTTP 200 |
+| Deployed authenticated/unauthenticated calls | `/health`: authenticated 200 with expected JSON; anonymous 403 |
+| Private storage | Both buckets enforce public access prevention and uniform access |
+| Firestore | Native database, vector index READY, expiry ACTIVE, deny-all client release verified |
+| Budget | IDR 180,000 monthly, project-filtered, credits excluded, 50/90/100% thresholds verified; delivery untested |
 
 The tests cover rule positives, negatives and edge cases; IAM membership changes;
 public access prevention; firewall protocols and port ranges; deletion and replacement;
 input size and depth limits; sensitive-value exclusion; sanitized errors; and
 execution with network access denied.
+API tests additionally cover liveness, disabled documentation routes, absence of
+unimplemented analysis routes, safe error handling, log content exclusion and
+Cloud Run port configuration.
 
 ## Reproduce
 
@@ -29,6 +45,7 @@ uv sync --locked
 uv run --locked python scripts/check.py
 uv run --locked python scripts/demo_offline.py
 uv run --locked python scripts/benchmark.py
+uv run --locked python scripts/check_infrastructure.py --scan
 uv build
 ```
 
@@ -38,6 +55,9 @@ acceptance threshold. Timing depends on the machine and does not predict cloud l
 
 GNU Make was unavailable on the evaluation machine. Native Python/uv commands were
 verified; the corresponding Make targets were not executed.
+The Terraform command requires an installed binary, or an explicit `--terraform`
+path. [Cloud foundation verification](cloud-foundation-verification.md) records
+the files, exact local commands and remaining checks.
 
 ## Limits
 

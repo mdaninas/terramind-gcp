@@ -5,10 +5,12 @@ AI-powered Terraform risk analysis and infrastructure intelligence on Google Clo
 Terramind is a personal portfolio project demonstrating cloud engineering,
 infrastructure security and applied AI through a reproducible Terraform review workflow.
 
-**Offline analyzer.** Four deterministic GCP rules, a local allowlist normalizer,
-and JSON/Markdown reports work without cloud credentials. Gemini, Firestore,
-FastAPI, Terraform infrastructure and GitHub Actions are planned;
-they are not implemented or deployed yet. All repository samples are synthetic.
+**Available:** four deterministic GCP rules, a local allowlist normalizer,
+JSON/Markdown reports and an authenticated Cloud Run liveness service. The isolated
+GCP foundation, private storage and Firestore vector index are deployed and verified.
+Terraform also configures GitHub federation; its token exchange remains untested.
+Gemini explanations, retrieval and deployment workflows are planned.
+All repository samples are synthetic.
 Terramind is not a full security scanner and never approves or applies changes.
 
 ## Quick start
@@ -71,7 +73,23 @@ adapter. Tests cover unit behavior, CLI integration and data leakage.
 - [Threat model](docs/threat-model.md)
 - [Two-minute demo](docs/demo-script.md)
 - [Local evaluation](docs/evaluation.md)
+- [Cloud setup and deployment](docs/setup-gcp.md)
+- [Cost, rollback and cleanup](docs/cost-and-cleanup.md)
+- [Infrastructure security exceptions](docs/security-exceptions.md)
 - [Changelog](CHANGELOG.md)
 
-GCP deployment is planned and has not been verified. The current demo runs
-locally without paid resources. Phase 2 features remain outside the current scope.
+Run the local liveness service with `uv run --locked --extra api python -m terramind.api`.
+It binds to `127.0.0.1:8080`; Google authentication is enforced by Cloud Run when
+deployed, not by the local development server. `/health` is the external liveness
+endpoint; `/healthz` remains available for container probes.
+
+Validate the infrastructure without cloud credentials:
+
+```sh
+uv run --locked python scripts/check_infrastructure.py --scan
+```
+
+This requires Terraform on PATH; use `--terraform /absolute/path/to/terraform`
+otherwise. The checker uses mock-provider plans and an isolated local data directory.
+It never applies changes or initializes a remote backend. The separate, approved
+cloud deployment is recorded in [cloud verification](docs/cloud-foundation-verification.md).

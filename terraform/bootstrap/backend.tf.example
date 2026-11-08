@@ -1,0 +1,5 @@
+# Optional: copy to backend.tf ONLY AFTER the state bucket exists.
+# Migrate the initial local bootstrap state using its own backend prefix.
+terraform {
+  backend "gcs" {}
+}

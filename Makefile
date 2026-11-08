@@ -1,4 +1,6 @@
-.PHONY: setup lint test demo-offline schemas audit
+.PHONY: setup lint test demo-offline schemas audit serve check-infra
+
+TERRAFORM ?= terraform
 
 setup:
 	uv sync --locked
@@ -19,3 +21,9 @@ audit:
 	uv run --locked python -c "from pathlib import Path; Path('artifacts').mkdir(exist_ok=True)"
 	uv export --locked --no-emit-project --format requirements-txt --output-file artifacts/audit-requirements.txt --quiet
 	uv run --locked pip-audit --no-deps --disable-pip --requirement artifacts/audit-requirements.txt
+
+serve:
+	uv run --locked --extra api python -m terramind.api
+
+check-infra:
+	uv run --locked python scripts/check_infrastructure.py --terraform "$(TERRAFORM)" --scan

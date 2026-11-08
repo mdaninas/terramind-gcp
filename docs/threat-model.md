@@ -14,7 +14,9 @@ as Terraform JSON. Repository examples are handcrafted synthetic normalized fact
 | Incorrect exposure claim | Explicit protocol/ports/source facts; prevention-aware REVIEW; no live reachability or backup claims | Hierarchical firewall precedence, IAM deny/conditions, unsupported resource types and custom roles need human review |
 | Model downgrades policy | No model dependency in the offline analyzer; reports derive severity from pure rules | Model integration must preserve this boundary under adversarial mocked AI responses |
 | Supply-chain dependency risk | uv lock with hashes, Ruff/mypy, pip-audit and bounded runtime dependencies | Audits report only known vulnerabilities; online setup/audit contact package services |
-| Accidental cloud mutation | No cloud SDKs, deployment workflows, Terraform executable invocation or apply endpoint | Cloud deployment, IAM changes and billing require explicit approval and verified project parameters |
+| Accidental cloud mutation | No apply endpoint or deployment workflow; the infrastructure checker uses backend-free validation and mock plans | Operator deployment instructions include apply commands that require explicit approval and verified parameters |
+| Unauthorized service invocation | Cloud Run invoker IAM requires explicit callers; deployed `/health` returned anonymous 403 and authenticated 200 | Project/service policies contain no public principals; organization inheritance needs separate review |
+| Overprivileged service identity | Runtime has no data roles for liveness; image deployment and ingestion use separate identities | Later adapters require a reviewed permission change; Firestore collection scoping remains application-enforced |
 
 No raw input, schema-validation values or original file paths are emitted by
 application errors. CLI help displays only documented commands. There is no logging
@@ -26,6 +28,10 @@ this is defense in depth, not a guarantee against deliberate staging. No real pl
 or state file is checked in. Tests create synthetic Terraform-shaped objects in
 memory or temporary test directories, never persistent raw-plan fixtures.
 
-Planned cloud integrations require additional controls for Cloud Run authentication, exact-repo WIF,
-Firestore collection access, report retention, metered requests, private runbook
-storage, CI privileges, model data flow and cleanup evidence.
+Cloud Run authentication is deployed and verified. Federation trust is deployed,
+but GitHub environment protection and a real token exchange remain unverified.
+Firestore client rules deny all access; server SDKs use database-conditioned IAM,
+which does not enforce collection restrictions. A report TTL field is prepared,
+but no report writer sets expiry yet. See [security exceptions](security-exceptions.md)
+for scanner exceptions and logging boundaries. Retrieval/model adapters, CI
+privileges and actual cleanup evidence remain planned.
