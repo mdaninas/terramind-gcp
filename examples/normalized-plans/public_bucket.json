@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0", "source": "synthetic-demo",
+  "changes": [{
+    "address": "google_storage_bucket_iam_member.resource_0001",
+    "type": "google_storage_bucket_iam_member", "actions": ["create"],
+    "attributes": {"grants": [{"role": "roles/storage.objectViewer", "principal": "allUsers", "newly_granted": true}]}
+  }]
+}

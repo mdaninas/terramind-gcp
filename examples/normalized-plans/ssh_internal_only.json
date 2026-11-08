@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0", "source": "synthetic-demo",
+  "changes": [{
+    "address": "google_compute_firewall.resource_0002",
+    "type": "google_compute_firewall", "actions": ["create"],
+    "attributes": {"direction": "INGRESS", "disabled": false, "source_ranges": [], "allow": [{"protocol": "tcp", "ports": ["22"]}]}
+  }]
+}

@@ -1,0 +1,157 @@
+{
+  "$defs": {
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        },
+        "remediation": {
+          "title": "Remediation",
+          "type": "string"
+        },
+        "resource": {
+          "title": "Resource",
+          "type": "string"
+        },
+        "rule_id": {
+          "enum": [
+            "TM-GCP-001",
+            "TM-GCP-002",
+            "TM-GCP-003",
+            "TM-GCP-004"
+          ],
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "severity": {
+          "default": "HIGH",
+          "enum": [
+            "CRITICAL",
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "INFO"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "FAIL",
+            "REVIEW"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "resource",
+        "title",
+        "rationale",
+        "evidence",
+        "remediation",
+        "status"
+      ],
+      "title": "Finding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "analysis_id": {
+      "title": "Analysis Id",
+      "type": "string"
+    },
+    "changed_resources": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Changed Resources",
+      "type": "array"
+    },
+    "citations": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Citations",
+      "type": "array"
+    },
+    "explanation": {
+      "title": "Explanation",
+      "type": "string"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "model_id": {
+      "default": null,
+      "title": "Model Id",
+      "type": "null"
+    },
+    "overall_risk": {
+      "enum": [
+        "CRITICAL",
+        "HIGH",
+        "MEDIUM",
+        "LOW",
+        "INFO",
+        "NO_KNOWN_FINDINGS"
+      ],
+      "title": "Overall Risk",
+      "type": "string"
+    },
+    "policy_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Policy Version",
+      "type": "string"
+    },
+    "rag_status": {
+      "const": "not_requested",
+      "default": "not_requested",
+      "title": "Rag Status",
+      "type": "string"
+    },
+    "timestamp": {
+      "title": "Timestamp",
+      "type": "string"
+    }
+  },
+  "required": [
+    "analysis_id",
+    "timestamp",
+    "overall_risk",
+    "findings",
+    "changed_resources",
+    "explanation",
+    "limitations"
+  ],
+  "title": "Report",
+  "type": "object"
+}

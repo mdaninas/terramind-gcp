@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0", "source": "synthetic-demo",
+  "changes": [{
+    "address": "google_storage_bucket.resource_0004",
+    "type": "google_storage_bucket", "actions": ["delete"], "attributes": {}
+  }]
+}

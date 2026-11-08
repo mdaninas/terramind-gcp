@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0", "source": "synthetic-demo",
+  "changes": [{
+    "address": "google_project_iam_binding.resource_0003",
+    "type": "google_project_iam_binding", "actions": ["create"],
+    "attributes": {"grants": [{"role": "roles/owner", "principal": "redacted", "newly_granted": true}]}
+  }]
+}
