@@ -25,4 +25,16 @@ public grant, avoiding an assertion of actual exposed data.
 
 The demo reads packaged synthetic normalized fixtures only. A real local plan is
 not needed. No Terraform CLI, API enablement or infrastructure provisioning occurs.
-A cloud demo, private HTML page, screenshots and AI explanations are planned.
+
+## Local report page
+
+Run `uv run --locked --extra api python -m terramind.api`, open
+`http://127.0.0.1:8080/demo` and select **Analyze synthetic sample**. Expect the same
+four findings, a JSON link and a Markdown download. This mode uses process memory
+and makes no provider calls. In another terminal, run
+`uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local`
+to verify the HTTP flow. Reports disappear on restart or expiry.
+
+The cloud CLI has verified Gemini explanations and Firestore retrieval separately.
+The hosted analysis API and protected deployment workflow still need activation
+and live verification. See the [cloud demonstration instructions](delivery.md#cloud-demonstration).

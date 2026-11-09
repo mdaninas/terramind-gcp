@@ -3,6 +3,11 @@ variable "region" { type = string }
 variable "name" { type = string }
 variable "deletion_protection" { type = bool }
 variable "ingester_email" { type = string }
+variable "runtime_email" { type = string }
+variable "enable_analysis_api" {
+  type    = bool
+  default = false
+}
 
 resource "google_firestore_database" "data" {
   project                     = var.project_id
@@ -40,6 +45,36 @@ resource "google_firestore_field" "report_expiry" {
   field      = "expires_at"
   ttl_config {}
   index_config {}
+}
+
+resource "google_firestore_field" "report_body" {
+  count      = var.enable_analysis_api ? 1 : 0
+  project    = var.project_id
+  database   = google_firestore_database.data.name
+  collection = "analyses"
+  field      = "report_json"
+  index_config {}
+}
+
+resource "google_project_iam_custom_role" "runtime" {
+  count       = var.enable_analysis_api ? 1 : 0
+  project     = var.project_id
+  role_id     = "${replace(var.name, "-", "_")}_reports"
+  title       = "Terramind synthetic analysis data"
+  description = "Read synthetic knowledge and create/read reports; no update, delete or index administration."
+  permissions = ["datastore.entities.get", "datastore.entities.list", "datastore.entities.create"]
+}
+
+resource "google_project_iam_member" "runtime" {
+  count   = var.enable_analysis_api ? 1 : 0
+  project = var.project_id
+  role    = google_project_iam_custom_role.runtime[0].name
+  member  = "serviceAccount:${var.runtime_email}"
+  condition {
+    title       = "terramind_database_only"
+    description = "Server SDK access is restricted to the dedicated named database."
+    expression  = "resource.name == 'projects/${var.project_id}/databases/${google_firestore_database.data.name}'"
+  }
 }
 
 resource "google_firebaserules_ruleset" "deny_clients" {
@@ -87,5 +122,7 @@ output "security_settings" {
     dimensions              = google_firestore_index.embeddings.fields[1].vector_config[0].dimension
     delete_protection_state = google_firestore_database.data.delete_protection_state
     client_rules_deny_all   = strcontains(google_firebaserules_ruleset.deny_clients.source[0].files[0].content, "allow read, write: if false;")
+    runtime_permissions     = var.enable_analysis_api ? google_project_iam_custom_role.runtime[0].permissions : []
+    runtime_condition       = var.enable_analysis_api ? google_project_iam_member.runtime[0].condition[0].expression : null
   }
 }

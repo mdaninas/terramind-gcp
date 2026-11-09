@@ -8,7 +8,7 @@ See the [roadmap](roadmap.md).
 
 The CLI depends on normalization, policies and reporting. Policies depend only on
 immutable typed contracts. The report builder runs policies and derives the maximum
-severity. It owns findings; later model/retrieval adapters can add advisory text
+severity. It owns findings; model/retrieval adapters add advisory text
 through separate contracts without replacing findings.
 
 No cloud SDK, HTTP server, credentials lookup, external subprocess or network
@@ -31,7 +31,7 @@ not survive. Unknown/sensitive facts generate closed limitation codes.
 
 Tradeoff: the cloud cannot map aliases back to real infrastructure. Engineers must
 correlate findings locally. Terraform names/order are not a trust boundary for
-policy authority; the future API must re-run rules on submitted facts.
+policy authority; the API re-runs rules on submitted facts.
 
 ## Differential IAM facts (ADR 002)
 
@@ -57,12 +57,12 @@ templates and allowlisted facts, avoiding injection from raw resource strings.
 
 ## HTTP and cloud foundation
 
-The packaged API adapter exposes `/health` and the container probe `/healthz`;
-`apps/api/main.py` is a thin source-tree
+The packaged API exposes liveness, strict synthetic analysis, report JSON/Markdown,
+a small report page and the packaged demo. `apps/api/main.py` is a thin source-tree
 entry point. Cloud Run owns authentication. The local server binds to loopback,
 while the non-root container listens on Cloud Run's assigned port. Content-free
-structured logs replace raw URL access logs. No analysis endpoints or data adapters
-are exposed yet.
+structured logs replace raw URL access logs. The existing deployed image remains
+health-only until the new image and runtime configuration are approved and promoted.
 
 Terraform separates state bootstrap from the dev environment. Modules manage
 identity, image storage, synthetic runbooks, a named Firestore database and private
@@ -70,15 +70,18 @@ Cloud Run. A null image prepares the supporting resources first; a verified dige
 then enables the service. Mock-provider plan tests validate security defaults without
 contacting GCP. These tests cannot establish deployed IAM or index readiness.
 
-The runtime has no data roles until an implemented adapter needs them. Ingestion
+Runtime data/prediction roles are opt-in and remain unapplied. Ingestion
 uses a separate identity with database-conditioned permissions and bucket-scoped
 object access. The GitHub identity can publish images and update the existing
 service, with trust restricted to exact repository and owner IDs, main, a protected
 environment and the manual deployment workflow. It has no Terraform-state access.
 
 Retrieval and Gemini advisory adapters are implemented behind provider-independent
-contracts and an explicit synthetic cloud CLI. Report persistence, private
-presentation and the deployment workflow remain planned. See
+contracts and an explicit synthetic cloud CLI. The API composes the same adapters
+with expiring create-only report persistence. Offline mode has bounded memory
+storage; cloud mode uses the fixed analyses collection. Server rendering escapes
+text and uses only packaged assets. CI and protected manual deployment workflows
+are prepared but have not run on GitHub. See
 [deployment setup](setup-gcp.md) and [security exceptions](security-exceptions.md).
 
 ## Evidence and advisory boundary
@@ -100,3 +103,12 @@ Local lexical vectors and fixture prose provide reproducible contract tests;
 their scores are labeled separately from live Google embedding evaluations.
 The [retrieval guide](retrieval-and-explanations.md) documents tradeoffs, limits
 and the authenticated operator workflow.
+
+## Delivery boundary
+
+Pull request jobs have no Google credentials or OIDC permission. A manual main-only
+workflow verifies environment protection, tests/builds trusted source without cloud
+credentials, then promotes that same run's image through a protected job with WIF.
+Only the image digest is updated; Terraform apply stays an approved operator action.
+No queues, public login service, report history dashboard or pull request comments
+are included. See [API composition](analysis-api.md) and [controlled delivery](delivery.md).

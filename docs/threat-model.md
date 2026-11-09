@@ -6,7 +6,7 @@ as Terraform JSON. Repository examples are handcrafted synthetic normalized fact
 
 | Threat | Current control | Residual risk / planned work |
 | --- | --- | --- |
-| Raw plan/state leaks to cloud | No network clients; local allowlist projection; cloud boundary will accept normalized schema only | CLI users must keep original files outside source control; no system can infer all semantic sensitivity |
+| Raw plan/state leaks to cloud | Offline path has no network clients; local allowlist projection; API accepts only strict synthetic normalized facts | Callers must keep original files outside source control; a source label cannot prove facts are synthetic |
 | Private identifiers leak through reports | Generated ordinal aliases, private CIDRs omitted, identity redaction, closed enums; canary tests | Aliases/types/counts still disclose structural facts; only synthetic data is approved for cloud demos |
 | Marked sensitive values affect output | Risk-relevant sensitive attributes omitted and limitation emitted | Redacted unknown facts can hide risks; no known findings never means safe |
 | Malicious plan text or Markdown injection | Arbitrary plan strings omitted; retrieved text is untrusted; model tools disabled; advisory Markdown escaped; malicious runbook tested | Prompt instructions cannot guarantee semantic correctness; generated advice still needs review |
@@ -14,9 +14,12 @@ as Terraform JSON. Repository examples are handcrafted synthetic normalized fact
 | Incorrect exposure claim | Explicit protocol/ports/source facts; prevention-aware REVIEW; no live reachability or backup claims | Hierarchical firewall precedence, IAM deny/conditions, unsupported resource types and custom roles need human review |
 | Model downgrades policy | Offline rules remain independent; model schema excludes policy fields; immutable findings survive malformed, injected and unavailable responses | Advisory prose can still be wrong; lexical approval guards are defensive rather than semantic proof |
 | Supply-chain dependency risk | uv lock with hashes, Ruff/mypy, pip-audit and bounded runtime dependencies | Audits report only known vulnerabilities; online setup/audit contact package services |
-| Accidental cloud mutation | No apply endpoint or deployment workflow; the infrastructure checker uses backend-free validation and mock plans | Operator deployment instructions include apply commands that require explicit approval and verified parameters |
+| Accidental cloud mutation | No apply endpoint; deployment workflow is manual/main/protected-environment only and changes an image digest; infrastructure checks use mock plans | Operator Terraform apply and IAM changes require explicit approval and verified parameters |
 | Unauthorized service invocation | Cloud Run invoker IAM requires explicit callers; deployed `/health` returned anonymous 403 and authenticated 200 | Project/service policies contain no public principals; organization inheritance needs separate review |
-| Overprivileged service identity | Runtime has no data roles for liveness; image deployment and ingestion use separate identities | Later adapters require a reviewed permission change; Firestore collection scoping remains application-enforced |
+| Overprivileged service identity | Runtime analysis roles are explicit opt-in and unapplied; image deployment and ingestion use separate identities | Prepared runtime data IAM isolates a database, not collections; model invocation is project-scoped |
+| Report theft or stale data | Private Cloud Run, generated UUIDs, no listing route, application expiry and Firestore TTL | All authorized demo invokers share report access; UUIDs are not user authorization; physical TTL deletion is asynchronous |
+| HTTP or presentation abuse | Streamed 256 KiB limit, five-second body timeout, strict media/schema, escaped HTML, CSP, one analysis at a time and a rolling admission limit | Admission limits reset per process and do not provide a hard spending cap |
+| Untrusted pull request deployment | CI has no OIDC/cloud credentials; privileged job consumes only the trusted manual run's image artifact | Main/workflow changes and environment reviewers must remain protected; hosted enforcement is unverified |
 
 No raw input, schema-validation values or original file paths are emitted by
 application errors. CLI help displays only documented commands. There is no logging
@@ -31,11 +34,12 @@ memory or temporary test directories, never persistent raw-plan fixtures.
 Cloud Run authentication is deployed and verified. Federation trust is deployed,
 but GitHub environment protection and a real token exchange remain unverified.
 Firestore client rules deny all access; server SDKs use database-conditioned IAM,
-which does not enforce collection restrictions. A report TTL field is prepared,
-but no report writer sets expiry yet. See [security exceptions](security-exceptions.md)
+which does not enforce collection restrictions. The report writer sets an aware
+expiry timestamp and refuses expired reads before physical TTL deletion. See [security exceptions](security-exceptions.md)
 for scanner exceptions and logging boundaries. Retrieval/model adapters operate
 through the synthetic cloud CLI; the health runtime has no data or prediction
-roles. Runtime permission changes, analysis endpoints, CI privileges and actual
-cleanup evidence remain planned. Indexed synthetic sources now incur metered
+roles in the existing deployment. Analysis endpoints and delivery workflows are
+implemented locally; runtime permission changes, hosted verification and actual
+cleanup evidence remain pending. Indexed synthetic sources incur metered
 storage and read/write usage; model calls have explicit time, attempt and token
 limits. Budget alerts do not stop spending.

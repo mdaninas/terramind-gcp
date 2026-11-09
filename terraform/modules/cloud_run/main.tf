@@ -13,6 +13,14 @@ variable "deployer_email" { type = string }
 variable "invoker_members" { type = set(string) }
 variable "labels" { type = map(string) }
 variable "deletion_protection" { type = bool }
+variable "environment" {
+  type    = map(string)
+  default = {}
+}
+variable "allow_deployer_invoke" {
+  type    = bool
+  default = false
+}
 variable "max_instances" {
   type = number
   validation {
@@ -43,6 +51,13 @@ resource "google_cloud_run_v2_service" "api" {
     }
     containers {
       image = var.image
+      dynamic "env" {
+        for_each = var.environment
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
       ports { container_port = 8080 }
       resources {
         limits            = { cpu = "1", memory = "512Mi" }
@@ -89,6 +104,15 @@ resource "google_cloud_run_v2_service_iam_member" "deployer" {
   member   = "serviceAccount:${var.deployer_email}"
 }
 
+resource "google_cloud_run_v2_service_iam_member" "deployer_invoker" {
+  count    = var.allow_deployer_invoke ? 1 : 0
+  project  = var.project_id
+  location = var.region
+  name     = google_cloud_run_v2_service.api.name
+  role     = "roles/run.invoker"
+  member   = "serviceAccount:${var.deployer_email}"
+}
+
 output "uri" { value = google_cloud_run_v2_service.api.uri }
 output "name" { value = google_cloud_run_v2_service.api.name }
 output "security_settings" {
@@ -99,5 +123,7 @@ output "security_settings" {
     max_instances        = google_cloud_run_v2_service.api.scaling[0].max_instance_count
     cpu_idle             = google_cloud_run_v2_service.api.template[0].containers[0].resources[0].cpu_idle
     deletion_protection  = google_cloud_run_v2_service.api.deletion_protection
+    environment          = var.environment
+    deployer_invokes     = var.allow_deployer_invoke
   }
 }

@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: Python and security
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Install locked dependencies
+        run: |
+          python -m pip install uv==0.12.8
+          uv sync --locked
+      - name: Lint, types, schemas and tests
+        run: uv run --locked python scripts/check.py
+      - name: Public file privacy check
+        run: uv run --locked python scripts/check_public_files.py
+      - name: Dependency audit
+        run: make audit
+      - name: Offline demonstrations
+        run: |
+          make demo-offline
+          make demo-retrieval
+      - name: Build analysis container
+        run: docker build --platform linux/amd64 --tag terramind:ci .
+      - name: Start restricted local container
+        run: |
+          docker run --detach --rm --name terramind-ci --publish 127.0.0.1:8080:8080 --read-only --cap-drop=ALL --security-opt=no-new-privileges terramind:ci
+          curl --fail --silent --retry 20 --retry-delay 1 --retry-connrefused http://127.0.0.1:8080/health
+      - name: Verify local API end to end
+        run: uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local
+      - name: Stop local container
+        if: always()
+        run: docker stop terramind-ci || true
+
+  infrastructure:
+    name: Terraform and Checkov
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+        with:
+          terraform_version: '1.17.1'
+          terraform_wrapper: false
+      - run: python -m pip install uv==0.12.8
+      - name: Credential-free validation and mock plans
+        run: uv run --locked python scripts/check_infrastructure.py --scan

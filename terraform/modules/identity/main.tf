@@ -5,12 +5,16 @@ variable "github_repository" { type = string }
 variable "github_repository_id" { type = string }
 variable "github_owner_id" { type = string }
 variable "github_environment" { type = string }
+variable "enable_analysis_api" {
+  type    = bool
+  default = false
+}
 
 resource "google_service_account" "runtime" {
   project      = var.project_id
   account_id   = "${var.name}-runtime"
   display_name = "Terramind API runtime"
-  description  = "Health service identity. No data or cloud administrator roles."
+  description  = "Terramind runtime. Analysis permissions are explicitly opt-in; no cloud administrator roles."
 }
 resource "google_service_account" "deployer" {
   project      = var.project_id
@@ -66,8 +70,27 @@ resource "google_service_account_iam_member" "runtime_act_as" {
   member             = "serviceAccount:${google_service_account.deployer.email}"
 }
 
+resource "google_project_iam_custom_role" "model_invoker" {
+  count       = var.enable_analysis_api ? 1 : 0
+  project     = var.project_id
+  role_id     = "${replace(var.name, "-", "_")}_prediction"
+  title       = "Terramind model prediction"
+  description = "Invoke publisher models and consume the project's quota; no model or endpoint administration."
+  permissions = ["aiplatform.endpoints.predict", "serviceusage.services.use"]
+}
+
+resource "google_project_iam_member" "runtime_prediction" {
+  count   = var.enable_analysis_api ? 1 : 0
+  project = var.project_id
+  role    = google_project_iam_custom_role.model_invoker[0].name
+  member  = "serviceAccount:${google_service_account.runtime.email}"
+}
+
 output "runtime_email" { value = google_service_account.runtime.email }
 output "deployer_email" { value = google_service_account.deployer.email }
 output "ingester_email" { value = google_service_account.ingester.email }
 output "workload_identity_provider" { value = google_iam_workload_identity_pool_provider.github.name }
 output "federation_condition" { value = google_iam_workload_identity_pool_provider.github.attribute_condition }
+output "runtime_model_permissions" {
+  value = var.enable_analysis_api ? google_project_iam_custom_role.model_invoker[0].permissions : []
+}

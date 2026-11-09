@@ -95,3 +95,32 @@ variable "notification_channels" {
   default     = []
   description = "Existing Monitoring channel resource names. Empty means incidents have no notification delivery."
 }
+variable "enable_analysis_api" {
+  type        = bool
+  default     = false
+  description = "Explicitly opt in to runtime data/prediction IAM, report index exemption and cloud API configuration. Requires owner approval."
+}
+variable "gemini_model" {
+  type    = string
+  default = "gemini-3.5-flash"
+  validation {
+    condition     = can(regex("^[a-z0-9][a-z0-9.-]{0,79}$", var.gemini_model))
+    error_message = "Use a supported publisher model ID, not a URL or arbitrary text."
+  }
+}
+variable "gemini_location" {
+  type    = string
+  default = "global"
+  validation {
+    condition     = can(regex("^[a-z][a-z0-9-]{0,39}$", var.gemini_location))
+    error_message = "Use a supported Google model location."
+  }
+}
+variable "explanation_language" {
+  type    = string
+  default = "en"
+  validation {
+    condition     = contains(["en", "id"], var.explanation_language)
+    error_message = "Choose en or id."
+  }
+}

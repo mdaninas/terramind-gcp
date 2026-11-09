@@ -10,8 +10,10 @@ JSON/Markdown reports and an authenticated Cloud Run liveness service. The isola
 GCP foundation, private storage and Firestore vector index are deployed and verified.
 Terraform also configures GitHub federation; its token exchange remains untested.
 The optional knowledge CLI adds synthetic runbook ingestion, Firestore retrieval
-and validated Gemini advisory output with deterministic fallback. Deployment
-workflows and the analysis HTTP endpoints remain planned.
+and validated Gemini advisory output with deterministic fallback. Analysis endpoints,
+expiring report storage, Markdown exports and a minimal report page are implemented
+and verified locally. CI and protected deployment workflows are prepared; hosted
+runs and deployment of the new analysis image remain unverified.
 All repository samples are synthetic.
 Terramind is not a full security scanner and never approves or applies changes.
 
@@ -77,15 +79,24 @@ adapter. Tests cover unit behavior, CLI integration and data leakage.
 - [Local evaluation](docs/evaluation.md)
 - [Retrieval and explanations](docs/retrieval-and-explanations.md)
 - [Retrieval verification](docs/retrieval-verification.md)
+- [Analysis API and local report demo](docs/analysis-api.md)
+- [Controlled delivery](docs/delivery.md)
+- [API and delivery verification](docs/api-delivery-verification.md)
 - [Cloud setup and deployment](docs/setup-gcp.md)
 - [Cost, rollback and cleanup](docs/cost-and-cleanup.md)
 - [Infrastructure security exceptions](docs/security-exceptions.md)
 - [Changelog](CHANGELOG.md)
 
-Run the local liveness service with `uv run --locked --extra api python -m terramind.api`.
+Run the local API with `uv run --locked --extra api python -m terramind.api`.
 It binds to `127.0.0.1:8080`; Google authentication is enforced by Cloud Run when
 deployed, not by the local development server. `/health` is the external liveness
 endpoint; `/healthz` remains available for container probes.
+
+Open `http://127.0.0.1:8080/demo` to analyze the packaged synthetic sample and view
+the report. Local mode makes no cloud calls and keeps at most 128 expiring reports
+in process memory. Verify the running API with
+`uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local`.
+See the API guide for request limits, storage behavior and the cloud approval gate.
 
 Validate the ten synthetic knowledge documents with
 `uv run --locked terramind-knowledge plan`. Run

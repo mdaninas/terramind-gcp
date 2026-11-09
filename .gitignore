@@ -22,6 +22,7 @@ tfplan*
 *.tfvars
 *.tfvars.json
 credentials*.json
+gha-creds-*.json
 *service-account*.json
 artifacts/
 backend.hcl

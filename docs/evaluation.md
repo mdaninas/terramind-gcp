@@ -2,12 +2,14 @@
 
 Local checks were rerun on 2026-11-09 using Python 3.12.13 on Windows. Cloud
 verification used a dedicated GCP project and Cloud Shell. These results cover
-the offline analyzer, cloud foundation and synthetic retrieval/model integration.
+the offline analyzer, cloud foundation, synthetic retrieval/model integration and
+local API/report delivery. Hosted analysis deployment and GitHub Actions runs are
+not verified.
 They do not establish general semantic correctness of model-generated advice.
 
 | Check | Result |
 | --- | --- |
-| Automated Python tests | 226 passed |
+| Automated Python tests | 291 passed |
 | Normalization and policy coverage, including branches | 97.58% |
 | Four policy rule functions | 100% coverage |
 | Required synthetic scenarios | All eight expectations passed |
@@ -18,13 +20,16 @@ They do not establish general semantic correctness of model-generated advice.
 | Isolated runtime-only demo | Passed |
 | Dependency audit | No known vulnerabilities reported |
 | Source archive and wheel | Built successfully |
-| API adapter coverage, measured separately | 94.92% |
-| Actual local Uvicorn HTTP request | `/healthz` returned 200 with the expected JSON |
+| API and report storage coverage, measured separately | 92.11% |
+| Actual local Uvicorn HTTP flow | Four findings, saved JSON round-trip, Markdown and HTML passed |
 | Terraform 1.17.1 formatting and validation | All three configuration roots passed |
-| Terraform mock-provider tests | Ten passed; no cloud calls or apply |
+| Terraform mock-provider tests | Twelve passed; no cloud calls or apply |
 | Checkov 3.4.3 Terraform scan | 17 passed, zero failed, four documented exceptions |
 | Checkov 3.4.3 Dockerfile scan | 48 passed, zero failed, zero skipped |
-| Container build and execution | Cloud Shell Linux amd64 build passed; hardened container returned HTTP 200 |
+| Earlier health container build and execution | Cloud Shell Linux amd64 build passed; hardened health container returned HTTP 200 |
+| New analysis container build and execution | Unverified; local Docker engine did not respond |
+| GitHub workflow syntax | Actionlint 1.7.12 passed; ShellCheck integration disabled on Windows |
+| Hosted CI and WIF image deployment | Unverified; workflow publication and protected environment configuration pending |
 | Deployed authenticated/unauthenticated calls | `/health`: authenticated 200 with expected JSON; anonymous 403 |
 | Private storage | Both buckets enforce public access prevention and uniform access |
 | Firestore | Native database, vector index READY, expiry ACTIVE, deny-all client release verified |
@@ -40,16 +45,19 @@ The tests cover rule positives, negatives and edge cases; IAM membership changes
 public access prevention; firewall protocols and port ranges; deletion and replacement;
 input size and depth limits; sensitive-value exclusion; sanitized errors; and
 execution with network access denied.
-API tests additionally cover liveness, disabled documentation routes, absence of
-unimplemented analysis routes, safe error handling, log content exclusion and
-Cloud Run port configuration.
+API tests additionally cover liveness, strict synthetic requests, bounded streaming,
+expiry, storage failure, throttling, model fallback, exports, escaped HTML, safe
+telemetry and Cloud Run port configuration. Delivery tests check credential-free
+pull request jobs, action pins and fail-closed environment/runtime guards.
 
 The [retrieval verification](retrieval-verification.md) records source integrity,
 malicious-runbook and malformed-model checks. The [live query results](evaluations/retrieval-2026-11-09.json)
 and [synthetic report](../examples/generated-reports/grounded-synthetic.md) are
 inspectable. The generation timing excludes retrieval and is one observation,
-not a latency guarantee. Terraform and container results above retain the earlier
-foundation verification; their configuration was not changed in this step.
+not a latency guarantee. The earlier deployed health image remains unchanged.
+Terraform configuration and source/package checks were rerun for API delivery;
+Dockerfile static scanning is separate from executing the new image. See the
+[API and delivery verification record](api-delivery-verification.md).
 
 ## Reproduce
 

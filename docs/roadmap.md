@@ -8,7 +8,7 @@ service are deployed, with authenticated access and anonymous rejection verified
 | Offline analysis | Local normalization, deterministic risk rules, JSON and Markdown reports | Implemented and verified locally |
 | Cloud foundation | Terraform foundation and private Cloud Run health service | Deployed and verified; federation exchange remains untested |
 | Retrieval and explanations | Synthetic runbooks, Firestore vector retrieval and Gemini explanations | CLI implemented and verified locally and on GCP |
-| API and delivery | Analysis API, private report page and GitHub Actions deployment | Planned |
+| API and delivery | Analysis API, private report page and GitHub Actions deployment | Implemented and verified locally; cloud activation and hosted runs pending |
 | Release verification | End-to-end evaluation, walkthrough and deployment documentation | Planned |
 
 ## Offline analyzer
@@ -52,9 +52,12 @@ references. See the [verification record](retrieval-verification.md).
 
 ## API and delivery
 
-Add strict analysis endpoints, sanitized report storage and retention, Markdown
-downloads, a minimal private HTML report page, credential-free pull request CI and
-protected deployment using OIDC and immutable image digests.
+Strict synthetic-only analysis endpoints, expiring report storage, Markdown
+downloads, a minimal HTML report page, credential-free pull request CI and protected
+manual deployment using OIDC and immutable image digests are implemented. The
+local API is verified. Runtime IAM changes, environment protection, hosted CI,
+federation exchange and the new cloud image still require activation/verification.
+See the [verification record](api-delivery-verification.md).
 
 Acceptance criteria: offline and authorized cloud demos work end to end, hosted CI
 passes, deployed smoke checks pass, and untrusted pull requests receive no deployment

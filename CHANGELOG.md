@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Added strict synthetic analysis endpoints, create-only expiring reports,
+  Markdown downloads and a minimal escaped report page with a packaged demo.
+- Added local admission/size/deadline limits, safe analysis telemetry, memory and
+  Firestore report adapters, and an authenticated cloud demonstration client.
+- Prepared credential-free CI, protected manual WIF image deployment, environment
+  and runtime guards, and explicitly opt-in runtime IAM/index configuration.
+  Hosted runs and deployment of the analysis image remain unverified.
+
 - Added ten synthetic knowledge documents, heading-aware chunks, idempotent
   Google embedding ingestion, private source publishing and Firestore retrieval.
 - Added Gemini advisory contracts, source validation, strict deterministic

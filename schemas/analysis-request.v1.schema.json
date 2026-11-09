@@ -1,0 +1,691 @@
+{
+  "$defs": {
+    "Allow": {
+      "additionalProperties": false,
+      "properties": {
+        "ports": {
+          "default": [],
+          "items": {
+            "maxLength": 11,
+            "pattern": "^[0-9]{1,5}(?:-[0-9]{1,5})?$",
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Ports",
+          "type": "array"
+        },
+        "protocol": {
+          "enum": [
+            "tcp",
+            "udp",
+            "all",
+            "other",
+            "unknown"
+          ],
+          "title": "Protocol",
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol"
+      ],
+      "title": "Allow",
+      "type": "object"
+    },
+    "Attributes": {
+      "additionalProperties": false,
+      "properties": {
+        "allow": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Allow"
+          },
+          "maxItems": 100,
+          "title": "Allow",
+          "type": "array"
+        },
+        "direction": {
+          "default": "unknown",
+          "enum": [
+            "INGRESS",
+            "EGRESS",
+            "unknown"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "disabled": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disabled"
+        },
+        "grants": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Grant"
+          },
+          "maxItems": 100,
+          "title": "Grants",
+          "type": "array"
+        },
+        "public_access_prevention": {
+          "default": "unknown",
+          "enum": [
+            "enforced",
+            "inherited",
+            "unknown"
+          ],
+          "title": "Public Access Prevention",
+          "type": "string"
+        },
+        "source_ranges": {
+          "default": [],
+          "items": {
+            "enum": [
+              "0.0.0.0/0",
+              "::/0"
+            ],
+            "type": "string"
+          },
+          "maxItems": 2,
+          "title": "Source Ranges",
+          "type": "array"
+        }
+      },
+      "title": "Attributes",
+      "type": "object"
+    },
+    "Change": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_storage_bucket"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_storage_bucket\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": {
+                  "enum": [
+                    "public_access_prevention"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_storage_bucket_iam_member"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_storage_bucket_iam_member\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": {
+                  "enum": [
+                    "grants",
+                    "public_access_prevention"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_storage_bucket_iam_binding"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_storage_bucket_iam_binding\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": {
+                  "enum": [
+                    "grants",
+                    "public_access_prevention"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_storage_bucket_iam_policy"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_storage_bucket_iam_policy\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": {
+                  "enum": [
+                    "grants",
+                    "public_access_prevention"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_project_iam_member"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_project_iam_member\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": {
+                  "enum": [
+                    "grants"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_project_iam_binding"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_project_iam_binding\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": {
+                  "enum": [
+                    "grants"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_project_iam_policy"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_project_iam_policy\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": {
+                  "enum": [
+                    "grants"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_compute_firewall"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_compute_firewall\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": {
+                  "enum": [
+                    "allow",
+                    "direction",
+                    "disabled",
+                    "source_ranges"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_sql_database_instance"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_sql_database_instance\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_sql_database"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_sql_database\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_compute_disk"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_compute_disk\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_compute_region_disk"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_compute_region_disk\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_firestore_database"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_firestore_database\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_bigtable_instance"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_bigtable_instance\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_spanner_instance"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_spanner_instance\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_spanner_database"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_spanner_database\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "google_filestore_instance"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^google_filestore_instance\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "unsupported_resource"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "pattern": "^unsupported_resource\\.resource_[0-9]{4}$"
+              },
+              "attributes": {
+                "propertyNames": false
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "actions": {
+          "enum": [
+            [
+              "no-op"
+            ],
+            [
+              "create"
+            ],
+            [
+              "read"
+            ],
+            [
+              "update"
+            ],
+            [
+              "delete"
+            ],
+            [
+              "forget"
+            ],
+            [
+              "delete",
+              "create"
+            ],
+            [
+              "create",
+              "delete"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "no-op",
+              "create",
+              "read",
+              "update",
+              "delete",
+              "forget"
+            ],
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Actions",
+          "type": "array"
+        },
+        "address": {
+          "maxLength": 100,
+          "pattern": "^[a-z_]+\\.resource_[0-9]{4}$",
+          "title": "Address",
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/$defs/Attributes"
+        },
+        "notes": {
+          "default": [],
+          "items": {
+            "enum": [
+              "unknown_values",
+              "sensitive_values",
+              "unsupported_resource",
+              "conditional_iam",
+              "unresolved_grants",
+              "incomplete_plan"
+            ],
+            "type": "string"
+          },
+          "maxItems": 6,
+          "title": "Notes",
+          "type": "array"
+        },
+        "type": {
+          "$ref": "#/$defs/ResourceType"
+        }
+      },
+      "required": [
+        "address",
+        "type",
+        "actions",
+        "attributes"
+      ],
+      "title": "Change",
+      "type": "object"
+    },
+    "Grant": {
+      "additionalProperties": false,
+      "properties": {
+        "newly_granted": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Newly Granted"
+        },
+        "principal": {
+          "enum": [
+            "allUsers",
+            "allAuthenticatedUsers",
+            "redacted"
+          ],
+          "title": "Principal",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "roles/storage.objectViewer",
+            "roles/storage.objectAdmin",
+            "roles/storage.admin",
+            "roles/storage.objectUser",
+            "roles/storage.legacyObjectReader",
+            "roles/storage.legacyBucketReader",
+            "roles/storage.legacyBucketOwner",
+            "roles/owner",
+            "roles/editor"
+          ],
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "principal",
+        "newly_granted"
+      ],
+      "title": "Grant",
+      "type": "object"
+    },
+    "ResourceType": {
+      "enum": [
+        "google_storage_bucket",
+        "google_storage_bucket_iam_member",
+        "google_storage_bucket_iam_binding",
+        "google_storage_bucket_iam_policy",
+        "google_project_iam_member",
+        "google_project_iam_binding",
+        "google_project_iam_policy",
+        "google_compute_firewall",
+        "google_sql_database_instance",
+        "google_sql_database",
+        "google_compute_disk",
+        "google_compute_region_disk",
+        "google_firestore_database",
+        "google_bigtable_instance",
+        "google_spanner_instance",
+        "google_spanner_database",
+        "google_filestore_instance",
+        "unsupported_resource"
+      ],
+      "title": "ResourceType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "changes": {
+      "items": {
+        "$ref": "#/$defs/Change"
+      },
+      "maxItems": 100,
+      "title": "Changes",
+      "type": "array"
+    },
+    "notes": {
+      "default": [],
+      "items": {
+        "enum": [
+          "unknown_values",
+          "sensitive_values",
+          "unsupported_resource",
+          "conditional_iam",
+          "unresolved_grants",
+          "incomplete_plan"
+        ],
+        "type": "string"
+      },
+      "maxItems": 6,
+      "title": "Notes",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "const": "synthetic-demo",
+      "title": "Source",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "source",
+    "changes"
+  ],
+  "title": "AnalysisRequest",
+  "type": "object"
+}

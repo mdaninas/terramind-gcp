@@ -154,9 +154,10 @@ provides alerts, and source/image/storage retention still matters.
 
 ## Scope of this change
 
-This step implements library and CLI integration. The deployed Cloud Run service
+This guide covers library and CLI integration. The deployed Cloud Run service
 continues to expose liveness only. Analysis HTTP routes, report persistence, the
-private report page, deployment workflows and reviewed runtime prediction/data
-permissions belong to the subsequent API and delivery step. Live CLI checks use
+report page and deployment workflows are now implemented locally; their cloud
+activation is documented in the [API guide](analysis-api.md) and
+[delivery review](delivery.md). Live CLI checks use
 the already authorized operator identity; they do not establish that the current
 health-only runtime or ingestion service account can invoke models.

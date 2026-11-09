@@ -2,7 +2,8 @@
 
 Local verification and live Google Cloud checks are recorded separately. The
 implementation uses the existing dedicated project and synthetic data only.
-It does not add analysis HTTP endpoints or deployment workflows.
+This is the retrieval feature's verification snapshot. Subsequent API and delivery
+work is recorded in the [current verification](api-delivery-verification.md).
 
 ## Files and architecture
 

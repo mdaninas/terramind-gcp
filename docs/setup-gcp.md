@@ -31,6 +31,8 @@ Initial package/provider downloads require internet access. The standalone
 root, state bootstrap and dev environment.
 
 The local service binds to `127.0.0.1:8080`; `GET /health` and `GET /healthz` return liveness only.
+The local analysis routes and synthetic report page are documented in the
+[API guide](analysis-api.md). Their cloud activation is a separate approval gate.
 It does not implement Google authentication locally. The container binds to
 `0.0.0.0` and respects Cloud Run's `PORT` environment variable.
 
@@ -223,9 +225,11 @@ the named database's deny-all client rule release before adding data adapters.
 The trust condition requires the exact repository, numeric repository and owner
 IDs, main branch, `development` environment subject, manual `workflow_dispatch`
 event and `.github/workflows/deploy.yml` from main. Configure protected environment
-reviewers and main-branch rules before creating the later deployment workflow.
-There is no deployment workflow in this change and no successful token exchange
-is claimed. Only the job that needs federation should receive `id-token: write`.
+reviewers and main-branch rules before running the prepared deployment workflow.
+Only its protected deployment job receives `id-token: write`; the workflow refuses
+to proceed without environment protection. No successful token exchange or hosted
+deployment run is claimed. See [controlled delivery](delivery.md) for variables,
+runtime IAM changes, private plan review and the remaining live verification gates.
 
 See [security exceptions](security-exceptions.md) and [cost and cleanup](cost-and-cleanup.md).
 

@@ -1,4 +1,4 @@
-.PHONY: setup lint test demo-offline demo-retrieval knowledge-plan schemas audit serve check-infra
+.PHONY: setup lint test demo-offline demo-retrieval demo-api demo-cloud knowledge-plan schemas audit serve check-infra
 
 TERRAFORM ?= terraform
 
@@ -16,6 +16,12 @@ demo-offline:
 
 demo-retrieval:
 	uv run --locked python scripts/demo_retrieval.py
+
+demo-api:
+	uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local
+
+demo-cloud:
+	uv run --locked python scripts/demo_cloud.py --require-advisory
 
 knowledge-plan:
 	uv run --locked terramind-knowledge plan

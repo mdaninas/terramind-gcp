@@ -1,0 +1,127 @@
+name: Deploy private API
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: terramind-development-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Require deployment environment protection
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/check_deployment_environment.py
+      - name: Verify trusted source
+        run: |
+          python -m pip install uv==0.12.8
+          uv sync --locked
+          uv run --locked python scripts/check.py
+          uv run --locked python scripts/check_public_files.py
+          make audit
+      - name: Build without cloud credentials
+        run: |
+          docker build --platform linux/amd64 --tag "terramind-build:$GITHUB_SHA" .
+          mkdir -p artifacts/image
+          docker save "terramind-build:$GITHUB_SHA" --output artifacts/image/image.tar
+          cd artifacts/image
+          sha256sum image.tar > image.sha256
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: trusted-image-${{ github.sha }}
+          path: artifacts/image/
+          retention-days: 1
+          if-no-files-found: error
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+    environment: development
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+      GCP_REGION: ${{ vars.GCP_REGION }}
+      CLOUD_RUN_SERVICE: ${{ vars.CLOUD_RUN_SERVICE }}
+      CLOUD_RUN_URL: ${{ vars.CLOUD_RUN_URL }}
+      ARTIFACT_REPOSITORY: ${{ vars.ARTIFACT_REPOSITORY }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: trusted-image-${{ github.sha }}
+          path: artifacts/image/
+      - name: Verify this run's image archive
+        working-directory: artifacts/image
+        run: |
+          sha256sum --check image.sha256
+          docker load --input image.tar
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Install locked smoke client
+        run: |
+          python -m pip install uv==0.12.8
+          uv sync --locked
+      - id: auth
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ vars.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.DEPLOYER_SERVICE_ACCOUNT }}
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+      - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+      - name: Check existing private runtime configuration
+        run: |
+          gcloud run services describe "$CLOUD_RUN_SERVICE" --project "$GCP_PROJECT_ID" --region "$GCP_REGION" --format=json > artifacts/runtime.json
+          gcloud run services get-iam-policy "$CLOUD_RUN_SERVICE" --project "$GCP_PROJECT_ID" --region "$GCP_REGION" --format=json > artifacts/runtime-iam.json
+          uv run --locked python scripts/check_runtime.py --service artifacts/runtime.json --iam artifacts/runtime-iam.json
+      - name: Publish and deploy immutable image
+        shell: bash
+        run: |
+          set -euo pipefail
+          IMAGE="$GCP_REGION-docker.pkg.dev/$GCP_PROJECT_ID/$ARTIFACT_REPOSITORY/terramind"
+          TAG="$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          gcloud auth configure-docker "$GCP_REGION-docker.pkg.dev" --quiet
+          docker tag "terramind-build:$GITHUB_SHA" "$IMAGE:$TAG"
+          docker push "$IMAGE:$TAG"
+          DIGEST=$(gcloud artifacts docker images describe "$IMAGE:$TAG" --project "$GCP_PROJECT_ID" --format='value(image_summary.digest)')
+          [[ "$DIGEST" =~ ^sha256:[a-f0-9]{64}$ ]]
+          gcloud run services update "$CLOUD_RUN_SERVICE" --project "$GCP_PROJECT_ID" --region "$GCP_REGION" --image "$IMAGE@$DIGEST" --quiet
+          echo "Deployed image: $IMAGE@$DIGEST" >> "$GITHUB_STEP_SUMMARY"
+          echo "Reconcile container_image in the private Terraform variables before the next infrastructure apply." >> "$GITHUB_STEP_SUMMARY"
+      - id: smoke_auth
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ vars.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.DEPLOYER_SERVICE_ACCOUNT }}
+          token_format: id_token
+          id_token_audience: ${{ vars.CLOUD_RUN_URL }}
+          create_credentials_file: false
+      - name: Verify private analysis end to end
+        env:
+          TERRAMIND_ID_TOKEN: ${{ steps.smoke_auth.outputs.id_token }}
+        run: uv run --locked python scripts/demo_cloud.py --url "$CLOUD_RUN_URL" --require-advisory

@@ -39,6 +39,7 @@ dev = [
     "google-genai>=1.50,<3",
     "google-cloud-firestore>=2.21,<3",
     "google-cloud-storage>=3,<4",
+    "pyyaml>=6,<7",
 ]
 
 [tool.hatch.build.targets.wheel]

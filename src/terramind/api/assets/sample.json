@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "source": "synthetic-demo",
+  "changes": [
+    {
+      "address": "google_storage_bucket_iam_member.resource_0001",
+      "type": "google_storage_bucket_iam_member",
+      "actions": [
+        "create"
+      ],
+      "attributes": {
+        "grants": [
+          {
+            "role": "roles/storage.objectViewer",
+            "principal": "allUsers",
+            "newly_granted": true
+          }
+        ]
+      }
+    },
+    {
+      "address": "google_compute_firewall.resource_0002",
+      "type": "google_compute_firewall",
+      "actions": [
+        "create"
+      ],
+      "attributes": {
+        "direction": "INGRESS",
+        "disabled": false,
+        "source_ranges": [
+          "0.0.0.0/0"
+        ],
+        "allow": [
+          {
+            "protocol": "tcp",
+            "ports": [
+              "22"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "address": "google_project_iam_binding.resource_0003",
+      "type": "google_project_iam_binding",
+      "actions": [
+        "create"
+      ],
+      "attributes": {
+        "grants": [
+          {
+            "role": "roles/owner",
+            "principal": "redacted",
+            "newly_granted": true
+          }
+        ]
+      }
+    },
+    {
+      "address": "google_storage_bucket.resource_0004",
+      "type": "google_storage_bucket",
+      "actions": [
+        "delete"
+      ],
+      "attributes": {}
+    }
+  ]
+}

@@ -22,8 +22,8 @@ def test_health_without_network(monkeypatch, path):
     assert response.headers["x-request-id"]
 
 
-@pytest.mark.parametrize("path", ["/docs", "/redoc", "/openapi.json", "/v1/analyses", "/demo"])
-def test_unimplemented_routes_are_not_exposed(path):
+@pytest.mark.parametrize("path", ["/docs", "/redoc", "/openapi.json"])
+def test_interactive_api_documentation_is_not_exposed(path):
     with TestClient(create_app()) as client:
         assert client.get(path).status_code == 404
 

@@ -93,3 +93,32 @@ run "reject_instance_sprawl" {
   variables { max_instances = 50 }
   expect_failures = [var.max_instances]
 }
+
+run "health_runtime_has_no_analysis_permissions" {
+  command = plan
+  assert {
+    condition     = length(module.identity.runtime_model_permissions) == 0 && length(module.firestore.security_settings.runtime_permissions) == 0 && !module.cloud_run[0].security_settings.deployer_invokes
+    error_message = "Analysis permissions and deployer invocation must require explicit opt-in."
+  }
+}
+
+run "analysis_runtime_is_scoped" {
+  command = plan
+  variables { enable_analysis_api = true }
+  assert {
+    condition     = toset(module.identity.runtime_model_permissions) == toset(["aiplatform.endpoints.predict", "serviceusage.services.use"])
+    error_message = "Runtime model access must contain prediction and quota use only."
+  }
+  assert {
+    condition     = toset(module.firestore.security_settings.runtime_permissions) == toset(["datastore.entities.get", "datastore.entities.list", "datastore.entities.create"])
+    error_message = "Runtime data access must not allow report updates, deletion or index administration."
+  }
+  assert {
+    condition     = module.firestore.security_settings.runtime_condition == "resource.name == 'projects/terramind-demo/databases/terramind-dev'"
+    error_message = "Runtime data access must be conditioned on the dedicated named database."
+  }
+  assert {
+    condition     = module.cloud_run[0].security_settings.environment["TERRAMIND_API_MODE"] == "cloud" && module.cloud_run[0].security_settings.environment["REPORT_RETENTION_HOURS"] == "24" && module.cloud_run[0].security_settings.deployer_invokes
+    error_message = "Cloud mode must configure retention and authenticated deployment smoke checks."
+  }
+}

@@ -4,7 +4,7 @@ WORKDIR /build
 COPY pyproject.toml uv.lock README.md ./
 COPY src ./src
 RUN python -m pip install --no-cache-dir uv==0.12.8 \
-    && uv sync --locked --no-dev --extra api --no-editable
+    && uv sync --locked --no-dev --extra api --extra cloud --no-editable
 
 FROM python:3.12-slim-bookworm AS runtime
 

@@ -24,6 +24,7 @@ module "identity" {
   github_repository_id = var.github_repository_id
   github_owner_id      = var.github_owner_id
   github_environment   = var.github_environment
+  enable_analysis_api  = var.enable_analysis_api
   depends_on           = [google_project_service.required]
 }
 
@@ -53,24 +54,39 @@ module "firestore" {
   region              = var.region
   name                = var.name_prefix
   ingester_email      = module.identity.ingester_email
+  runtime_email       = module.identity.runtime_email
+  enable_analysis_api = var.enable_analysis_api
   deletion_protection = var.deletion_protection
   depends_on          = [google_project_service.required]
 }
 
 module "cloud_run" {
-  count               = var.container_image == null ? 0 : 1
-  source              = "../../modules/cloud_run"
-  project_id          = var.project_id
-  region              = var.region
-  name                = var.name_prefix
-  image               = var.container_image
-  runtime_email       = module.identity.runtime_email
-  deployer_email      = module.identity.deployer_email
-  invoker_members     = var.invoker_members
-  max_instances       = var.max_instances
-  deletion_protection = var.deletion_protection
-  labels              = local.labels
-  depends_on          = [google_project_service.required]
+  count                 = var.container_image == null ? 0 : 1
+  source                = "../../modules/cloud_run"
+  project_id            = var.project_id
+  region                = var.region
+  name                  = var.name_prefix
+  image                 = var.container_image
+  runtime_email         = module.identity.runtime_email
+  deployer_email        = module.identity.deployer_email
+  invoker_members       = var.invoker_members
+  max_instances         = var.max_instances
+  deletion_protection   = var.deletion_protection
+  labels                = local.labels
+  allow_deployer_invoke = var.enable_analysis_api
+  environment = var.enable_analysis_api ? {
+    TERRAMIND_API_MODE     = "cloud"
+    GCP_PROJECT_ID         = var.project_id
+    FIRESTORE_DATABASE     = module.firestore.name
+    GEMINI_MODEL           = var.gemini_model
+    GEMINI_LOCATION        = var.gemini_location
+    EMBEDDING_MODEL        = "gemini-embedding-001"
+    EMBEDDING_LOCATION     = var.region
+    EXPLANATION_LANGUAGE   = var.explanation_language
+    REPORT_RETENTION_HOURS = "24"
+    ANALYSES_PER_MINUTE    = "6"
+  } : {}
+  depends_on = [google_project_service.required]
 }
 
 resource "google_logging_project_exclusion" "raw_request_urls" {

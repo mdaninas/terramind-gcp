@@ -10,21 +10,22 @@ portfolio work is finished, following the order below.
 | Service | Cost driver | Configured control |
 | --- | --- | --- |
 | Cloud Run | Requests, CPU, memory and egress | Request-based CPU, minimum zero instances, maximum two by default, concurrency eight, request timeout 30 seconds |
-| Firestore | Document operations, vector indexes, storage and TTL deletions | Dedicated synthetic database, fixed 768-dimensional index, report expiry field prepared |
+| Firestore | Document operations, vector indexes, storage and TTL deletions | Dedicated synthetic database, fixed 768-dimensional index, active report expiry policy; prepared writer enforces 24-hour expiry |
 | Cloud Storage | Stored versions, operations, soft-deleted data and egress | Private synthetic source bucket, 30-day source lifecycle, versioned state history lifecycle |
 | Artifact Registry | Image storage and transfers | Immutable tags, old untagged-image deletion after 14 days, keep ten recent versions |
 | Logging and Monitoring | Retained logs, queries, alerts and notifications | Content-free application telemetry, automatic request-URL log exclusion for this service |
-| Embeddings and Gemini | Input/output tokens and model requests | Explicit synthetic CLI execution, text/token limits, shared RPC deadlines and bounded attempts; no background ingestion or generation |
+| Embeddings and Gemini | Input/output tokens and model requests | Explicit synthetic CLI execution; prepared API admits one analysis at a time and six per minute per process; token/RPC limits, no background generation |
 
 Immutable tagged images are retained until deliberately removed; the untagged
 cleanup rule does not cap total registry storage. Soft-deleted objects can continue
 to incur retention costs after logical deletion. Firestore TTL is asynchronous and
-does not guarantee immediate deletion. A report writer must set `expires_at` before
-the configured TTL policy can expire reports; that writer is not implemented yet.
+does not guarantee immediate deletion. The new report writer sets `expires_at` and
+refuses expired reads; its cloud deployment remains pending. Process-local rate
+limits reset on restart and are multiplied by additional instances.
 
 Set a project-filtered Cloud Billing budget and notification thresholds before
 provisioning. Budget alerts do not impose a spending cap. Instance settings reduce
-exposure but do not bound all charges, especially storage, egress and later model
+exposure but do not bound all charges, especially storage, egress and model
 calls. Review current pricing and applicable quotas for the approved project and
 region. This repository does not claim a fixed monthly price or a free deployment.
 

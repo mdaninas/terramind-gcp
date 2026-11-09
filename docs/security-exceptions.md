@@ -23,8 +23,12 @@ permissions. Human impersonation permissions are not granted automatically.
 Firestore server libraries enforce IAM and bypass client Security Rules. The IAM
 condition isolates the named database; it does not enforce collection-level access.
 Client rules deny all direct client reads/writes. Collection allowlists for
-`knowledge_chunks` and `analyses` must be enforced in the later application adapters.
+`knowledge_chunks` and `analyses` are enforced in application adapters.
 This is an explicit limitation relative to a collection-level authorization goal.
+The prepared runtime role adds read/list/create in that database, without update,
+delete or index administration. Its model role adds prediction/quota use only at
+project scope. These roles remain opt-in and unapplied; the existing runtime is
+still health-only. All demo invokers share report access, without per-user ownership.
 
 ## Logging boundaries
 

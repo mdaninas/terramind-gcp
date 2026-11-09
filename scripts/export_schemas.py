@@ -7,6 +7,7 @@ from pathlib import Path
 
 from terramind.llm.contracts import ModelNarrative
 from terramind.rag.contracts import Chunk
+from terramind.schemas.api import AnalysisRequest
 from terramind.schemas.normalized import NormalizedPlan
 from terramind.schemas.report import Report
 
@@ -17,6 +18,7 @@ def main() -> int:
     args = parser.parse_args()
     for name, model in (
         ("normalized-plan.v1", NormalizedPlan),
+        ("analysis-request.v1", AnalysisRequest),
         ("report.v1", Report),
         ("knowledge-chunk.v1", Chunk),
         ("advisory-response.v1", ModelNarrative),
