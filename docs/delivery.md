@@ -1,8 +1,9 @@
 # Controlled delivery
 
-The workflow files are prepared locally. No hosted workflow run, OIDC exchange or
-deployment of the analysis API is claimed. The earlier private health deployment
-remains active. Repository inspection on 2026-11-09 found no GitHub environments.
+Hosted CI passed on 2026-11-09, including the analysis container and local HTTP
+round-trip. The development environment has a required owner reviewer and exactly
+one allowed deployment branch, main. OIDC exchange and deployment of the analysis
+API remain unverified. The earlier private health deployment remains active.
 
 ## Pull request CI
 

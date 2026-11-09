@@ -3,8 +3,8 @@
 Local checks were rerun on 2026-11-09 using Python 3.12.13 on Windows. Cloud
 verification used a dedicated GCP project and Cloud Shell. These results cover
 the offline analyzer, cloud foundation, synthetic retrieval/model integration and
-local API/report delivery. Hosted analysis deployment and GitHub Actions runs are
-not verified.
+local API/report delivery. Hosted CI is verified; WIF exchange and the hosted
+analysis deployment are not verified.
 They do not establish general semantic correctness of model-generated advice.
 
 | Check | Result |
@@ -27,9 +27,10 @@ They do not establish general semantic correctness of model-generated advice.
 | Checkov 3.4.3 Terraform scan | 17 passed, zero failed, four documented exceptions |
 | Checkov 3.4.3 Dockerfile scan | 48 passed, zero failed, zero skipped |
 | Earlier health container build and execution | Cloud Shell Linux amd64 build passed; hardened health container returned HTTP 200 |
-| New analysis container build and execution | Unverified; local Docker engine did not respond |
+| New analysis container build and execution | GitHub-hosted Linux amd64 build and restricted offline API round-trip passed |
 | GitHub workflow syntax | Actionlint 1.7.12 passed; ShellCheck integration disabled on Windows |
-| Hosted CI and WIF image deployment | Unverified; workflow publication and protected environment configuration pending |
+| Hosted CI | Both Python/security and Terraform/Checkov jobs passed |
+| WIF image deployment | Unverified; protected environment is configured, runtime activation pending |
 | Deployed authenticated/unauthenticated calls | `/health`: authenticated 200 with expected JSON; anonymous 403 |
 | Private storage | Both buckets enforce public access prevention and uniform access |
 | Firestore | Native database, vector index READY, expiry ACTIVE, deny-all client release verified |

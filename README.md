@@ -12,8 +12,9 @@ Terraform also configures GitHub federation; its token exchange remains untested
 The optional knowledge CLI adds synthetic runbook ingestion, Firestore retrieval
 and validated Gemini advisory output with deterministic fallback. Analysis endpoints,
 expiring report storage, Markdown exports and a minimal report page are implemented
-and verified locally. CI and protected deployment workflows are prepared; hosted
-runs and deployment of the new analysis image remain unverified.
+and verified locally. Hosted CI passes, including the restricted container and
+API round-trip. The protected deployment environment is configured; WIF exchange,
+runtime activation and deployment of the new analysis image remain unverified.
 All repository samples are synthetic.
 Terramind is not a full security scanner and never approves or applies changes.
 

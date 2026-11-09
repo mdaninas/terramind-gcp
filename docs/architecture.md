@@ -81,7 +81,8 @@ contracts and an explicit synthetic cloud CLI. The API composes the same adapter
 with expiring create-only report persistence. Offline mode has bounded memory
 storage; cloud mode uses the fixed analyses collection. Server rendering escapes
 text and uses only packaged assets. CI and protected manual deployment workflows
-are prepared but have not run on GitHub. See
+are implemented. Hosted CI has passed, including the hardened local container;
+protected image deployment and WIF exchange remain unverified. See
 [deployment setup](setup-gcp.md) and [security exceptions](security-exceptions.md).
 
 ## Evidence and advisory boundary

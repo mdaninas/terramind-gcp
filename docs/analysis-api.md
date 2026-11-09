@@ -1,9 +1,9 @@
 # Analysis API and report delivery
 
-The synchronous API and report page are implemented and verified locally. The
-existing Cloud Run deployment still serves the earlier health image. Publishing
-the workflows, configuring deployment protection, approving runtime IAM and
-verifying a deployed analysis are separate outstanding gates.
+The synchronous API and report page are implemented and verified locally and in
+the hosted CI container. The protected deployment environment is configured. The
+existing Cloud Run deployment still serves the earlier health image; runtime IAM
+activation, WIF exchange and a deployed analysis remain outstanding gates.
 
 ## Local demonstration
 

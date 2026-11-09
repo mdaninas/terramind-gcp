@@ -39,7 +39,7 @@ expiry timestamp and refuses expired reads before physical TTL deletion. See [se
 for scanner exceptions and logging boundaries. Retrieval/model adapters operate
 through the synthetic cloud CLI; the health runtime has no data or prediction
 roles in the existing deployment. Analysis endpoints and delivery workflows are
-implemented locally; runtime permission changes, hosted verification and actual
+implemented and hosted CI verified; runtime permission changes, cloud deployment and actual
 cleanup evidence remain pending. Indexed synthetic sources incur metered
 storage and read/write usage; model calls have explicit time, attempt and token
 limits. Budget alerts do not stop spending.

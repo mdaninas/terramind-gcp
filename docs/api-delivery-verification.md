@@ -1,8 +1,10 @@
 # API and delivery verification
 
-The API and private report presentation are implemented locally. Hosted CI, WIF
-exchange, runtime IAM activation and deployment of the new analysis image remain
-unverified. No cloud resource, IAM or API changes were executed in this work.
+The API and private report presentation are implemented. Hosted CI and the
+restricted analysis container are verified; the protected deployment environment
+is configured. WIF exchange, runtime IAM activation and deployment of the new
+analysis image remain unverified. No GCP resource, IAM or API changes were executed
+in this feature's delivery checks.
 
 ## Files and decisions
 
@@ -75,17 +77,31 @@ were uploaded or committed. The Docker build context excludes operator artifacts
 
 The local Docker engine did not answer a bounded CLI check after Docker Desktop
 was started. The new analysis container was therefore not built or smoke-tested
-locally. Python package builds and local Uvicorn checks are separate evidence;
-the earlier foundation container test does not establish this image's behavior.
+locally. The new image was subsequently built and executed on a GitHub-hosted
+Linux runner, as recorded below.
 
-GitHub Settings showed no configured environments. The deployment guard correctly
-requires configuration before OIDC use; this has been verified by tests, not a
-hosted run. Local gh is unauthenticated and gcloud is not installed. The connected
-browser can reach GitHub/GCP, but no cloud mutations were attempted.
+Initial GitHub inspection found no environments. The development environment was
+then configured through authenticated GitHub API calls with an owner reviewer,
+self-review permitted, exactly one main branch policy and seven non-secret
+deployment variables. Its settings passed the same guard used by the workflow.
+No long-lived credential was created or added to GitHub. Google operator access
+is still required for runtime activation; no GCP mutations were attempted.
 
-To finish live verification, obtain explicit approval for the
-[prepared runtime IAM/index/configuration changes](delivery.md#runtime-change-prepared-for-approval),
-configure required-reviewer/main-only environment protection, publish the reviewed
-workflows, and run hosted CI plus a protected deployment and authenticated cloud
-demo. Existing health and retrieval resources remain active. Cleanup remains
+## Hosted CI evidence
+
+Implementation commit `e284f92` passed all 291 Python tests, the dependency audit,
+Terraform/Checkov checks and the image build. Its readiness probe encountered a
+connection reset during startup. Commit `f891019` added bounded retry handling for
+startup errors. The [successful hosted CI run](https://github.com/mdaninas/terramind-gcp/actions/runs/42596169414)
+passed both jobs on Ubuntu 24.04 with Python 3.12.16. The restricted container
+used a read-only filesystem, dropped all capabilities and disabled privilege gain.
+Its real HTTP check preserved all four findings and verified persisted JSON,
+Markdown and the report page. One observed offline POST took 0.002 seconds.
+This is not a live Firestore/Gemini measurement or a deployed Cloud Run check.
+
+To finish live verification, activate the reviewed
+[runtime IAM/index/configuration changes](delivery.md#runtime-change-prepared-for-approval)
+through an authenticated Google operator session, then run protected deployment
+and the authenticated cloud demo. The workflows and environment protection are
+already configured. Existing health and retrieval resources remain active. Cleanup remains
 tracked for completion of the portfolio project.
