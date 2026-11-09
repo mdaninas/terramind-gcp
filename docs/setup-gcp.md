@@ -1,9 +1,10 @@
 # GCP setup and deployment
 
-The Terraform foundation and FastAPI liveness service were deployed in an approved
-dedicated project. Real `/health` requests returned anonymous 403 and authenticated
-200. The [verification record](cloud-foundation-verification.md) separates those
-live results from configuration checks and mock-provider tests.
+The Terraform foundation and private FastAPI analysis service are deployed in an
+approved dedicated project. Authenticated cloud analysis, saved reports and exports
+passed; anonymous access was rejected. Protected GitHub Actions deployment through
+WIF is verified. See the [foundation record](cloud-foundation-verification.md) and
+[current analysis deployment evidence](api-delivery-verification.md).
 
 Provisioning, API enablement, IAM changes, image uploads and paid resource usage
 require explicit owner approval. The commands below are operator instructions;
@@ -32,7 +33,8 @@ root, state bootstrap and dev environment.
 
 The local service binds to `127.0.0.1:8080`; `GET /health` and `GET /healthz` return liveness only.
 The local analysis routes and synthetic report page are documented in the
-[API guide](analysis-api.md). Their cloud activation is a separate approval gate.
+[API guide](analysis-api.md). Cloud activation was explicitly approved and verified
+in the dedicated project; new provisioning or IAM changes still require approval.
 It does not implement Google authentication locally. The container binds to
 `0.0.0.0` and respects Cloud Run's `PORT` environment variable.
 
@@ -191,7 +193,9 @@ Monitoring notification-channel resource names. Review and approve a new plan
 before applying it. A policy with no notification channels creates incidents but
 does not deliver notifications.
 
-The runtime has no data permissions for the health service. The image deployer can
+Health-only configuration grants no data permissions. The approved analysis
+configuration activates the scoped roles documented in [delivery](delivery.md).
+The image deployer can
 update the named service, publish to its repository and act as its runtime only.
 It cannot run the infrastructure configuration with these permissions. Terraform
 continues to own service configuration, including the desired image digest;
@@ -229,9 +233,10 @@ owner/repository IDs using GitHub's current default format; the deployment guard
 checks this through the GitHub API. Configure protected environment reviewers and
 main-branch rules before running the prepared deployment workflow.
 Only its protected deployment job receives `id-token: write`; the workflow refuses
-to proceed without environment protection. No successful token exchange or hosted
-deployment run is claimed. See [controlled delivery](delivery.md) for variables,
-runtime IAM changes, private plan review and the remaining live verification gates.
+to proceed without environment protection. The protected deployment and actual
+WIF token exchange passed in the dedicated project. See [controlled delivery](delivery.md)
+for variables, runtime IAM changes and private plan review, and the
+[verification record](api-delivery-verification.md) for observed results.
 
 See [security exceptions](security-exceptions.md) and [cost and cleanup](cost-and-cleanup.md).
 

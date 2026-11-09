@@ -99,7 +99,8 @@ under ignored artifacts or the private Cloud Shell workspace.
 ## Security and remaining work
 
 No new infrastructure, APIs or IAM changes were required for these operator-run
-checks. The existing private Cloud Run service continues to provide liveness.
+checks. Cloud Run served liveness at the time of this CLI evaluation; the later
+analysis deployment is recorded in [API delivery verification](api-delivery-verification.md).
 Only the ten reviewed synthetic documents and sanitized synthetic fixture facts
 were sent to Google services. No tool execution or credential values enter model
 context. Application errors omit provider details and input values.
@@ -107,7 +108,7 @@ context. Application errors omit provider details and input values.
 These tests do not establish semantic correctness for arbitrary model prose.
 Prompt instructions and lexical approval guards are defense in depth; immutable
 findings, validated references and escaped rendering provide the enforceable
-boundaries. Health-runtime data/prediction roles, analysis routes, report storage,
-private presentation and protected deployment remain subsequent work. Cloud
-resources and indexed synthetic documents remain active for development, with
-cleanup tracked for completion of the portfolio project.
+boundaries. Runtime data/prediction roles, analysis routes, report storage,
+private presentation and protected deployment were subsequently activated and
+verified separately. Cloud resources and indexed synthetic documents remain active
+for development, with cleanup tracked for completion of the portfolio project.

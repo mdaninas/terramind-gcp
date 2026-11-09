@@ -15,11 +15,11 @@ as Terraform JSON. Repository examples are handcrafted synthetic normalized fact
 | Model downgrades policy | Offline rules remain independent; model schema excludes policy fields; immutable findings survive malformed, injected and unavailable responses | Advisory prose can still be wrong; lexical approval guards are defensive rather than semantic proof |
 | Supply-chain dependency risk | uv lock with hashes, Ruff/mypy, pip-audit and bounded runtime dependencies | Audits report only known vulnerabilities; online setup/audit contact package services |
 | Accidental cloud mutation | No apply endpoint; deployment workflow is manual/main/protected-environment only and changes an image digest; infrastructure checks use mock plans | Operator Terraform apply and IAM changes require explicit approval and verified parameters |
-| Unauthorized service invocation | Cloud Run invoker IAM requires explicit callers; deployed `/health` returned anonymous 403 and authenticated 200 | Project/service policies contain no public principals; organization inheritance needs separate review |
-| Overprivileged service identity | Runtime analysis roles are explicit opt-in and unapplied; image deployment and ingestion use separate identities | Prepared runtime data IAM isolates a database, not collections; model invocation is project-scoped |
+| Unauthorized service invocation | Cloud Run invoker IAM requires explicit callers; deployed health/demo/analysis rejected anonymous calls; authenticated report reads returned 200 | Project/service policies contain no public principals; organization inheritance needs separate review |
+| Overprivileged service identity | Runtime analysis roles are explicit opt-in and activated with custom permissions; deployment and ingestion use separate identities | Runtime data IAM isolates a database, not collections; model invocation is project-scoped |
 | Report theft or stale data | Private Cloud Run, generated UUIDs, no listing route, application expiry and Firestore TTL | All authorized demo invokers share report access; UUIDs are not user authorization; physical TTL deletion is asynchronous |
 | HTTP or presentation abuse | Streamed 256 KiB limit, five-second body timeout, strict media/schema, escaped HTML, CSP, one analysis at a time and a rolling admission limit | Admission limits reset per process and do not provide a hard spending cap |
-| Untrusted pull request deployment | CI has no OIDC/cloud credentials; privileged job consumes only the trusted manual run's image artifact | Main/workflow changes and environment reviewers must remain protected; hosted enforcement is unverified |
+| Untrusted pull request deployment | CI has no OIDC/cloud credentials; privileged job consumes only the trusted manual run's image artifact | Protected main-only deployment and WIF exchange passed; main/workflow changes and reviewers must remain protected |
 
 No raw input, schema-validation values or original file paths are emitted by
 application errors. CLI help displays only documented commands. There is no logging
@@ -31,15 +31,15 @@ this is defense in depth, not a guarantee against deliberate staging. No real pl
 or state file is checked in. Tests create synthetic Terraform-shaped objects in
 memory or temporary test directories, never persistent raw-plan fixtures.
 
-Cloud Run authentication is deployed and verified. Federation trust is deployed,
-but GitHub environment protection and a real token exchange remain unverified.
+Cloud Run authentication, protected GitHub environment enforcement and a real WIF
+token exchange are verified.
 Firestore client rules deny all access; server SDKs use database-conditioned IAM,
 which does not enforce collection restrictions. The report writer sets an aware
 expiry timestamp and refuses expired reads before physical TTL deletion. See [security exceptions](security-exceptions.md)
 for scanner exceptions and logging boundaries. Retrieval/model adapters operate
-through the synthetic cloud CLI; the health runtime has no data or prediction
-roles in the existing deployment. Analysis endpoints and delivery workflows are
-implemented and hosted CI verified; runtime permission changes, cloud deployment and actual
-cleanup evidence remain pending. Indexed synthetic sources incur metered
+through the synthetic cloud CLI and deployed API. The runtime has named-database
+get/list/create and project-scoped prediction/quota use, without update/delete or
+administration. Hosted CI and cloud report delivery passed; final cleanup remains
+pending. Indexed synthetic sources incur metered
 storage and read/write usage; model calls have explicit time, attempt and token
 limits. Budget alerts do not stop spending.

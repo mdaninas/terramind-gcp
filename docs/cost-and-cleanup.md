@@ -10,17 +10,17 @@ portfolio work is finished, following the order below.
 | Service | Cost driver | Configured control |
 | --- | --- | --- |
 | Cloud Run | Requests, CPU, memory and egress | Request-based CPU, minimum zero instances, maximum two by default, concurrency eight, request timeout 30 seconds |
-| Firestore | Document operations, vector indexes, storage and TTL deletions | Dedicated synthetic database, fixed 768-dimensional index, active report expiry policy; prepared writer enforces 24-hour expiry |
+| Firestore | Document operations, vector indexes, storage and TTL deletions | Dedicated synthetic database, fixed 768-dimensional index, active report expiry policy; deployed writer enforces 24-hour expiry |
 | Cloud Storage | Stored versions, operations, soft-deleted data and egress | Private synthetic source bucket, 30-day source lifecycle, versioned state history lifecycle |
 | Artifact Registry | Image storage and transfers | Immutable tags, old untagged-image deletion after 14 days, keep ten recent versions |
 | Logging and Monitoring | Retained logs, queries, alerts and notifications | Content-free application telemetry, automatic request-URL log exclusion for this service |
-| Embeddings and Gemini | Input/output tokens and model requests | Explicit synthetic CLI execution; prepared API admits one analysis at a time and six per minute per process; token/RPC limits, no background generation |
+| Embeddings and Gemini | Input/output tokens and model requests | Explicit synthetic CLI execution; deployed API admits one analysis at a time and six per minute per process; token/RPC limits, no background generation |
 
 Immutable tagged images are retained until deliberately removed; the untagged
 cleanup rule does not cap total registry storage. Soft-deleted objects can continue
 to incur retention costs after logical deletion. Firestore TTL is asynchronous and
 does not guarantee immediate deletion. The new report writer sets `expires_at` and
-refuses expired reads; its cloud deployment remains pending. Process-local rate
+refuses expired reads; cloud report creation and reads are verified. Process-local rate
 limits reset on restart and are multiplied by additional instances.
 
 Set a project-filtered Cloud Billing budget and notification thresholds before
@@ -47,8 +47,10 @@ verification. Ten synthetic Markdown objects and ten vector records remain store
 Identical re-ingestion reuses vectors and performs reads without embedding or
 document writes. Generated source objects retain the existing lifecycle and
 soft-delete behavior. See the [retrieval limits](retrieval-and-explanations.md)
-before repeating metered evaluations. The Cloud Run health service itself does
-not invoke models or retrieve knowledge yet.
+before repeating metered evaluations. The deployed analysis API invokes retrieval
+and Gemini only for admitted analysis requests. Health, preview and report reads
+do not trigger model generation. A live workflow analysis took 10.898 seconds;
+independent verification reused that saved report without another model call.
 
 ## Rollback
 

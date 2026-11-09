@@ -7,14 +7,18 @@ there is no global skip list. Revisit them before using real data or expanding a
 | --- | --- | --- |
 | CKV_GCP_62: bucket access logging | Bootstrap state and synthetic-runbook buckets | Legacy Cloud Storage access-log delivery requires an additional log bucket and analytics-writer grant. It is omitted from this small demo. Administrative audit logs remain available, but object read/write auditing is incomplete unless Data Access audit logging is separately enabled and reviewed for cost and metadata retention. Both buckets enforce public access prevention, uniform access and versioning. |
 | CKV_GCP_84: registry customer-managed encryption | Container repository | Google-managed encryption at rest is used. A dedicated Cloud KMS key adds operational work and metered resources for synthetic images. This configuration does not provide customer-managed key control. |
-| CKV_GCP_125: GitHub OIDC condition | Parameterized WIF provider module | Checkov 3.4.3 cannot resolve the module's interpolated subject to a literal repository name, including when a variable file is supplied. Terraform mock plans check the fully evaluated repository name, immutable repository and owner IDs, main branch, protected environment subject, exact workflow and manual event, joined without an OR bypass. No live token exchange has been verified. |
+| CKV_GCP_125: GitHub OIDC condition | Parameterized WIF provider module | Checkov 3.4.3 cannot resolve the module's interpolated subject to a literal repository name, including when a variable file is supplied. Terraform mock plans check the fully evaluated repository name, immutable repository and owner IDs, main branch, protected environment subject, exact workflow and manual event, joined without an OR bypass. A live protected deployment exchanged the exact immutable subject successfully. |
 
 ## Identity boundaries
 
-The API runtime has no project data roles while it only serves liveness. The image
+The deployed API runtime has the explicit custom data/prediction roles below. The image
 deployer can write its Artifact Registry repository, update its existing Cloud Run
 service and act as its runtime identity. It cannot create infrastructure, edit IAM,
 read Terraform state or impersonate the ingestion identity through these grants.
+The service update permission covers more than the image field. Workflow code
+limits promotion to the image, so the trusted source, environment reviewer and
+deployer identity remain security boundaries; compromised deployment access could
+change the existing service and execute code as its runtime identity.
 
 The ingestion identity has bucket-scoped object access and a custom Firestore entity
 role conditioned on one named database. It has no model, IAM or index-administration
@@ -25,10 +29,11 @@ condition isolates the named database; it does not enforce collection-level acce
 Client rules deny all direct client reads/writes. Collection allowlists for
 `knowledge_chunks` and `analyses` are enforced in application adapters.
 This is an explicit limitation relative to a collection-level authorization goal.
-The prepared runtime role adds read/list/create in that database, without update,
-delete or index administration. Its model role adds prediction/quota use only at
-project scope. These roles remain opt-in and unapplied; the existing runtime is
-still health-only. All demo invokers share report access, without per-user ownership.
+The activated runtime role grants read/list/create in that database, without update,
+delete or index administration. Its model role grants prediction/quota use only at
+project scope. These roles remain opt-in in reusable Terraform configuration and
+were verified in the approved project. All demo invokers share report access,
+without per-user ownership.
 
 ## Logging boundaries
 

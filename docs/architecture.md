@@ -1,7 +1,8 @@
 # Architecture decisions
 
 Offline analysis is implemented and verified locally. The isolated GCP foundation
-and private Cloud Run liveness API are deployed, with real authentication checks.
+and private Cloud Run analysis API are deployed, with real authentication and
+end-to-end report checks. Protected GitHub delivery through WIF is verified.
 See the [roadmap](roadmap.md).
 
 ## Dependency direction
@@ -61,8 +62,8 @@ The packaged API exposes liveness, strict synthetic analysis, report JSON/Markdo
 a small report page and the packaged demo. `apps/api/main.py` is a thin source-tree
 entry point. Cloud Run owns authentication. The local server binds to loopback,
 while the non-root container listens on Cloud Run's assigned port. Content-free
-structured logs replace raw URL access logs. The existing deployed image remains
-health-only until the new image and runtime configuration are approved and promoted.
+structured logs replace raw URL access logs. The approved cloud deployment uses
+Firestore reports, vector retrieval and Gemini; local mode remains offline.
 
 Terraform separates state bootstrap from the dev environment. Modules manage
 identity, image storage, synthetic runbooks, a named Firestore database and private
@@ -70,7 +71,7 @@ Cloud Run. A null image prepares the supporting resources first; a verified dige
 then enables the service. Mock-provider plan tests validate security defaults without
 contacting GCP. These tests cannot establish deployed IAM or index readiness.
 
-Runtime data/prediction roles are opt-in and remain unapplied. Ingestion
+Runtime data/prediction roles are opt-in and activated in the approved project. Ingestion
 uses a separate identity with database-conditioned permissions and bucket-scoped
 object access. The GitHub identity can publish images and update the existing
 service, with trust restricted to exact repository and owner IDs, main, a protected
@@ -81,8 +82,8 @@ contracts and an explicit synthetic cloud CLI. The API composes the same adapter
 with expiring create-only report persistence. Offline mode has bounded memory
 storage; cloud mode uses the fixed analyses collection. Server rendering escapes
 text and uses only packaged assets. CI and protected manual deployment workflows
-are implemented. Hosted CI has passed, including the hardened local container;
-protected image deployment and WIF exchange remain unverified. See
+are implemented. Hosted CI passed, including the hardened container. Protected
+image deployment, WIF exchange and live cloud report delivery are verified. See
 [deployment setup](setup-gcp.md) and [security exceptions](security-exceptions.md).
 
 ## Evidence and advisory boundary

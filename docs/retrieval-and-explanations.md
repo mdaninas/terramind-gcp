@@ -154,10 +154,10 @@ provides alerts, and source/image/storage retention still matters.
 
 ## Scope of this change
 
-This guide covers library and CLI integration. The deployed Cloud Run service
-continues to expose liveness only. Analysis HTTP routes, report persistence, the
-report page and deployment workflows are now implemented locally; their cloud
-activation is documented in the [API guide](analysis-api.md) and
-[delivery review](delivery.md). Live CLI checks use
-the already authorized operator identity; they do not establish that the current
-health-only runtime or ingestion service account can invoke models.
+This guide covers library and CLI integration. Analysis HTTP routes, expiring
+report persistence and the report page are also deployed and verified through
+protected GitHub delivery. See the [API guide](analysis-api.md),
+[delivery guide](delivery.md) and [live evidence](api-delivery-verification.md).
+The earlier CLI checks used the authorized operator identity. The separate cloud
+API check now verifies retrieval and Gemini with the scoped runtime identity;
+the ingestion service account still has no prediction role.

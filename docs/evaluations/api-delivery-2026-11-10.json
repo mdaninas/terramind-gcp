@@ -1,0 +1,83 @@
+{
+  "verified_date": "2026-11-10",
+  "timezone": "Asia/Jakarta",
+  "synthetic_only": true,
+  "source_sha": "a9ca913877b51e624b961230ca116dba769bff04",
+  "ci_url": "https://github.com/mdaninas/terramind-gcp/actions/runs/42660198226",
+  "deployment_url": "https://github.com/mdaninas/terramind-gcp/actions/runs/42660304648",
+  "image_digest": "sha256:6f63da0382f4b70e13ba469ee8f2f5866b558729e8333aca53543a459a20eeb1",
+  "revision": "terramind-dev-00004-9zq",
+  "wif_exchange_verified": true,
+  "workflow_smoke": {
+    "mode": "cloud",
+    "anonymous_rejection_verified": true,
+    "report_round_trip_verified": true,
+    "markdown_and_page_verified": true,
+    "findings_preserved": true,
+    "finding_count": 4,
+    "source_count": 10,
+    "model_id": "gemini-3.5-flash",
+    "rag_status": "available",
+    "analysis_request_seconds": 10.898
+  },
+  "independent_read_verification": {
+    "verified_at": "2026-11-09T17:05:56.349481+00:00",
+    "synthetic_only": true,
+    "existing_report_read_only": true,
+    "new_model_calls": 0,
+    "stored_report_validated": true,
+    "finding_count": 4,
+    "risk": "HIGH",
+    "source_count": 10,
+    "all_citations_verified": true,
+    "model_id": "gemini-3.5-flash",
+    "rag_status": "available",
+    "authenticated_statuses": {
+      "/json": 200,
+      "/markdown": 200,
+      "/view": 200
+    },
+    "anonymous_report_status": 403,
+    "retention_hours": 24.002
+  },
+  "terraform": {
+    "activation": {
+      "added": 6,
+      "changed": 2,
+      "destroyed": 0
+    },
+    "federation_correction": {
+      "changed": 1,
+      "only_changed_field": "attribute_condition"
+    },
+    "post_promotion_reconciliation": {
+      "changed": 1,
+      "only_changed_fields": [
+        "client",
+        "client_version"
+      ]
+    },
+    "final_dev_drift_exit": 0
+  },
+  "cost_controls": {
+    "cloud_run_min_instances": 0,
+    "cloud_run_max_instances": 1,
+    "request_based_cpu": true,
+    "timeout_seconds": 30,
+    "analyses_per_minute_per_process": 6,
+    "report_retention_hours": 24,
+    "monthly_alert_currency": "IDR",
+    "monthly_alert_units": 180000,
+    "hard_spending_cap": false
+  },
+  "resources_active": true,
+  "cleanup_executed": false,
+  "remaining_checks": [
+    "Portfolio walkthrough and screenshots",
+    "Fresh-clone reproduction",
+    "Final release review",
+    "Budget notification delivery",
+    "Monitoring notification channel",
+    "Organization-inherited policies"
+  ]
+}

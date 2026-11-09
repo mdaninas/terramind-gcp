@@ -6,16 +6,16 @@ Terramind is a personal portfolio project demonstrating cloud engineering,
 infrastructure security and applied AI through a reproducible Terraform review workflow.
 
 **Available:** four deterministic GCP rules, a local allowlist normalizer,
-JSON/Markdown reports and an authenticated Cloud Run liveness service. The isolated
-GCP foundation, private storage and Firestore vector index are deployed and verified.
-Terraform also configures GitHub federation; its token exchange remains untested.
-The optional knowledge CLI adds synthetic runbook ingestion, Firestore retrieval
-and validated Gemini advisory output with deterministic fallback. Analysis endpoints,
-expiring report storage, Markdown exports and a minimal report page are implemented
-and verified locally. Hosted CI passes, including the restricted container and
-API round-trip. The protected deployment environment is configured; WIF exchange,
-runtime activation and deployment of the new analysis image remain unverified.
-All repository samples are synthetic.
+JSON/Markdown reports, synthetic runbook ingestion, Firestore vector retrieval and
+validated Gemini advisory output with deterministic fallback. The private Cloud Run
+analysis API, expiring report storage and minimal report page are deployed and
+verified. Protected GitHub Actions delivery uses short-lived WIF credentials and
+immutable image digests. Hosted CI passes, including the restricted container.
+A live cloud analysis preserved all four HIGH findings and validated ten sources;
+its saved JSON, Markdown and HTML passed authenticated checks. Anonymous access was
+rejected. See the [deployment evidence](docs/api-delivery-verification.md).
+All repository samples are synthetic. Resources remain active with minimum zero
+and maximum one Cloud Run instance; final cleanup is pending.
 Terramind is not a full security scanner and never approves or applies changes.
 
 ## Quick start
@@ -45,7 +45,7 @@ uv run --locked terramind normalize --input /local/private/tfplan.json --output 
 Raw `terraform show -json` output can contain plaintext secrets. Keep it outside
 the repository. The CLI reads it locally, rejects files over 5 MiB or 100 change
 records, and emits at most 256 KiB. Do not upload raw plans, state or credentials.
-Only synthetic normalized data is approved for the eventual cloud demo.
+Only synthetic normalized data is approved for the cloud demo.
 
 ## Rules
 
@@ -97,7 +97,7 @@ Open `http://127.0.0.1:8080/demo` to analyze the packaged synthetic sample and v
 the report. Local mode makes no cloud calls and keeps at most 128 expiring reports
 in process memory. Verify the running API with
 `uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local`.
-See the API guide for request limits, storage behavior and the cloud approval gate.
+See the API guide for request limits, storage behavior and authenticated cloud use.
 
 Validate the ten synthetic knowledge documents with
 `uv run --locked terramind-knowledge plan`. Run

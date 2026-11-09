@@ -4,8 +4,9 @@ This record captures the foundation and liveness deployment. The service was dep
 with owner approval in a new,
 dedicated portfolio project on 2026-11-09 (Asia/Jakarta). Cloud Run authentication,
 private buckets and Firestore index readiness were verified. The existing lab
-project was left unchanged. Notification delivery and GitHub federation token
-exchange remain untested.
+project was left unchanged. Notification delivery was not tested. Federation
+exchange was untested at this stage; it subsequently passed with the protected
+analysis deployment recorded in [API delivery verification](api-delivery-verification.md).
 
 ## Files
 

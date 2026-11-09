@@ -11,7 +11,10 @@
   Firestore report adapters, and an authenticated cloud demonstration client.
 - Prepared credential-free CI, protected manual WIF image deployment, environment
   and runtime guards, and explicitly opt-in runtime IAM/index configuration.
-  Hosted runs and deployment of the analysis image remain unverified.
+  Verified hosted CI, a real WIF exchange and immutable Cloud Run image deployment.
+- Verified live synthetic analysis with four HIGH findings, ten validated sources,
+  saved JSON, Markdown and HTML; anonymous requests were rejected. One analysis
+  request took 10.898 seconds. Resources remain active pending final cleanup.
 
 - Added ten synthetic knowledge documents, heading-aware chunks, idempotent
   Google embedding ingestion, private source publishing and Firestore retrieval.
@@ -33,7 +36,7 @@
 - Verified the approved Cloud Run deployment: `/health` returns authenticated
   200 and anonymous 403; private buckets and the ready Firestore index were checked.
 - Retained `/healthz` for internal probes and added the external `/health` alias
-  for Cloud Run's reserved-path compatibility. Federation exchange remains untested.
+  for Cloud Run's reserved-path compatibility.
 
 ## 0.1.0 - 2026-11-08
 

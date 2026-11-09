@@ -1,9 +1,10 @@
 # Controlled delivery
 
-Hosted CI passed on 2026-11-09, including the analysis container and local HTTP
-round-trip. The development environment has a required owner reviewer and exactly
-one allowed deployment branch, main. OIDC exchange and deployment of the analysis
-API remain unverified. The earlier private health deployment remains active.
+Hosted CI and private analysis deployment passed. The development environment has
+a required owner reviewer and exactly one allowed deployment branch, main. A real
+OIDC exchange through WIF, immutable image promotion and live Firestore/Gemini
+analysis were verified on 2026-11-10 (Asia/Jakarta). See the
+[deployment record](api-delivery-verification.md). Resources remain active.
 
 ## Pull request CI
 
@@ -90,10 +91,11 @@ See the [GitHub OIDC subject reference](https://docs.github.com/en/actions/refer
 See [GitHub environment REST permissions](https://docs.github.com/en/rest/deployments/environments)
 and [Google federation guidance](https://docs.cloud.google.com/iam/docs/workload-identity-federation-with-deployment-pipelines).
 
-## Runtime change prepared for approval
+## Runtime activation and approval
 
 The default `enable_analysis_api = false` retains health-only permissions. Setting
-it to true prepares these changes, all in the existing approved project:
+it to true enables these changes. They were explicitly approved, applied and
+verified in the dedicated project; new deployments still require approval:
 
 | Scope | Change |
 | --- | --- |
@@ -132,11 +134,12 @@ plan only with explicit approval:
 terraform -chdir=terraform/environments/dev apply "$PRIVATE_PLAN_DIR/analysis.plan"
 ```
 
-The old health image does not expose analysis routes even after this configuration
-change. Publish the reviewed source/workflows, configure the protected environment
-and manually dispatch deployment. Record the actual hosted CI, WIF, deployed digest,
-anonymous/authenticated status codes, retained report and source-validation results.
-Resources stay active until the requested final cleanup is performed and verified.
+For a new activation, the old health image does not expose analysis routes until
+image promotion. Publish reviewed source/workflows, configure the protected
+environment and manually dispatch deployment. Record hosted CI, WIF, image digest,
+authentication, retained report and source-validation results. These checks passed
+for the current dedicated deployment. Resources stay active until final cleanup is
+performed and verified.
 
 ## Cloud demonstration
 

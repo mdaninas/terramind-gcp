@@ -1,14 +1,15 @@
 # Roadmap
 
-The offline analyzer is verified locally. The GCP foundation and private liveness
-service are deployed, with authenticated access and anonymous rejection verified.
+The offline analyzer, synthetic retrieval and private analysis API are implemented
+and verified. Protected GitHub Actions deployment through WIF passed. Portfolio
+release verification remains next; cloud resources are active.
 
 | Area | Scope | Status |
 | --- | --- | --- |
 | Offline analysis | Local normalization, deterministic risk rules, JSON and Markdown reports | Implemented and verified locally |
-| Cloud foundation | Terraform foundation and private Cloud Run health service | Deployed and verified; federation exchange remains untested |
+| Cloud foundation | Terraform foundation and private Cloud Run health service | Deployed and verified; federation exchange passed |
 | Retrieval and explanations | Synthetic runbooks, Firestore vector retrieval and Gemini explanations | CLI implemented and verified locally and on GCP |
-| API and delivery | Analysis API, private report page and GitHub Actions deployment | Local API and hosted CI verified; protected environment configured; cloud activation pending |
+| API and delivery | Analysis API, private report page and GitHub Actions deployment | Deployed and verified; protected WIF delivery and cloud analysis passed |
 | Release verification | End-to-end evaluation, walkthrough and deployment documentation | Planned |
 
 ## Offline analyzer
@@ -56,8 +57,10 @@ Strict synthetic-only analysis endpoints, expiring report storage, Markdown
 downloads, a minimal HTML report page, credential-free pull request CI and protected
 manual deployment using OIDC and immutable image digests are implemented. The
 local API and hosted CI are verified. The protected development environment has a
-required owner reviewer and an exact main branch policy. Runtime IAM changes,
-federation exchange and the new cloud image still require activation/verification.
+required owner reviewer and an exact main branch policy. Approved runtime activation,
+WIF exchange, immutable image deployment and authenticated cloud analysis passed.
+The saved report preserved four HIGH findings and ten validated source references;
+anonymous requests were rejected.
 See the [verification record](api-delivery-verification.md).
 
 Acceptance criteria: offline and authorized cloud demos work end to end, hosted CI

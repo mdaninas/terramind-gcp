@@ -1,15 +1,16 @@
 # Local evaluation
 
-Local checks were rerun on 2026-11-09 using Python 3.12.13 on Windows. Cloud
-verification used a dedicated GCP project and Cloud Shell. These results cover
-the offline analyzer, cloud foundation, synthetic retrieval/model integration and
-local API/report delivery. Hosted CI is verified; WIF exchange and the hosted
-analysis deployment are not verified.
+Local checks used Python 3.12.13 on Windows; hosted CI used Python 3.12 on Linux.
+Cloud verification used a dedicated GCP project, Cloud Shell for the foundation
+and the local Google Cloud CLI plus GitHub Actions for analysis delivery. These
+results cover the offline analyzer, foundation, synthetic retrieval/model integration
+and API/report delivery. Protected WIF deployment and live analysis passed on
+2026-11-10 (Asia/Jakarta).
 They do not establish general semantic correctness of model-generated advice.
 
 | Check | Result |
 | --- | --- |
-| Automated Python tests | 291 passed |
+| Automated Python tests | 297 passed |
 | Normalization and policy coverage, including branches | 97.58% |
 | Four policy rule functions | 100% coverage |
 | Required synthetic scenarios | All eight expectations passed |
@@ -30,7 +31,7 @@ They do not establish general semantic correctness of model-generated advice.
 | New analysis container build and execution | GitHub-hosted Linux amd64 build and restricted offline API round-trip passed |
 | GitHub workflow syntax | Actionlint 1.7.12 passed; ShellCheck integration disabled on Windows |
 | Hosted CI | Both Python/security and Terraform/Checkov jobs passed |
-| WIF image deployment | Unverified; protected environment is configured, runtime activation pending |
+| WIF image deployment | Passed protected deployment, immutable image promotion and real OIDC exchange |
 | Deployed authenticated/unauthenticated calls | `/health`: authenticated 200 with expected JSON; anonymous 403 |
 | Private storage | Both buckets enforce public access prevention and uniform access |
 | Firestore | Native database, vector index READY, expiry ACTIVE, deny-all client release verified |
@@ -55,9 +56,11 @@ The [retrieval verification](retrieval-verification.md) records source integrity
 malicious-runbook and malformed-model checks. The [live query results](evaluations/retrieval-2026-11-09.json)
 and [synthetic report](../examples/generated-reports/grounded-synthetic.md) are
 inspectable. The generation timing excludes retrieval and is one observation,
-not a latency guarantee. The earlier deployed health image remains unchanged.
-Terraform configuration and source/package checks were rerun for API delivery;
-Dockerfile static scanning is separate from executing the new image. See the
+not a latency guarantee. The new private analysis image also passed cloud smoke
+checks: four findings, ten sources, saved JSON, Markdown and HTML. One complete
+analysis request took 10.898 seconds. Independent report reads passed with no new
+model call. Terraform and source checks passed; static Dockerfile scanning is
+separate from the executed Linux container and live Cloud Run checks. See the
 [API and delivery verification record](api-delivery-verification.md).
 
 ## Reproduce

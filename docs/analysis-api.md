@@ -1,9 +1,9 @@
 # Analysis API and report delivery
 
-The synchronous API and report page are implemented and verified locally and in
-the hosted CI container. The protected deployment environment is configured. The
-existing Cloud Run deployment still serves the earlier health image; runtime IAM
-activation, WIF exchange and a deployed analysis remain outstanding gates.
+The synchronous API and report page are verified locally, in the hosted CI
+container and on private Cloud Run. Protected delivery through WIF deployed an
+immutable image and passed the live synthetic analysis, storage and export checks.
+See the [deployment evidence](api-delivery-verification.md). Resources remain active.
 
 ## Local demonstration
 
@@ -91,7 +91,7 @@ not copied into report records. UTF-8 report JSON is limited to 512 KiB.
 Reports expire after 24 hours, configurable down to one hour. Reads enforce expiry
 immediately, even when Firestore has not physically deleted a record. The existing
 TTL policy schedules eventual deletion; physical deletion is asynchronous. The
-prepared Terraform change excludes the report JSON body from indexing. See
+applied Terraform configuration excludes the report JSON body from indexing. See
 [Firestore TTL behavior](https://firebase.google.com/docs/firestore/ttl).
 
 ## Authentication and presentation
