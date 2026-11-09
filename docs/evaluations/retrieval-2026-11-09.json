@@ -1,0 +1,110 @@
+{
+  "mode": "google-firestore",
+  "model_id": "gemini-embedding-001",
+  "queries": 10,
+  "hits_at_3": 10,
+  "passed": true,
+  "results": [
+    {
+      "id": "public-read",
+      "expected_doc_id": "rb-public-bucket",
+      "returned_doc_ids": [
+        "rb-public-bucket",
+        "inc-public-exposure",
+        "rb-access-prevention"
+      ],
+      "hit_at_3": true
+    },
+    {
+      "id": "basic-role",
+      "expected_doc_id": "rb-iam-least-privilege",
+      "returned_doc_ids": [
+        "rb-iam-least-privilege",
+        "inc-basic-role-expansion",
+        "inc-public-exposure"
+      ],
+      "hit_at_3": true
+    },
+    {
+      "id": "ssh-rdp",
+      "expected_doc_id": "rb-firewall-hardening",
+      "returned_doc_ids": [
+        "rb-firewall-hardening",
+        "inc-admin-ingress",
+        "rb-access-prevention"
+      ],
+      "hit_at_3": true
+    },
+    {
+      "id": "delete-backup",
+      "expected_doc_id": "rb-backup-deletion",
+      "returned_doc_ids": [
+        "rb-backup-deletion",
+        "inc-destructive-replacement",
+        "inc-public-exposure"
+      ],
+      "hit_at_3": true
+    },
+    {
+      "id": "deployment-checklist",
+      "expected_doc_id": "rb-review-checklist",
+      "returned_doc_ids": [
+        "rb-review-checklist",
+        "rb-backup-deletion",
+        "rb-iam-least-privilege"
+      ],
+      "hit_at_3": true
+    },
+    {
+      "id": "prevention-review",
+      "expected_doc_id": "rb-access-prevention",
+      "returned_doc_ids": [
+        "rb-access-prevention",
+        "inc-public-exposure",
+        "rb-public-bucket"
+      ],
+      "hit_at_3": true
+    },
+    {
+      "id": "object-incident",
+      "expected_doc_id": "inc-public-exposure",
+      "returned_doc_ids": [
+        "inc-public-exposure",
+        "inc-admin-ingress",
+        "inc-basic-role-expansion"
+      ],
+      "hit_at_3": true
+    },
+    {
+      "id": "ingress-incident",
+      "expected_doc_id": "inc-admin-ingress",
+      "returned_doc_ids": [
+        "inc-admin-ingress",
+        "rb-firewall-hardening",
+        "inc-basic-role-expansion"
+      ],
+      "hit_at_3": true
+    },
+    {
+      "id": "iam-incident",
+      "expected_doc_id": "inc-basic-role-expansion",
+      "returned_doc_ids": [
+        "inc-basic-role-expansion",
+        "rb-iam-least-privilege",
+        "inc-public-exposure"
+      ],
+      "hit_at_3": true
+    },
+    {
+      "id": "replace-incident",
+      "expected_doc_id": "inc-destructive-replacement",
+      "returned_doc_ids": [
+        "inc-destructive-replacement",
+        "rb-backup-deletion",
+        "inc-public-exposure"
+      ],
+      "hit_at_3": true
+    }
+  ],
+  "rpc_attempts": 20
+}

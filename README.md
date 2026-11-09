@@ -9,7 +9,9 @@ infrastructure security and applied AI through a reproducible Terraform review w
 JSON/Markdown reports and an authenticated Cloud Run liveness service. The isolated
 GCP foundation, private storage and Firestore vector index are deployed and verified.
 Terraform also configures GitHub federation; its token exchange remains untested.
-Gemini explanations, retrieval and deployment workflows are planned.
+The optional knowledge CLI adds synthetic runbook ingestion, Firestore retrieval
+and validated Gemini advisory output with deterministic fallback. Deployment
+workflows and the analysis HTTP endpoints remain planned.
 All repository samples are synthetic.
 Terramind is not a full security scanner and never approves or applies changes.
 
@@ -73,6 +75,8 @@ adapter. Tests cover unit behavior, CLI integration and data leakage.
 - [Threat model](docs/threat-model.md)
 - [Two-minute demo](docs/demo-script.md)
 - [Local evaluation](docs/evaluation.md)
+- [Retrieval and explanations](docs/retrieval-and-explanations.md)
+- [Retrieval verification](docs/retrieval-verification.md)
 - [Cloud setup and deployment](docs/setup-gcp.md)
 - [Cost, rollback and cleanup](docs/cost-and-cleanup.md)
 - [Infrastructure security exceptions](docs/security-exceptions.md)
@@ -82,6 +86,12 @@ Run the local liveness service with `uv run --locked --extra api python -m terra
 It binds to `127.0.0.1:8080`; Google authentication is enforced by Cloud Run when
 deployed, not by the local development server. `/health` is the external liveness
 endpoint; `/healthz` remains available for container probes.
+
+Validate the ten synthetic knowledge documents with
+`uv run --locked terramind-knowledge plan`. Run
+`uv run --locked python scripts/demo_retrieval.py` for a credential-free integration
+demo using explicitly labeled local test doubles. The separate cloud commands
+require approved project settings and `--execute`; see the retrieval guide.
 
 Validate the infrastructure without cloud credentials:
 

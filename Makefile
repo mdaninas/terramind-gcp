@@ -1,4 +1,4 @@
-.PHONY: setup lint test demo-offline schemas audit serve check-infra
+.PHONY: setup lint test demo-offline demo-retrieval knowledge-plan schemas audit serve check-infra
 
 TERRAFORM ?= terraform
 
@@ -14,12 +14,18 @@ test:
 demo-offline:
 	uv run --locked python scripts/demo_offline.py
 
+demo-retrieval:
+	uv run --locked python scripts/demo_retrieval.py
+
+knowledge-plan:
+	uv run --locked terramind-knowledge plan
+
 schemas:
 	uv run --locked python scripts/export_schemas.py
 
 audit:
 	uv run --locked python -c "from pathlib import Path; Path('artifacts').mkdir(exist_ok=True)"
-	uv export --locked --no-emit-project --format requirements-txt --output-file artifacts/audit-requirements.txt --quiet
+	uv export --locked --all-extras --no-emit-project --format requirements-txt --output-file artifacts/audit-requirements.txt --quiet
 	uv run --locked pip-audit --no-deps --disable-pip --requirement artifacts/audit-requirements.txt
 
 serve:

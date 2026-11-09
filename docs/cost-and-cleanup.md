@@ -14,7 +14,7 @@ portfolio work is finished, following the order below.
 | Cloud Storage | Stored versions, operations, soft-deleted data and egress | Private synthetic source bucket, 30-day source lifecycle, versioned state history lifecycle |
 | Artifact Registry | Image storage and transfers | Immutable tags, old untagged-image deletion after 14 days, keep ten recent versions |
 | Logging and Monitoring | Retained logs, queries, alerts and notifications | Content-free application telemetry, automatic request-URL log exclusion for this service |
-| Embeddings and Gemini | Input/output tokens and model requests | No model calls are implemented yet; later adapters need explicit call, input, timeout and retry limits |
+| Embeddings and Gemini | Input/output tokens and model requests | Explicit synthetic CLI execution, text/token limits, shared RPC deadlines and bounded attempts; no background ingestion or generation |
 
 Immutable tagged images are retained until deliberately removed; the untagged
 cleanup rule does not cap total registry storage. Soft-deleted objects can continue
@@ -40,6 +40,14 @@ account uses IDR, so exchange-rate movements change the USD equivalent. The budg
 amount, project filter, gross-usage calculation and thresholds were verified using
 the Billing Budgets API. Notification delivery has not been tested. No automatic
 shutdown is configured, and the alert does not stop spending.
+
+The knowledge CLI has now made live embedding and Gemini requests during
+verification. Ten synthetic Markdown objects and ten vector records remain stored.
+Identical re-ingestion reuses vectors and performs reads without embedding or
+document writes. Generated source objects retain the existing lifecycle and
+soft-delete behavior. See the [retrieval limits](retrieval-and-explanations.md)
+before repeating metered evaluations. The Cloud Run health service itself does
+not invoke models or retrieve knowledge yet.
 
 ## Rollback
 

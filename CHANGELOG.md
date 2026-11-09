@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Added ten synthetic knowledge documents, heading-aware chunks, idempotent
+  Google embedding ingestion, private source publishing and Firestore retrieval.
+- Added Gemini advisory contracts, source validation, strict deterministic
+  fallback, escaped report rendering and bounded model/RPC settings.
+- Added a separate synthetic cloud CLI, local retrieval test-double demo, golden
+  citation/failure cases and a malicious runbook test fixture.
+- Verified ten live retrieval queries, idempotent re-ingestion and a grounded
+  Gemini report retaining all four findings with ten validated source references.
 - Added a FastAPI liveness service, safe structured request telemetry and a
   non-root container definition with a restricted build context.
 - Added separate Terraform state bootstrap and modular cloud configuration for

@@ -1,0 +1,12 @@
+[
+  {"id":"public-read","query":"Review a new Cloud Storage allUsers object-view binding and the intended audience.","expected_doc_id":"rb-public-bucket"},
+  {"id":"basic-role","query":"How should a newly added project roles/owner or roles/editor grant be scoped for least privilege?","expected_doc_id":"rb-iam-least-privilege"},
+  {"id":"ssh-rdp","query":"How should world ingress for TCP 22 SSH and 3389 RDP be hardened without claiming VM reachability?","expected_doc_id":"rb-firewall-hardening"},
+  {"id":"delete-backup","query":"What recovery point, restore test and retention evidence should be reviewed before deleting a persistent database?","expected_doc_id":"rb-backup-deletion"},
+  {"id":"deployment-checklist","query":"Give a deployment review checklist covering normalization, policy findings, private authentication, cost settings and rollback.","expected_doc_id":"rb-review-checklist"},
+  {"id":"prevention-review","query":"How should a public grant be interpreted when public access prevention is verifiably enforced and the status is REVIEW?","expected_doc_id":"rb-access-prevention"},
+  {"id":"object-incident","query":"Find the fabricated tabletop incident where an allUsers object-view binding conflicted with private application intent.","expected_doc_id":"inc-public-exposure"},
+  {"id":"ingress-incident","query":"Find the fabricated administrative ingress incident where broad SSH and RDP access was proposed to restore administrator access.","expected_doc_id":"inc-admin-ingress"},
+  {"id":"iam-incident","query":"Find the fabricated basic role expansion incident where a deployment failure led to a proposed project editor grant to the runtime account.","expected_doc_id":"inc-basic-role-expansion"},
+  {"id":"replace-incident","query":"Find the fabricated destructive database replacement incident where create and delete actions were mistaken for data preservation.","expected_doc_id":"inc-destructive-replacement"}
+]

@@ -12,11 +12,17 @@ dependencies = ["pydantic>=2.12,<3"]
 
 [project.scripts]
 terramind = "terramind.cli:main"
+terramind-knowledge = "terramind.knowledge_cli:main"
 
 [project.optional-dependencies]
 api = [
     "fastapi>=0.118,<1",
     "uvicorn>=0.35,<1",
+]
+cloud = [
+    "google-cloud-firestore>=2.21,<3",
+    "google-cloud-storage>=3,<4",
+    "google-genai>=1.50,<3",
 ]
 
 [dependency-groups]
@@ -30,6 +36,9 @@ dev = [
     "fastapi>=0.118,<1",
     "uvicorn>=0.35,<1",
     "httpx2>=2.16,<3",
+    "google-genai>=1.50,<3",
+    "google-cloud-firestore>=2.21,<3",
+    "google-cloud-storage>=3,<4",
 ]
 
 [tool.hatch.build.targets.wheel]

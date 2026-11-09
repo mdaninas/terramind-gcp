@@ -1,0 +1,12 @@
+[
+  {"id":"public-read","fixture":"public_bucket","response":"valid","advisory":true},
+  {"id":"prevention-review","fixture":"public_bucket_pap_enforced","response":"valid","advisory":true},
+  {"id":"ssh-ingress","fixture":"ssh_open_world","response":"valid","advisory":true},
+  {"id":"project-owner","fixture":"project_owner_grant","response":"valid","advisory":true},
+  {"id":"persistent-delete","fixture":"bucket_delete","response":"valid","advisory":true},
+  {"id":"invented-reference","fixture":"public_bucket","response":"unknown-citation","advisory":true},
+  {"id":"ungrounded-reference","fixture":"ssh_open_world","response":"only-unknown-citation","advisory":false},
+  {"id":"severity-override","fixture":"project_owner_grant","response":"override","advisory":false},
+  {"id":"malformed-json","fixture":"bucket_delete","response":"malformed","advisory":false},
+  {"id":"approval-injection","fixture":"public_bucket","response":"safe","advisory":false}
+]

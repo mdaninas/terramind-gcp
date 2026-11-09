@@ -76,6 +76,27 @@ object access. The GitHub identity can publish images and update the existing
 service, with trust restricted to exact repository and owner IDs, main, a protected
 environment and the manual deployment workflow. It has no Terraform-state access.
 
-Planned adapters include Firestore retrieval, Gemini explanations, report
-persistence, private presentation and the deployment workflow. See
+Retrieval and Gemini advisory adapters are implemented behind provider-independent
+contracts and an explicit synthetic cloud CLI. Report persistence, private
+presentation and the deployment workflow remain planned. See
 [deployment setup](setup-gcp.md) and [security exceptions](security-exceptions.md).
+
+## Evidence and advisory boundary
+
+The optional cloud CLI imports Google SDKs only after local validation. A separate
+knowledge package handles strict synthetic metadata, heading-aware chunking,
+idempotent embedding reuse and atomic Firestore synchronization. Source Markdown
+is private and content addressed; the vector collection is fixed by the adapter.
+
+Retrieval runs once per applicable policy type, with at most three sources per
+type in the default profile. Generation receives immutable finding facts and
+untrusted excerpts. Closed response contracts exclude severity and policy changes.
+The application validates finding coverage and resolves citations only from the
+provided source set before constructing an advisory. Provider failure, malformed
+output or missing evidence returns the original deterministic findings with a
+visible limitation. Markdown escapes all advisory text and source titles.
+
+Local lexical vectors and fixture prose provide reproducible contract tests;
+their scores are labeled separately from live Google embedding evaluations.
+The [retrieval guide](retrieval-and-explanations.md) documents tradeoffs, limits
+and the authenticated operator workflow.

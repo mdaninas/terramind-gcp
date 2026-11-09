@@ -1,7 +1,10 @@
 """Deterministic report contracts; model adapters cannot own policy severity."""
 
-from typing import Literal
+from typing import Annotated, Literal
 
+from pydantic import Field
+
+from terramind.llm.contracts import Advisory
 from terramind.schemas.normalized import ClosedModel
 
 Severity = Literal["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]
@@ -26,7 +29,8 @@ class Report(ClosedModel):
     changed_resources: tuple[str, ...]
     explanation: str
     citations: tuple[str, ...] = ()
-    model_id: None = None
-    rag_status: Literal["not_requested"] = "not_requested"
+    model_id: Annotated[str, Field(pattern=r"^[a-z0-9][a-z0-9.-]{0,79}$")] | None = None
+    rag_status: Literal["not_requested", "available", "partial", "unavailable"] = "not_requested"
+    advisory: Advisory | None = None
     policy_version: Literal["1.0"] = "1.0"
     limitations: tuple[str, ...]

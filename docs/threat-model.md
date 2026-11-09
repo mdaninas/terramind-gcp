@@ -9,10 +9,10 @@ as Terraform JSON. Repository examples are handcrafted synthetic normalized fact
 | Raw plan/state leaks to cloud | No network clients; local allowlist projection; cloud boundary will accept normalized schema only | CLI users must keep original files outside source control; no system can infer all semantic sensitivity |
 | Private identifiers leak through reports | Generated ordinal aliases, private CIDRs omitted, identity redaction, closed enums; canary tests | Aliases/types/counts still disclose structural facts; only synthetic data is approved for cloud demos |
 | Marked sensitive values affect output | Risk-relevant sensitive attributes omitted and limitation emitted | Redacted unknown facts can hide risks; no known findings never means safe |
-| Malicious plan text or Markdown injection | Arbitrary descriptions/labels/conditions omitted; no command execution from plan fields | Retrieval/model prompt injection defenses and a malicious runbook fixture are planned |
+| Malicious plan text or Markdown injection | Arbitrary plan strings omitted; retrieved text is untrusted; model tools disabled; advisory Markdown escaped; malicious runbook tested | Prompt instructions cannot guarantee semantic correctness; generated advice still needs review |
 | Parser resource exhaustion / ambiguity | 5 MiB/256 KiB limits, max 100 changes, bounded collections, depth 64, duplicate-key rejection | Local caller already controls its own files; limits are conservative and reject some large legitimate plans |
 | Incorrect exposure claim | Explicit protocol/ports/source facts; prevention-aware REVIEW; no live reachability or backup claims | Hierarchical firewall precedence, IAM deny/conditions, unsupported resource types and custom roles need human review |
-| Model downgrades policy | No model dependency in the offline analyzer; reports derive severity from pure rules | Model integration must preserve this boundary under adversarial mocked AI responses |
+| Model downgrades policy | Offline rules remain independent; model schema excludes policy fields; immutable findings survive malformed, injected and unavailable responses | Advisory prose can still be wrong; lexical approval guards are defensive rather than semantic proof |
 | Supply-chain dependency risk | uv lock with hashes, Ruff/mypy, pip-audit and bounded runtime dependencies | Audits report only known vulnerabilities; online setup/audit contact package services |
 | Accidental cloud mutation | No apply endpoint or deployment workflow; the infrastructure checker uses backend-free validation and mock plans | Operator deployment instructions include apply commands that require explicit approval and verified parameters |
 | Unauthorized service invocation | Cloud Run invoker IAM requires explicit callers; deployed `/health` returned anonymous 403 and authenticated 200 | Project/service policies contain no public principals; organization inheritance needs separate review |
@@ -33,5 +33,9 @@ but GitHub environment protection and a real token exchange remain unverified.
 Firestore client rules deny all access; server SDKs use database-conditioned IAM,
 which does not enforce collection restrictions. A report TTL field is prepared,
 but no report writer sets expiry yet. See [security exceptions](security-exceptions.md)
-for scanner exceptions and logging boundaries. Retrieval/model adapters, CI
-privileges and actual cleanup evidence remain planned.
+for scanner exceptions and logging boundaries. Retrieval/model adapters operate
+through the synthetic cloud CLI; the health runtime has no data or prediction
+roles. Runtime permission changes, analysis endpoints, CI privileges and actual
+cleanup evidence remain planned. Indexed synthetic sources now incur metered
+storage and read/write usage; model calls have explicit time, attempt and token
+limits. Budget alerts do not stop spending.

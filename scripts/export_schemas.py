@@ -5,6 +5,8 @@ import json
 import sys
 from pathlib import Path
 
+from terramind.llm.contracts import ModelNarrative
+from terramind.rag.contracts import Chunk
 from terramind.schemas.normalized import NormalizedPlan
 from terramind.schemas.report import Report
 
@@ -13,7 +15,12 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    for name, model in (("normalized-plan.v1", NormalizedPlan), ("report.v1", Report)):
+    for name, model in (
+        ("normalized-plan.v1", NormalizedPlan),
+        ("report.v1", Report),
+        ("knowledge-chunk.v1", Chunk),
+        ("advisory-response.v1", ModelNarrative),
+    ):
         path = Path("schemas") / f"{name}.schema.json"
         content = json.dumps(model.model_json_schema(), indent=2, sort_keys=True) + "\n"
         if args.check:

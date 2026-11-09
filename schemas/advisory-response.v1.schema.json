@@ -1,0 +1,96 @@
+{
+  "$defs": {
+    "FindingExplanation": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9:._-]{0,159}$",
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Citation Ids",
+          "type": "array"
+        },
+        "finding_id": {
+          "pattern": "^TM-GCP-00[1-4]:google_[a-z0-9_]+\\.resource_[0-9]{4}$",
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 1200,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "text",
+        "citation_ids"
+      ],
+      "title": "FindingExplanation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "citations": {
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 12,
+      "minItems": 1,
+      "title": "Citations",
+      "type": "array"
+    },
+    "explanations": {
+      "items": {
+        "$ref": "#/$defs/FindingExplanation"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "title": "Explanations",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "maxLength": 1200,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 8,
+      "title": "Limitations",
+      "type": "array"
+    },
+    "recommendations": {
+      "items": {
+        "maxLength": 1200,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Recommendations",
+      "type": "array"
+    },
+    "summary": {
+      "maxLength": 1200,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    }
+  },
+  "required": [
+    "summary",
+    "explanations",
+    "recommendations",
+    "citations",
+    "limitations"
+  ],
+  "title": "ModelNarrative",
+  "type": "object"
+}

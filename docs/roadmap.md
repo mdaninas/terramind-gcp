@@ -7,7 +7,7 @@ service are deployed, with authenticated access and anonymous rejection verified
 | --- | --- | --- |
 | Offline analysis | Local normalization, deterministic risk rules, JSON and Markdown reports | Implemented and verified locally |
 | Cloud foundation | Terraform foundation and private Cloud Run health service | Deployed and verified; federation exchange remains untested |
-| Retrieval and explanations | Synthetic runbooks, Firestore vector retrieval and Gemini explanations | Planned |
+| Retrieval and explanations | Synthetic runbooks, Firestore vector retrieval and Gemini explanations | CLI implemented and verified locally and on GCP |
 | API and delivery | Analysis API, private report page and GitHub Actions deployment | Planned |
 | Release verification | End-to-end evaluation, walkthrough and deployment documentation | Planned |
 
@@ -35,14 +35,20 @@ The vector index is READY and the expiry policy is ACTIVE. See
 
 ## Retrieval and explanations
 
-Add 8-12 synthetic Markdown documents, heading-aware chunks, idempotent ingestion,
+Ten synthetic Markdown documents, heading-aware chunks, idempotent ingestion,
 768-dimensional Google embeddings, Firestore vector retrieval and structured
-Gemini explanations. Keep model names and endpoints configurable.
+Gemini explanations are implemented behind the optional knowledge CLI. Model
+names and endpoints remain configurable.
 
 Acceptance criteria: at least eight of ten curated queries retrieve the intended
 runbook in the top three, citations map to supplied sources, and model outages or
 prompt injection cannot remove or downgrade deterministic findings. Record local
 mock tests and live cloud evaluations separately.
+
+The live evaluation retrieved the expected document in the top three for all ten
+queries. Identical re-ingestion made zero embedding calls or document changes.
+A live Gemini report preserved all four findings and validated ten source
+references. See the [verification record](retrieval-verification.md).
 
 ## API and delivery
 

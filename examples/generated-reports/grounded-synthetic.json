@@ -1,0 +1,259 @@
+{
+  "analysis_id": "5a4a49c0-1262-4931-a57a-8fafd7a724b4",
+  "timestamp": "2026-11-09T04:22:13.780882+00:00",
+  "overall_risk": "HIGH",
+  "findings": [
+    {
+      "rule_id": "TM-GCP-002",
+      "resource": "google_compute_firewall.resource_0002",
+      "severity": "HIGH",
+      "title": "Firewall permits world-sourced administrative traffic",
+      "rationale": "The ingress allow rule includes SSH or RDP ports from a world CIDR. This does not establish the presence or reachability of a target VM.",
+      "evidence": [
+        "sources=0.0.0.0/0",
+        "administrative_ports=22"
+      ],
+      "remediation": "Restrict source ranges and target scope; use IAP or an approved private access path.",
+      "status": "FAIL"
+    },
+    {
+      "rule_id": "TM-GCP-003",
+      "resource": "google_project_iam_binding.resource_0003",
+      "severity": "HIGH",
+      "title": "Proposed project-level basic role grant",
+      "rationale": "Owner and editor grant broad project permissions. This is a least-privilege review, not evidence of internet exposure.",
+      "evidence": [
+        "project role=roles/owner"
+      ],
+      "remediation": "Replace basic roles with narrowly scoped predefined or reviewed custom roles.",
+      "status": "FAIL"
+    },
+    {
+      "rule_id": "TM-GCP-004",
+      "resource": "google_storage_bucket.resource_0004",
+      "severity": "HIGH",
+      "title": "Planned deletion of a persistent resource",
+      "rationale": "Deletion or replacement can disrupt service or remove data; backup state and recovery readiness are not established by this plan.",
+      "evidence": [
+        "resource_type=google_storage_bucket",
+        "actions=delete"
+      ],
+      "remediation": "Require human review of ownership, dependencies, backups and a tested recovery plan.",
+      "status": "REVIEW"
+    },
+    {
+      "rule_id": "TM-GCP-001",
+      "resource": "google_storage_bucket_iam_member.resource_0001",
+      "severity": "HIGH",
+      "title": "Proposed public Cloud Storage object-read grant",
+      "rationale": "Public principals receive object-read permissions; exposure depends on prevention policies and any IAM conditions.",
+      "evidence": [
+        "roles/storage.objectViewer -> allUsers",
+        "public_access_prevention=unknown"
+      ],
+      "remediation": "Remove public principals; use scoped identities and enforce public access prevention.",
+      "status": "FAIL"
+    }
+  ],
+  "changed_resources": [
+    "google_storage_bucket_iam_member.resource_0001",
+    "google_compute_firewall.resource_0002",
+    "google_project_iam_binding.resource_0003",
+    "google_storage_bucket.resource_0004"
+  ],
+  "explanation": "The deterministic Terraform review identified four findings involving administrative firewall rules, project permissions, data destruction, and public access grants that require operator attention prior to deployment.",
+  "citations": [
+    "rb-firewall-hardening:administrative-ingress-000",
+    "inc-admin-ingress:fabricated-administrative-ingress-incident-000",
+    "rb-review-checklist:deployment-review-checklist-000",
+    "rb-iam-least-privilege:project-basic-roles-000",
+    "inc-basic-role-expansion:fabricated-basic-role-expansion-incident-000",
+    "rb-public-bucket:public-bucket-access-000",
+    "rb-backup-deletion:persistent-resource-deletion-000",
+    "inc-destructive-replacement:fabricated-destructive-replacement-incident-000",
+    "inc-public-exposure:fabricated-public-object-grant-incident-000",
+    "rb-access-prevention:public-access-prevention-interpretation-000"
+  ],
+  "model_id": "gemini-3.5-flash",
+  "rag_status": "available",
+  "advisory": {
+    "summary": "The deterministic Terraform review identified four findings involving administrative firewall rules, project permissions, data destruction, and public access grants that require operator attention prior to deployment.",
+    "explanations": [
+      {
+        "finding_id": "TM-GCP-002:google_compute_firewall.resource_0002",
+        "text": "The proposed configuration allows SSH administrative traffic (port 22) from any IP address (0.0.0.0/0). This represents an administrative ingress path, although the actual presence or reachability of a target VM cannot be established from the plan alone.",
+        "citation_ids": [
+          "rb-firewall-hardening:administrative-ingress-000",
+          "inc-admin-ingress:fabricated-administrative-ingress-incident-000",
+          "rb-review-checklist:deployment-review-checklist-000"
+        ]
+      },
+      {
+        "finding_id": "TM-GCP-003:google_project_iam_binding.resource_0003",
+        "text": "The proposed grant assigns a basic project role (roles/owner) which expands administrative capabilities. This represents an authorization risk rather than direct proof of internet exposure.",
+        "citation_ids": [
+          "rb-iam-least-privilege:project-basic-roles-000",
+          "inc-basic-role-expansion:fabricated-basic-role-expansion-incident-000",
+          "rb-public-bucket:public-bucket-access-000"
+        ]
+      },
+      {
+        "finding_id": "TM-GCP-004:google_storage_bucket.resource_0004",
+        "text": "The plan requests the deletion of a persistent Cloud Storage bucket. A destructive action presents a service disruption or data loss risk; backup readiness and recovery capabilities are not verified by this plan.",
+        "citation_ids": [
+          "rb-backup-deletion:persistent-resource-deletion-000",
+          "inc-destructive-replacement:fabricated-destructive-replacement-incident-000",
+          "rb-public-bucket:public-bucket-access-000"
+        ]
+      },
+      {
+        "finding_id": "TM-GCP-001:google_storage_bucket_iam_member.resource_0001",
+        "text": "The plan proposes granting object-read access (roles/storage.objectViewer) to allUsers. This public principal grant conflicts with private access goals, though effective exposure depends on bucket-level and organizational prevention policies.",
+        "citation_ids": [
+          "rb-public-bucket:public-bucket-access-000",
+          "inc-public-exposure:fabricated-public-object-grant-incident-000",
+          "rb-access-prevention:public-access-prevention-interpretation-000"
+        ]
+      }
+    ],
+    "recommendations": [
+      "Restrict firewall ingress rules to validated, scoped private networks or use an access proxy such as IAP.",
+      "Replace broad project roles with narrowly scoped, predefined or custom IAM roles mapped to operational needs.",
+      "Verify database and bucket backup retention, integrity, and restore procedures locally before applying deletions.",
+      "Remove allUsers from object-read permissions and configure public access prevention on the bucket."
+    ],
+    "citations": [
+      "rb-firewall-hardening:administrative-ingress-000",
+      "inc-admin-ingress:fabricated-administrative-ingress-incident-000",
+      "rb-review-checklist:deployment-review-checklist-000",
+      "rb-iam-least-privilege:project-basic-roles-000",
+      "inc-basic-role-expansion:fabricated-basic-role-expansion-incident-000",
+      "rb-public-bucket:public-bucket-access-000",
+      "rb-backup-deletion:persistent-resource-deletion-000",
+      "inc-destructive-replacement:fabricated-destructive-replacement-incident-000",
+      "inc-public-exposure:fabricated-public-object-grant-incident-000",
+      "rb-access-prevention:public-access-prevention-interpretation-000"
+    ],
+    "limitations": [
+      "The plan facts do not establish if a VM exists, listens on the target port, or has a public IP assigned.",
+      "Sanitized payloads omit IAM conditions and parent organization policies, leaving effective permission states uncertain.",
+      "The proposed actions do not verify whether backup copies exist, are valid, or have been successfully tested.",
+      "A model explanation is supporting guidance and does not constitute authorization to modify or apply infrastructure."
+    ],
+    "model_id": "gemini-3.5-flash",
+    "rag_status": "available",
+    "sources": [
+      {
+        "citation_id": "rb-firewall-hardening:administrative-ingress-000",
+        "chunk_id": "6a58c01539ce0aec9f1b574b02e4a8db1608b1461b98d754e2ea9fab1457e277",
+        "doc_id": "rb-firewall-hardening",
+        "section_id": "administrative-ingress-000",
+        "title": "Synthetic firewall administration hardening",
+        "version": "1.0",
+        "source_path": "runbooks/firewall-hardening.md",
+        "content_hash": "8121efd1178c656609df429ae5b41899248f93266566206748ea6ff0c7582e5d"
+      },
+      {
+        "citation_id": "inc-admin-ingress:fabricated-administrative-ingress-incident-000",
+        "chunk_id": "32d48701315bb3919538ef9446b50e8764004ccd5275077b15744c21548fd263",
+        "doc_id": "inc-admin-ingress",
+        "section_id": "fabricated-administrative-ingress-incident-000",
+        "title": "Synthetic incident world administrative ingress",
+        "version": "1.0",
+        "source_path": "incidents/admin-ingress.md",
+        "content_hash": "258d33a0462e48ef2f3545ceba088d079572a4836e5f1702995fa400aee9df3a"
+      },
+      {
+        "citation_id": "rb-review-checklist:deployment-review-checklist-000",
+        "chunk_id": "9ab2d2e9c20c97b8b7c0b8411712dd76c3dba170a9b69233405b2a959c9b389e",
+        "doc_id": "rb-review-checklist",
+        "section_id": "deployment-review-checklist-000",
+        "title": "Synthetic deployment review checklist",
+        "version": "1.0",
+        "source_path": "runbooks/review-checklist.md",
+        "content_hash": "e8a17fd44c20532b602bcdbe7bb8770486b841fc213aebca7abcaec159d3ba38"
+      },
+      {
+        "citation_id": "rb-iam-least-privilege:project-basic-roles-000",
+        "chunk_id": "3aca4d6580c69f48a9715af2d038ade4cd4c2e2a08f704d19cfa4d527fcf7d7b",
+        "doc_id": "rb-iam-least-privilege",
+        "section_id": "project-basic-roles-000",
+        "title": "Synthetic project IAM least privilege review",
+        "version": "1.0",
+        "source_path": "runbooks/iam-least-privilege.md",
+        "content_hash": "e2206dc00c64af5e0b192cd18139aec40f790f32b40ecfe03d3173faf6232489"
+      },
+      {
+        "citation_id": "inc-basic-role-expansion:fabricated-basic-role-expansion-incident-000",
+        "chunk_id": "c4ea5c824bb4120b8cca0175f3ae2122b7a4fecdf9a4a278587e803c8628d52a",
+        "doc_id": "inc-basic-role-expansion",
+        "section_id": "fabricated-basic-role-expansion-incident-000",
+        "title": "Synthetic incident excessive project permissions",
+        "version": "1.0",
+        "source_path": "incidents/basic-role-expansion.md",
+        "content_hash": "5253109d44ca436630dfa39559d88836b173c9d5824bc4874709dd2b69b075f2"
+      },
+      {
+        "citation_id": "rb-public-bucket:public-bucket-access-000",
+        "chunk_id": "ee4983f80a849dcad02422e6bd132272eedfd72ec3f316b07fd857c1a0e1a7b6",
+        "doc_id": "rb-public-bucket",
+        "section_id": "public-bucket-access-000",
+        "title": "Synthetic public bucket access review",
+        "version": "1.0",
+        "source_path": "runbooks/public-bucket.md",
+        "content_hash": "9b00d628ae0d1ee59c8f1b469965b3f26494184a64f16039a47ed0ab499db3ab"
+      },
+      {
+        "citation_id": "rb-backup-deletion:persistent-resource-deletion-000",
+        "chunk_id": "a29466e47a67713eb3f46f0e7262098595c331786fdb0a56fc3b79fe4962f7e7",
+        "doc_id": "rb-backup-deletion",
+        "section_id": "persistent-resource-deletion-000",
+        "title": "Synthetic persistent data deletion review",
+        "version": "1.0",
+        "source_path": "runbooks/backup-deletion.md",
+        "content_hash": "d9ecd779e9af8816e74df06cac4927a94ce44db24090ec33484641a51ba3f0f5"
+      },
+      {
+        "citation_id": "inc-destructive-replacement:fabricated-destructive-replacement-incident-000",
+        "chunk_id": "59c3a225073d02c263734aa70a67e2a915d4f00af5797d64e9156c6f18cc9449",
+        "doc_id": "inc-destructive-replacement",
+        "section_id": "fabricated-destructive-replacement-incident-000",
+        "title": "Synthetic incident destructive database replacement",
+        "version": "1.0",
+        "source_path": "incidents/destructive-replacement.md",
+        "content_hash": "d8e95937b783101c6451454623b5713bf5f947ddc06b9c7a52c23242956f8564"
+      },
+      {
+        "citation_id": "inc-public-exposure:fabricated-public-object-grant-incident-000",
+        "chunk_id": "35ecf5a79d9259bf781e88cf80162b1d56967d71f23617849b4c1186462c246a",
+        "doc_id": "inc-public-exposure",
+        "section_id": "fabricated-public-object-grant-incident-000",
+        "title": "Synthetic incident public object grant",
+        "version": "1.0",
+        "source_path": "incidents/public-exposure.md",
+        "content_hash": "e9020c7badeeb1be43ba4e285e2ca96249435a7b48fec87d25f93ff040ee36f5"
+      },
+      {
+        "citation_id": "rb-access-prevention:public-access-prevention-interpretation-000",
+        "chunk_id": "806e69133585940ba11c538e87aed46fe603a3d8c9ff6866956282b783d10e1d",
+        "doc_id": "rb-access-prevention",
+        "section_id": "public-access-prevention-interpretation-000",
+        "title": "Synthetic public access prevention interpretation",
+        "version": "1.0",
+        "source_path": "runbooks/access-prevention.md",
+        "content_hash": "79e12fe650818a1641fec3905c7ef8c12ea4f54e01a8b79e628d1fa4cc28f277"
+      }
+    ]
+  },
+  "policy_version": "1.0",
+  "limitations": [
+    "Terramind checks four specific policies; no known findings is not a guarantee of safety.",
+    "Findings describe proposed changes, not verified deployed exposure or backup status.",
+    "Resource aliases conceal original identifiers; correlate by input order locally.",
+    "AI text is advisory and can be incorrect.",
+    "The plan facts do not establish if a VM exists, listens on the target port, or has a public IP assigned.",
+    "Sanitized payloads omit IAM conditions and parent organization policies, leaving effective permission states uncertain.",
+    "The proposed actions do not verify whether backup copies exist, are valid, or have been successfully tested.",
+    "A model explanation is supporting guidance and does not constitute authorization to modify or apply infrastructure."
+  ]
+}

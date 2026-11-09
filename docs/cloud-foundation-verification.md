@@ -1,6 +1,7 @@
 # Cloud foundation verification
 
-The foundation and liveness service were deployed with owner approval in a new,
+This record captures the foundation and liveness deployment. The service was deployed
+with owner approval in a new,
 dedicated portfolio project on 2026-11-09 (Asia/Jakarta). Cloud Run authentication,
 private buckets and Firestore index readiness were verified. The existing lab
 project was left unchanged. Notification delivery and GitHub federation token
@@ -119,7 +120,8 @@ and shut down the subprocess. It did not invoke GCP.
   no explicit project-role grants. Separate deployment and ingestion identities
   are configured; this does not establish collection-level Firestore enforcement.
 - The configured demo limits are zero minimum instances, one maximum instance,
-  request-based CPU and a 30-second request timeout. No model calls were made.
+  request-based CPU and a 30-second request timeout. No model calls were made
+  during these foundation checks; later CLI verification is recorded separately.
 - Final live `terraform plan -detailed-exitcode` checks returned **0** for all
   three roots: project, bootstrap and dev. No configuration drift was reported.
 
@@ -137,5 +139,6 @@ the [cleanup procedure](cost-and-cleanup.md) when the portfolio work is finished
 No automatic shutdown is configured. Budget email delivery, server-error alert
 delivery, federation exchange, protected GitHub environments and organization-level
 IAM/log-sink inheritance have not been verified. The server-error policy currently
-has no notification channel. Retrieval, Gemini explanations, analysis endpoints
-and deployment workflows are subsequent work.
+has no notification channel. The subsequent retrieval and Gemini CLI checks are
+recorded in [retrieval verification](retrieval-verification.md). Analysis endpoints
+and deployment workflows remain subsequent work.

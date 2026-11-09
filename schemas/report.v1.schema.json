@@ -1,5 +1,91 @@
 {
   "$defs": {
+    "Advisory": {
+      "additionalProperties": false,
+      "properties": {
+        "citations": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9:._-]{0,159}$",
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Citations",
+          "type": "array"
+        },
+        "explanations": {
+          "items": {
+            "$ref": "#/$defs/FindingExplanation"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Explanations",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "maxLength": 1200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 8,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "model_id": {
+          "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "rag_status": {
+          "enum": [
+            "available",
+            "partial",
+            "unavailable"
+          ],
+          "title": "Rag Status",
+          "type": "string"
+        },
+        "recommendations": {
+          "items": {
+            "maxLength": 1200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Recommendations",
+          "type": "array"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceCitation"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        },
+        "summary": {
+          "maxLength": 1200,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "summary",
+        "explanations",
+        "recommendations",
+        "citations",
+        "limitations",
+        "model_id",
+        "rag_status",
+        "sources"
+      ],
+      "title": "Advisory",
+      "type": "object"
+    },
     "Finding": {
       "additionalProperties": false,
       "properties": {
@@ -68,10 +154,106 @@
       ],
       "title": "Finding",
       "type": "object"
+    },
+    "FindingExplanation": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9:._-]{0,159}$",
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Citation Ids",
+          "type": "array"
+        },
+        "finding_id": {
+          "pattern": "^TM-GCP-00[1-4]:google_[a-z0-9_]+\\.resource_[0-9]{4}$",
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 1200,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "text",
+        "citation_ids"
+      ],
+      "title": "FindingExplanation",
+      "type": "object"
+    },
+    "SourceCitation": {
+      "additionalProperties": false,
+      "properties": {
+        "chunk_id": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Chunk Id",
+          "type": "string"
+        },
+        "citation_id": {
+          "pattern": "^[a-z0-9][a-z0-9:._-]{0,159}$",
+          "title": "Citation Id",
+          "type": "string"
+        },
+        "content_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "doc_id": {
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "section_id": {
+          "title": "Section Id",
+          "type": "string"
+        },
+        "source_path": {
+          "title": "Source Path",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "citation_id",
+        "chunk_id",
+        "doc_id",
+        "section_id",
+        "title",
+        "version",
+        "source_path",
+        "content_hash"
+      ],
+      "title": "SourceCitation",
+      "type": "object"
     }
   },
   "additionalProperties": false,
   "properties": {
+    "advisory": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Advisory"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
     "analysis_id": {
       "title": "Analysis Id",
       "type": "string"
@@ -110,9 +292,17 @@
       "type": "array"
     },
     "model_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
       "default": null,
-      "title": "Model Id",
-      "type": "null"
+      "title": "Model Id"
     },
     "overall_risk": {
       "enum": [
@@ -133,8 +323,13 @@
       "type": "string"
     },
     "rag_status": {
-      "const": "not_requested",
       "default": "not_requested",
+      "enum": [
+        "not_requested",
+        "available",
+        "partial",
+        "unavailable"
+      ],
       "title": "Rag Status",
       "type": "string"
     },

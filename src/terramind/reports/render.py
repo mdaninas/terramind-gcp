@@ -1,5 +1,7 @@
 """Offline advisory reporting. Findings remain authoritative."""
 
+import html
+import re
 from datetime import UTC, datetime
 from uuid import uuid4
 
@@ -54,9 +56,9 @@ def markdown(report: Report) -> str:
         f"Generated (UTC): {report.timestamp}",
         f"Overall risk: **{report.overall_risk}**",
         f"Policy version: {report.policy_version}",
-        f"RAG status: {report.rag_status}; model: none",
+        f"RAG status: {report.rag_status}; model: {report.model_id or 'none'}",
         "",
-        report.explanation,
+        _plain(report.explanation),
         "",
         "## Changed resources",
         "",
@@ -84,5 +86,30 @@ def markdown(report: Report) -> str:
         )
     if not report.findings:
         lines.extend(["NO_KNOWN_FINDINGS. Review the limitations below.", ""])
-    lines.extend(["## Limitations", "", *(f"- {text}" for text in report.limitations), ""])
+    if report.advisory is not None:
+        lines.extend(["## AI advisory", "", "Advisory text does not change policy findings.", ""])
+        for item in report.advisory.explanations:
+            lines.extend(
+                [
+                    f"- {_plain(item.finding_id)}: {_plain(item.text)}",
+                    f"  Sources: {', '.join(item.citation_ids)}",
+                ]
+            )
+        lines.extend(["", "### Recommendations", ""])
+        lines.extend(f"- {_plain(text)}" for text in report.advisory.recommendations)
+        lines.extend(["", "### Cited synthetic sources", ""])
+        for source in report.advisory.sources:
+            lines.append(
+                f"- `{source.citation_id}`: {_plain(source.title)} "
+                f"({_plain(source.doc_id)}, {_plain(source.section_id)}, "
+                f"version {_plain(source.version)}, {_plain(source.source_path)}); "
+                f"content SHA-256 `{source.content_hash}`"
+            )
+        lines.append("")
+    lines.extend(["## Limitations", "", *(f"- {_plain(text)}" for text in report.limitations), ""])
     return "\n".join(lines)
+
+
+def _plain(text: str) -> str:
+    """Render untrusted advisory prose as text, without active Markdown or HTML."""
+    return html.escape(re.sub(r"([\\`*_{}\[\]()#+.!|>~-])", r"\\\1", text.replace("\n", " ")))
