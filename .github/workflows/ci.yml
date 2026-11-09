@@ -44,7 +44,10 @@ jobs:
       - name: Start restricted local container
         run: |
           docker run --detach --rm --name terramind-ci --publish 127.0.0.1:8080:8080 --read-only --cap-drop=ALL --security-opt=no-new-privileges terramind:ci
-          curl --fail --silent --retry 20 --retry-delay 1 --retry-connrefused http://127.0.0.1:8080/health
+          curl --fail --silent --show-error --max-time 3 --retry 20 --retry-delay 1 --retry-max-time 30 --retry-all-errors http://127.0.0.1:8080/health
+      - name: Show container startup failure
+        if: failure()
+        run: docker logs terramind-ci
       - name: Verify local API end to end
         run: uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local
       - name: Stop local container
