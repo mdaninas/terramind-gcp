@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from scripts.check_deployment_environment import protected
+from scripts.check_deployment_environment import immutable_subject, protected
 from scripts.check_runtime import ready
 
 
@@ -86,6 +86,28 @@ def test_environment_guard_rejects_unprotected_or_broad_access(change):
     elif change == "protected-only":
         environment["deployment_branch_policy"] = {"protected_branches": True}
     assert protected(environment, branches) == (change == "none")
+
+
+@pytest.mark.parametrize("change", ["none", "legacy", "custom", "owner", "repository", "name"])
+def test_immutable_subject_guard_requires_exact_default_identity(change):
+    configuration = {
+        "use_default": True,
+        "use_immutable_subject": True,
+        "sub_claim_prefix": "repo:synthetic@987654321/terramind@123456789",
+    }
+    if change == "legacy":
+        configuration["use_immutable_subject"] = False
+    elif change == "custom":
+        configuration["use_default"] = False
+    elif change == "owner":
+        configuration["sub_claim_prefix"] = "repo:synthetic@1/terramind@123456789"
+    elif change == "repository":
+        configuration["sub_claim_prefix"] = "repo:synthetic@987654321/terramind@1"
+    elif change == "name":
+        configuration["sub_claim_prefix"] = "repo:synthetic@987654321/other@123456789"
+    assert immutable_subject(configuration, "synthetic/terramind", 987654321, 123456789) == (
+        change == "none"
+    )
 
 
 def runtime():

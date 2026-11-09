@@ -54,7 +54,7 @@ run "private_service_and_cost_defaults" {
         "assertion.repository_owner_id == '987654321'",
         "assertion.repository == 'synthetic/terramind'",
         "assertion.ref == 'refs/heads/main'",
-        "assertion.sub == 'repo:synthetic/terramind:environment:development'",
+        "assertion.sub == 'repo:synthetic@987654321/terramind@123456789:environment:development'",
         "assertion.workflow_ref == 'synthetic/terramind/.github/workflows/deploy.yml@refs/heads/main'",
         "assertion.event_name == 'workflow_dispatch'",
       ] : strcontains(module.identity.federation_condition, clause)

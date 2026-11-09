@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Matched federation to GitHub's immutable owner/repository subject format and
+  added a fail-closed OIDC metadata check before deployment builds.
+
 - Added strict synthetic analysis endpoints, create-only expiring reports,
   Markdown downloads and a minimal escaped report page with a packaged demo.
 - Added local admission/size/deadline limits, safe analysis telemetry, memory and

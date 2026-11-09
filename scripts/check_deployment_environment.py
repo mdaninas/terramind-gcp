@@ -25,6 +25,18 @@ def protected(environment: dict[str, Any], branches: dict[str, Any]) -> bool:
     )
 
 
+def immutable_subject(
+    configuration: dict[str, Any], repository: str, owner_id: int, repository_id: int
+) -> bool:
+    owner, name = repository.split("/", 1)
+    return bool(
+        configuration.get("use_default") is True
+        and configuration.get("use_immutable_subject") is True
+        and configuration.get("sub_claim_prefix")
+        == f"repo:{owner}@{owner_id}/{name}@{repository_id}"
+    )
+
+
 def main() -> int:
     repository = os.environ.get("GITHUB_REPOSITORY", "")
     token = os.environ.get("GITHUB_TOKEN", "")
@@ -36,7 +48,7 @@ def main() -> int:
 
     def get(suffix: str) -> dict[str, Any]:
         request = Request(
-            f"https://api.github.com/repos/{repository}/environments/development{suffix}",
+            f"https://api.github.com/repos/{repository}{suffix}",
             headers={
                 "Authorization": f"Bearer {token}",
                 "Accept": "application/vnd.github+json",
@@ -48,13 +60,26 @@ def main() -> int:
             return value
 
     try:
-        ready = protected(get(""), get("/deployment-branch-policies?per_page=100"))
+        metadata = get("")
+        ready = (
+            metadata["full_name"] == repository
+            and protected(
+                get("/environments/development"),
+                get("/environments/development/deployment-branch-policies?per_page=100"),
+            )
+            and immutable_subject(
+                get("/actions/oidc/customization/sub"),
+                repository,
+                metadata["owner"]["id"],
+                metadata["id"],
+            )
+        )
     except Exception:
         ready = False
     print(
-        "Deployment environment protection verified."
+        "Deployment environment protection and immutable OIDC subject verified."
         if ready
-        else "Deployment blocked: configure required reviewers and an exact main branch policy."
+        else "Deployment blocked: verify reviewers, main branch policy and immutable OIDC subject."
     )
     return 0 if ready else 1
 

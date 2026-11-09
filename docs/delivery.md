@@ -80,6 +80,13 @@ No API keys or service-account JSON files are required. GitHub's environment and
 branch policies control when WIF can be used; the GCP provider additionally binds
 the immutable repository/owner IDs, exact repository, main ref, environment subject,
 manual event and exact deploy workflow. Protect changes to main and these files.
+The provider requires GitHub's default immutable subject format:
+`repo:OWNER@OWNER_ID/REPOSITORY@REPOSITORY_ID:environment:development`.
+Before deployment, the guard checks the repository's OIDC customization metadata
+and rejects legacy/custom subject formats or a different identity prefix. GitHub
+uses this default for new repositories created after July 15, 2026; verify it for
+an existing repository. Do not add a broad subject wildcard to resolve a mismatch.
+See the [GitHub OIDC subject reference](https://docs.github.com/en/actions/reference/security/oidc).
 See [GitHub environment REST permissions](https://docs.github.com/en/rest/deployments/environments)
 and [Google federation guidance](https://docs.cloud.google.com/iam/docs/workload-identity-federation-with-deployment-pipelines).
 

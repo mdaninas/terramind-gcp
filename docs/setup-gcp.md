@@ -224,8 +224,10 @@ the named database's deny-all client rule release before adding data adapters.
 
 The trust condition requires the exact repository, numeric repository and owner
 IDs, main branch, `development` environment subject, manual `workflow_dispatch`
-event and `.github/workflows/deploy.yml` from main. Configure protected environment
-reviewers and main-branch rules before running the prepared deployment workflow.
+event and `.github/workflows/deploy.yml` from main. The subject includes immutable
+owner/repository IDs using GitHub's current default format; the deployment guard
+checks this through the GitHub API. Configure protected environment reviewers and
+main-branch rules before running the prepared deployment workflow.
 Only its protected deployment job receives `id-token: write`; the workflow refuses
 to proceed without environment protection. No successful token exchange or hosted
 deployment run is claimed. See [controlled delivery](delivery.md) for variables,

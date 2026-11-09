@@ -10,6 +10,15 @@ variable "enable_analysis_api" {
   default = false
 }
 
+locals {
+  github_subject = format(
+    "repo:%s@%s/%s@%s:environment:%s",
+    split("/", var.github_repository)[0], var.github_owner_id,
+    split("/", var.github_repository)[1], var.github_repository_id,
+    var.github_environment,
+  )
+}
+
 resource "google_service_account" "runtime" {
   project      = var.project_id
   account_id   = "${var.name}-runtime"
@@ -51,7 +60,7 @@ resource "google_iam_workload_identity_pool_provider" "github" {
     assertion.repository_owner_id == '${var.github_owner_id}' &&
     assertion.repository == '${var.github_repository}' &&
     assertion.ref == 'refs/heads/main' &&
-    assertion.sub == 'repo:${var.github_repository}:environment:${var.github_environment}' &&
+    assertion.sub == '${local.github_subject}' &&
     assertion.workflow_ref == '${var.github_repository}/.github/workflows/deploy.yml@refs/heads/main' &&
     assertion.event_name == 'workflow_dispatch'
   CEL
