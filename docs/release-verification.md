@@ -93,6 +93,36 @@ commands, results and PNG hashes. The browser captures used the unchanged local
 application source and synthetic sample. The published Gemini example is from the
 earlier live CLI evaluation, with its provenance documented separately.
 
+## Current-checkout status recheck
+
+On 2026-11-10 (Asia/Jakarta), source `e53c43e` was checked in the existing local
+checkout before the status documentation updates. This was not another fresh
+clone or deployment. The [recheck record](evaluations/status-recheck-2026-11-10.json)
+keeps these results separate from the earlier release and live cloud evidence.
+
+- `uv run --locked python scripts/check.py`: 297 tests passed in 8.93 seconds;
+  normalization/policy coverage 97.58%; Ruff, mypy and schema checks passed.
+- Offline analysis produced four HIGH findings. The retrieval test double hit
+  all ten intended documents in the top three with zero cloud calls.
+- The 100-change benchmark took 0.003820 seconds. Source archive and wheel builds
+  passed. Local HTTP analysis took 0.031 seconds and preserved all four findings
+  through saved JSON, Markdown and HTML; retrieval was not requested, model null.
+- Infrastructure formatting, validation in all three roots and twelve
+  mock-provider tests passed. Checkov reported 17 Terraform checks passed,
+  zero failed and four documented skips; Dockerfile checks were 48 passed,
+  zero failed and zero skipped. Actionlint passed both workflows.
+- Public-file privacy scanning and `git diff --check` passed after the status
+  documentation updates.
+
+The attempted read-only `gcloud run services describe` could not authenticate:
+the current gcloud configuration had zero cached accounts and no active account.
+Anonymous GET requests to the previously recorded Cloud Run `/health` and `/demo`
+returned 403. This confirms those anonymous requests were rejected; it does not
+reconfirm runtime readiness, the image digest, IAM policies, authenticated access,
+Firestore or model behavior. No provisioning, IAM changes, deployment, cloud
+analysis, ingestion or paid model requests were performed. Cloud state remains
+supported by the earlier authenticated verification, with this limitation explicit.
+
 ## Security and remaining operator work
 
 The scanner and final file review exclude credentials, raw plans/state, local

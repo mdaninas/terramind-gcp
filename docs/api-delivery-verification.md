@@ -151,7 +151,9 @@ The monthly alert remains IDR 180,000 before credits, with 50/90/100% thresholds
 it does not stop spending. No automatic shutdown or background generation is
 configured. Storage, reads and model use remain metered.
 
-Portfolio walkthrough/screenshots, fresh-clone reproduction and final release
-review remain next. Budget notification delivery, a Monitoring notification
-channel and organization-inherited policies are not verified by these checks.
-Cleanup remains scheduled for completion of portfolio work; resources are active.
+Portfolio walkthrough/screenshots and fresh-clone reproduction were subsequently
+completed in the [release verification record](release-verification.md). Release
+tagging and final resource cleanup remain owner actions. Budget notification
+delivery, a Monitoring notification channel and organization-inherited policies
+are not verified by these checks. Resources were last documented as active;
+cleanup has not been executed.

@@ -1,0 +1,90 @@
+{
+  "verified_date": "2026-11-10",
+  "timezone": "Asia/Jakarta",
+  "source_sha": "e53c43e4dad02ad4388d951f3773bf814451a25e",
+  "source": "existing local checkout before status documentation updates",
+  "synthetic_only": true,
+  "fresh_clone_repeated": false,
+  "quality": {
+    "command": "uv run --locked python scripts/check.py",
+    "exit_code": 0,
+    "test_count": 297,
+    "test_seconds": 8.93,
+    "normalization_policy_coverage_percent": 97.58,
+    "ruff_lint_and_format": "passed",
+    "strict_mypy": "passed, 48 source files",
+    "schema_drift": "passed"
+  },
+  "offline_demo": {
+    "command": "uv run --locked python scripts/demo_offline.py",
+    "exit_code": 0,
+    "finding_count": 4,
+    "overall_risk": "HIGH"
+  },
+  "retrieval_demo": {
+    "command": "uv run --locked python scripts/demo_retrieval.py",
+    "exit_code": 0,
+    "mode": "local-test-double",
+    "retrieval_hits_at_3": 10,
+    "queries": 10,
+    "cloud_calls": 0
+  },
+  "benchmark": {
+    "command": "uv run --locked python scripts/benchmark.py",
+    "exit_code": 0,
+    "changes": 100,
+    "elapsed_seconds": 0.00382
+  },
+  "package_build": {
+    "command": "uv build",
+    "exit_code": 0,
+    "source_archive": true,
+    "wheel": true
+  },
+  "public_file_privacy": {
+    "command": "uv run --locked python scripts/check_public_files.py",
+    "exit_code": 0
+  },
+  "infrastructure": {
+    "command": "uv run --locked python scripts/check_infrastructure.py --terraform ./artifacts/tools/terraform/terraform.exe --scan",
+    "exit_code": 0,
+    "format": "passed",
+    "validated_roots": ["project", "bootstrap", "environments/dev"],
+    "mock_provider_tests_passed": 12,
+    "terraform_checkov": {"passed": 17, "failed": 0, "skipped": 4},
+    "documented_exceptions": "docs/security-exceptions.md",
+    "dockerfile_checkov": {"passed": 48, "failed": 0, "skipped": 0},
+    "actionlint": "passed both workflows, ShellCheck integration disabled"
+  },
+  "local_http": {
+    "command": "uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8084 --local --output artifacts/status-recheck-local-http.json",
+    "exit_code": 0,
+    "mode": "local",
+    "anonymous_rejection_verified": false,
+    "report_round_trip_verified": true,
+    "markdown_and_page_verified": true,
+    "findings_preserved": true,
+    "finding_count": 4,
+    "source_count": 0,
+    "model_id": null,
+    "rag_status": "not_requested",
+    "analysis_request_seconds": 0.031
+  },
+  "cloud_recheck": {
+    "service_description": "not verified, gcloud has no active account",
+    "cached_accounts": 0,
+    "active_accounts": 0,
+    "anonymous_get_statuses": {"/health": 403, "/demo": 403},
+    "endpoint_source": "previous authenticated runtime verification, ignored local artifact",
+    "authenticated_runtime_and_iam_reverified": false,
+    "cloud_analysis_requests": 0,
+    "model_requests": 0,
+    "provisioning_deployment_and_iam_mutations": 0,
+    "cleanup_executed": false,
+    "resources_last_verified_state": "active in earlier authenticated release verification"
+  },
+  "prior_evidence": [
+    "docs/evaluations/release-2026-11-10.json",
+    "docs/evaluations/api-delivery-2026-11-10.json"
+  ]
+}
