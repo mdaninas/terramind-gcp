@@ -1,6 +1,9 @@
 """Synthesize existing findings with validated citations or return policy fallback."""
 
 import json
+from collections.abc import Callable
+
+from pydantic import ValidationError
 
 from terramind.llm.contracts import (
     Advisory,
@@ -9,6 +12,7 @@ from terramind.llm.contracts import (
     Synthesizer,
     finding_id,
 )
+from terramind.llm.diagnostics import LIMITATIONS, AdvisoryReason, AdvisoryUnavailable
 from terramind.rag.contracts import Chunk
 from terramind.rag.retrieval import RULE_QUERIES, Retriever
 from terramind.reports.render import build_report
@@ -27,6 +31,8 @@ SYSTEM_INSTRUCTION = (
     "Copy allowed_citation_ids exactly into citation fields. Use the supplied citation_id, "
     "never abbreviations, document titles or inferred references. "
     "Use plain ASCII prose, no HTML, links, emoji or em dash. "
+    "Keep the summary and each explanation to two short sentences. "
+    "Provide at most three concise recommendations and three limitations. "
     "Return only JSON matching the supplied schema. State uncertainty; advice is not proof."
 )
 
@@ -49,13 +55,25 @@ def explain(
     synthesizer: Synthesizer,
     *,
     language: str = "en",
+    observe: Callable[[AdvisoryReason], None] | None = None,
 ) -> Report:
     if language not in ("en", "id"):
         raise ValueError("Explanation language must be en or id")
     base = build_report(plan)
+
+    def outcome(reason: AdvisoryReason) -> None:
+        if observe is not None:
+            observe(reason)
+
+    def fallback(status: str, reason: AdvisoryReason) -> Report:
+        outcome(reason)
+        return policy_fallback(base, status, LIMITATIONS[reason])
+
     if not base.findings:
+        outcome(AdvisoryReason.NOT_REQUESTED)
         return base  # No paid retrieval or model call for an empty finding set.
     if len(base.findings) > MAX_EXPLAINED_FINDINGS:
+        outcome(AdvisoryReason.INPUT_LIMIT)
         return policy_fallback(
             base, "not_requested", "Advisory finding limit exceeded; review all findings."
         )
@@ -67,9 +85,7 @@ def explain(
             by_rule[rule_id] = ()
     if any(not chunks for chunks in by_rule.values()):
         status = "partial" if any(by_rule.values()) else "unavailable"
-        return policy_fallback(
-            base, status, "Knowledge empty, invalid or unavailable for some findings."
-        )
+        return fallback(status, AdvisoryReason.RETRIEVAL)
     sources = {chunk.citation_id: chunk for chunks in by_rule.values() for chunk in chunks}
     allowed = {
         finding_id(finding): {chunk.citation_id for chunk in by_rule[finding.rule_id]}
@@ -92,17 +108,16 @@ def explain(
     }
     prompt = json.dumps(payload, ensure_ascii=True, separators=(",", ":"))
     if len(prompt.encode()) > MAX_PROMPT_BYTES:
-        return policy_fallback(
-            base, "available", "Advisory input limit exceeded; policy findings retained."
-        )
+        return fallback("available", AdvisoryReason.INPUT_LIMIT)
+    contract_stage = AdvisoryReason.RESPONSE_CONTRACT
     try:
         response = synthesizer.generate(prompt)
         if len(response.encode()) > MAX_RESPONSE_BYTES:
-            raise ValueError("Advisory response exceeds its size limit")
+            raise AdvisoryUnavailable("Response limit", reason=AdvisoryReason.RESPONSE_SIZE)
         narrative = ModelNarrative.model_validate_json(response)
         ids = [item.finding_id for item in narrative.explanations]
         if len(ids) != len(set(ids)) or set(ids) != set(allowed):
-            raise ValueError("Advisory finding coverage mismatch")
+            raise AdvisoryUnavailable("Finding coverage", reason=AdvisoryReason.FINDING_COVERAGE)
         cleaned = []
         dropped = False
         for item in narrative.explanations:
@@ -111,13 +126,16 @@ def explain(
             )
             dropped |= citations != item.citation_ids
             if not citations:
-                raise ValueError("Advisory lacks grounded citations")
+                raise AdvisoryUnavailable(
+                    "Citation coverage", reason=AdvisoryReason.CITATION_COVERAGE
+                )
             cleaned.append(item.model_copy(update={"citation_ids": citations}))
         used = tuple(dict.fromkeys(x for item in cleaned for x in item.citation_ids))
         dropped |= set(narrative.citations) != set(used)
         limitations = narrative.limitations + (
             ("Unrecognized, unrelated or unused citation IDs were removed.",) if dropped else ()
         )
+        contract_stage = AdvisoryReason.ADVISORY_CONTRACT
         advisory = Advisory.model_validate(
             {
                 **narrative.model_dump(),
@@ -129,7 +147,7 @@ def explain(
                 "sources": tuple(SourceCitation.from_chunk(sources[key]) for key in used),
             }
         )
-        return Report.model_validate(
+        result = Report.model_validate(
             {
                 **base.model_dump(),
                 "explanation": advisory.summary,
@@ -144,7 +162,13 @@ def explain(
                 ),
             }
         )
+        outcome(AdvisoryReason.VALIDATED)
+        return result
+    except AdvisoryUnavailable as error:
+        return fallback("available", error.reason)
+    except ValidationError:
+        return fallback("available", contract_stage)
+    except TimeoutError:
+        return fallback("available", AdvisoryReason.TIMEOUT)
     except Exception:
-        return policy_fallback(
-            base, "available", "Model failed validation, timed out or was unavailable."
-        )
+        return fallback("available", AdvisoryReason.DEPENDENCY)

@@ -57,6 +57,22 @@ def test_all_actions_are_pinned_to_full_commit_hashes():
                     assert step["with"]["persist-credentials"] == "false"
 
 
+def test_extended_advisory_smoke_is_explicit_and_preserves_failed_evidence():
+    deploy = yaml.load(Path(".github/workflows/deploy.yml").read_text(), Loader=yaml.BaseLoader)
+    option = deploy["on"]["workflow_dispatch"]["inputs"]["verify_policy_packs"]
+    assert option["type"] == "boolean" and option["default"] == "false"
+    steps = deploy["jobs"]["deploy"]["steps"]
+    smoke = next(step for step in steps if step.get("name") == "Verify private analysis end to end")
+    assert "--require-advisory" in smoke["run"] and "--all-scenarios" in smoke["run"]
+    assert "continue-on-error" not in smoke and "retry" not in smoke["run"]
+    artifact = next(
+        step for step in steps if step.get("name") == "Retain content-free verification results"
+    )
+    assert artifact["if"] == "always()"
+    assert artifact["with"]["path"] == "artifacts/api-demo-summary.json"
+    assert artifact["with"]["retention-days"] == "1"
+
+
 def protection():
     return (
         {

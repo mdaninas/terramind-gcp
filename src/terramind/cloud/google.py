@@ -1,5 +1,6 @@
 """Official SDK adapters with explicit project, collection, timeout and retry boundaries."""
 
+import json
 from typing import Any, Literal
 
 from google import genai
@@ -9,10 +10,12 @@ from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.vector import Vector
 from google.cloud.storage.client import Client as StorageClient  # type: ignore[import-untyped]
 from google.genai import errors, types
+from pydantic import TypeAdapter
 
 from terramind.cloud.budget import CallBudget, DependencyUnavailable
 from terramind.cloud.settings import CloudSettings
-from terramind.llm.contracts import ModelNarrative
+from terramind.llm.contracts import CitationId, FindingId, ModelNarrative
+from terramind.llm.diagnostics import AdvisoryReason
 from terramind.llm.service import SYSTEM_INSTRUCTION
 from terramind.rag.contracts import MAX_CHUNKS, Document, IndexedChunk, unit_vector
 
@@ -39,7 +42,7 @@ def http_options(timeout: float) -> types.HttpOptions:
     )
 
 
-def generation_schema() -> dict[str, Any]:
+def generation_schema(prompt: str = "{}") -> dict[str, Any]:
     """Use a small provider schema; the full strict contract is validated locally."""
     schema = ModelNarrative.model_json_schema()
     definitions = schema.get("$defs", {})
@@ -56,9 +59,31 @@ def generation_schema() -> dict[str, Any]:
             result["additionalProperties"] = False
         elif node["type"] == "array":
             result["items"] = portable(node["items"])
+            for bound in ("minItems", "maxItems"):
+                if bound in node:
+                    result[bound] = node[bound]
         return result
 
-    return portable(schema)
+    result = portable(schema)
+    explanations = result["properties"]["explanations"]
+    explanations["maxItems"] = 12
+    result["properties"]["recommendations"]["maxItems"] = 3
+    result["properties"]["limitations"]["maxItems"] = 3
+    # These identifiers come from the bounded plan/retrieval payload, never provider text.
+    payload = json.loads(prompt)
+    findings = payload.get("findings", []) if isinstance(payload, dict) else []
+    if isinstance(findings, list) and 1 <= len(findings) <= 12:
+        ids = TypeAdapter(list[FindingId]).validate_python([f["finding_id"] for f in findings])
+        citations = TypeAdapter(list[CitationId]).validate_python(
+            list(dict.fromkeys(c for f in findings for c in f["allowed_citation_ids"]))
+        )
+        if len(set(ids)) != len(ids) or not 1 <= len(citations) <= 60:
+            raise ValueError("Invalid generation identifiers")
+        explanations["minItems"] = explanations["maxItems"] = len(ids)
+        explanations["items"]["properties"]["finding_id"]["enum"] = ids
+        explanations["items"]["properties"]["citation_ids"]["items"]["enum"] = citations
+        result["properties"]["citations"]["items"]["enum"] = citations
+    return result
 
 
 class GoogleEmbedder:
@@ -134,7 +159,7 @@ class GeminiSynthesizer:
                 config=types.GenerateContentConfig(
                     system_instruction=SYSTEM_INSTRUCTION,
                     response_mime_type="application/json",
-                    response_json_schema=generation_schema(),
+                    response_json_schema=generation_schema(prompt),
                     max_output_tokens=4096,
                     # Verified model support; other configured models use their defaults.
                     thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.MINIMAL)
@@ -149,9 +174,13 @@ class GeminiSynthesizer:
                 candidate.finish_reason != types.FinishReason.STOP
                 for candidate in response.candidates
             ):
-                raise DependencyUnavailable("Model response did not complete")
+                raise DependencyUnavailable(
+                    "Model response did not complete", reason=AdvisoryReason.INCOMPLETE
+                )
             if not response.text:
-                raise DependencyUnavailable("Model did not return text")
+                raise DependencyUnavailable(
+                    "Model did not return text", reason=AdvisoryReason.EMPTY
+                )
             return response.text
 
         return self.budget.run(request, transient=is_transient)

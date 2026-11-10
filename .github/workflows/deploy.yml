@@ -2,6 +2,11 @@ name: Deploy private API
 
 on:
   workflow_dispatch:
+    inputs:
+      verify_policy_packs:
+        description: Verify all three synthetic advisory scenarios (three analysis submissions)
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -124,4 +129,19 @@ jobs:
       - name: Verify private analysis end to end
         env:
           TERRAMIND_ID_TOKEN: ${{ steps.smoke_auth.outputs.id_token }}
-        run: uv run --locked python scripts/demo_cloud.py --url "$CLOUD_RUN_URL" --require-advisory
+          VERIFY_POLICY_PACKS: ${{ inputs.verify_policy_packs }}
+        shell: bash
+        run: |
+          args=()
+          if [[ "$VERIFY_POLICY_PACKS" == 'true' ]]; then
+            args+=(--all-scenarios)
+          fi
+          uv run --locked python scripts/demo_cloud.py --url "$CLOUD_RUN_URL" --require-advisory "${args[@]}"
+      - name: Retain content-free verification results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: cloud-verification-${{ github.sha }}
+          path: artifacts/api-demo-summary.json
+          retention-days: 1
+          if-no-files-found: ignore

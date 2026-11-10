@@ -66,6 +66,13 @@ and [deployment environments](https://docs.github.com/en/actions/concepts/workfl
 
 ## Required environment configuration
 
+The optional `verify_policy_packs` workflow-dispatch input defaults to false.
+Enable it only within an approved paid verification window: strict smoke then
+attempts core, Storage and Database samples once each, with at most three analysis
+submissions. Missing advice remains a failure. Its content-free summary is retained
+for one day even on failure. See the [prepared rerun](advisory-verification-preparation.md)
+for the full checks and billing shutdown requirement.
+
 Create `development` with a required reviewer and selected deployment branch
 `main`, type branch. For this personal project the owner may review their own
 manual dispatch; leave self-review prevention off unless another reviewer is

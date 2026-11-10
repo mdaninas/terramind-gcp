@@ -75,9 +75,9 @@ def test_gemini_disables_tools_and_continuation_and_uses_structured_schema():
         "limitations",
     }
     assert not any(
-        key in json.dumps(config.response_json_schema)
-        for key in ("$ref", "pattern", "maxItems", "maxLength")
+        key in json.dumps(config.response_json_schema) for key in ("$ref", "pattern", "maxLength")
     )
+    assert config.response_json_schema["properties"]["explanations"]["maxItems"] == 12
     assert config.max_output_tokens == 4096
     assert config.thinking_config.thinking_level == types.ThinkingLevel.MINIMAL
     assert config.automatic_function_calling.disable is True
@@ -108,8 +108,9 @@ def test_truncated_generation_is_not_accepted_even_if_its_text_is_valid_json():
         )
     )
     client = SimpleNamespace(models=SimpleNamespace(generate_content=method))
-    with pytest.raises(DependencyUnavailable):
+    with pytest.raises(DependencyUnavailable) as error:
         GeminiSynthesizer(settings(), CallBudget(), client).generate("{}")
+    assert error.value.reason.value == "generation_incomplete"
     assert method.call_count == 1
 
 

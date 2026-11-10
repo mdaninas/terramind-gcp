@@ -195,6 +195,11 @@ image successfully but failed its strict advisory smoke. Hosted services are
 paused. See the [evidence](docs/evaluations/live-integrations-2026-11-10.json) and
 [cost controls](docs/cost-and-cleanup.md). Resource deletion is not claimed.
 
+The subsequent [advisory verification preparation](docs/advisory-verification-preparation.md)
+adds bounded generation constraints, content-free failure diagnosis and an opt-in
+three-scenario strict smoke. These changes are locally tested and have not been
+deployed or rerun against paid models.
+
 Terraform configurations define the private Cloud Run service, Firestore vector
 index, runbook storage, scoped identities and runtime settings. GitHub Actions
 uses Workload Identity Federation for short-lived deployment credentials. Manual

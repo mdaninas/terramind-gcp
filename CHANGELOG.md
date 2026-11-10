@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Prepared request-specific generation bounds and finding/citation enums, concise
+  output instructions, and classified content-free advisory diagnostics. Policy
+  validation and the existing call, deadline and token caps remain enforced.
+- Added an opt-in core/Storage/Database strict smoke with no submission retries,
+  independent coverage/provenance checks and retained safe failure artifacts.
+  Local HTTP/model regressions do not establish a successful live model rerun.
+
 - Verified hosted synthetic PR publishing and rerun behavior, real Eventarc
   synchronization of twelve documents, durable receipts, replay deduplication
   and expired-lease recovery under explicit owner approval.

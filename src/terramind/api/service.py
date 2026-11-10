@@ -1,5 +1,7 @@
 """Application composition with explicit cloud opt-in and per-process admission limits."""
 
+import json
+import logging
 import os
 import time
 from collections import deque
@@ -12,6 +14,7 @@ from typing import Literal
 
 from terramind.cloud.budget import CallBudget, DependencyUnavailable
 from terramind.cloud.settings import CloudSettings
+from terramind.llm.diagnostics import LIMITATIONS, AdvisoryReason, AdvisoryUnavailable
 from terramind.llm.service import explain, policy_fallback
 from terramind.reports.render import build_report
 from terramind.reports.store import MemoryReportStore, ReportStore, StoredAnalysis
@@ -84,6 +87,22 @@ def cloud_analysis(plan: NormalizedPlan, settings: CloudSettings) -> Report:
     embedder = None
     synthesizer = None
     knowledge = None
+    budget: CallBudget | None = None
+    started = time.monotonic()
+
+    def observe(reason: AdvisoryReason) -> None:
+        logging.getLogger("terramind.api").info(
+            json.dumps(
+                {
+                    "event": "advisory_outcome",
+                    "reason": reason.value,
+                    "finding_count": len(base.findings),
+                    "physical_calls": budget.calls if budget is not None else 0,
+                    "duration_ms": round((time.monotonic() - started) * 1000, 3),
+                }
+            )
+        )
+
     try:
         from terramind.cloud.google import (
             FirestoreKnowledgeStore,
@@ -97,12 +116,18 @@ def cloud_analysis(plan: NormalizedPlan, settings: CloudSettings) -> Report:
         knowledge = FirestoreKnowledgeStore(settings, budget)
         synthesizer = GeminiSynthesizer(settings, budget)
         return explain(
-            plan, Retriever(embedder, knowledge), synthesizer, language=settings.language
+            plan,
+            Retriever(embedder, knowledge),
+            synthesizer,
+            language=settings.language,
+            observe=observe,
         )
-    except Exception:
-        return policy_fallback(
-            base, "unavailable", "Cloud advisory unavailable; findings retained."
+    except Exception as error:
+        reason = (
+            error.reason if isinstance(error, AdvisoryUnavailable) else AdvisoryReason.DEPENDENCY
         )
+        observe(reason)
+        return policy_fallback(base, "unavailable", LIMITATIONS[reason])
     finally:
         for client in (
             embedder.client if embedder else None,
