@@ -3,8 +3,10 @@
 The portal is a separate server-rendered application with Google OpenID Connect
 configuration, local synthetic demo accounts, owner-scoped reports, a dashboard
 and paginated history filters. Local API, cryptographic verifier and browser
-checks passed. A live Google sign-in and hosted portal deployment have not been
-performed. See the [verification record](portal-verification.md).
+checks passed. Subsequent real Google login, private Cloud Run hosting, Firestore
+report persistence, exports, filters and logout were exercised on 2026-11-10.
+See the [hosted results and advisory limitations](live-integrations-verification.md)
+and the historical [local verification](portal-verification.md). Billing is disabled.
 
 ## Try the local synthetic demo
 
@@ -49,7 +51,8 @@ cloud analysis or hosted deployment.
 
 Create or select a reviewed Google OAuth web client and register exactly
 `PORTAL_ORIGIN/auth/callback` as its authorized redirect URI. Provider setup is an
-operator action; no OAuth client or new access grant was created during this work.
+operator action. The approved hosted verification used an External testing client
+with one reviewed test user and a Secret Manager client-secret binding.
 Supply these values through private environment or secret storage:
 
 - `PORTAL_AUTH_MODE=google`.
@@ -76,8 +79,9 @@ provider and stable Google `sub`, not an email supplied by a browser. Raw profil
 names/emails and provider ID/access/refresh tokens are not saved in reports or
 SQLite. Client secrets are not stored in SQLite or included in settings repr.
 Pending nonces/verifiers and CSRF values are sensitive server-side state and are
-held in the private database. Live provider/client compatibility, including PKCE
-enforcement, remains a required smoke check before hosted use.
+held in the private database. The reviewed testing client completed a real code
+exchange with matching state and nonce. Negative provider-side PKCE cases were
+not exercised live.
 
 ## Session and ownership boundary
 
@@ -116,10 +120,10 @@ controls are not enterprise rate limiting or tenant isolation.
 ## Optional cloud analysis and hosting limits
 
 The subsequent [live activation plan](live-activation-plan.md) provides a durable
-Firestore adapter and standalone private Cloud Run configuration. Local checks
-pass; this configuration has not yet been applied. Billing was reactivated for
-live preparation under the owner's prior approval. The original single-host
-verification below remains historical evidence, not a deployment claim.
+Firestore adapter and standalone private Cloud Run configuration. The configuration
+was applied under explicit approval, followed by real Google login and durable
+report verification. Billing was disabled after testing. The original single-host
+verification remains historical evidence; current results are recorded separately.
 
 Offline is the default. `PORTAL_ANALYSIS_MODE=cloud` requires Google authentication,
 the cloud extras, approved GCP configuration/credentials and active billing for
@@ -135,19 +139,22 @@ authentication and approved cloud configuration. A Cloud Run portal refuses
 SQLite storage. The new environment uses a separate portal database and retains
 Cloud Run invoker IAM independently of Google application login.
 
-For the prepared operator-only rollout, run the official authenticated proxy on
+For an approved operator-only rollout, run the official authenticated proxy on
 `127.0.0.1:8091`; register that exact origin's `/auth/callback` with the reviewed
 OAuth web client. `PORTAL_TRANSPORT_HOST` allowlists one exact Cloud Run hostname
-to accommodate the proxy's Host rewrite. The original Origin/CSRF boundary stays
+to accommodate the proxy's Host rewrite. Set Terraform's optional `transport_host`
+to the exact hostname returned in `service_url`, rather than assuming its URL
+format. The original Origin/CSRF boundary stays
 fixed to the loopback origin. No forwarded host or identity header grants access.
 This is a private hosted operator demo, not a public login website. An HTTPS
 public-facing rollout would need its own ingress and OAuth review.
 
 During the original single-host implementation no billing, cloud IAM, OAuth
-settings or paid resources changed. During subsequent activation preparation,
-billing was re-enabled; the OAuth branding form is prepared but has not been
-submitted. New IAM, credentials, resource provisioning and paid model calls remain
-pending explicit review. Provider login and hosted persistence are still unverified.
+settings or paid resources changed. During subsequent approved activation,
+the OAuth client, scoped IAM and private resources were configured and tested.
+The core portal report returned a validated advisory; optional-pack reports used
+safe fallback. Six total analysis submissions were counted, including a no-change
+sample without retrieval/model calls. Billing was then disabled and the proxy stopped.
 
 References: [Google OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect),
 [google-auth token verifier](https://googleapis.dev/python/google-auth/latest/reference/google.oauth2.id_token.html),

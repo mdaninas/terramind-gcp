@@ -2,9 +2,11 @@
 
 A separate private FastAPI receiver handles Cloud Storage finalized events at
 `POST /events/storage`. The implementation and SDK adapters are verified with
-local doubles; Terraform configuration is validated and mock-planned. Eventarc,
-the receiver deployment, its new IAM and live event delivery have not been
-activated or verified on GCP. Project billing remains disabled.
+local doubles and real GCP delivery. The approved hosted window synchronized the
+twelve-document corpus, recovered an expired lease and verified receipt/state
+invariance after replay. See the [hosted record](live-integrations-verification.md).
+The concurrent stale-worker fence remains covered by local tests. Billing was
+disabled after verification, with the project retained.
 
 ## Source contract
 

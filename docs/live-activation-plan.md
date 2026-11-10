@@ -1,10 +1,16 @@
 # Live integration activation plan
 
+Historical approved proposal. The subsequent
+[hosted verification record](live-integrations-verification.md) supersedes the
+operating state below. Resources were applied, Google login was exercised and
+billing was disabled again after six analysis submissions. Advisory limitations
+and the failed latest strict smoke are recorded with the actual results.
+
 Prepared on 2026-11-10 from `d7ef9b502fe30c7f900e7d787526afda62383ef8`
 plus the uncommitted durable-portal and verification changes. This is a reviewable
 activation proposal, not a record of successful hosted verification.
 
-## Current operating state
+## Operating state when prepared
 
 The dedicated project is `terramind-gcp-mdaninas`, in `us-central1`.
 Billing was re-linked to its existing open billing account under the owner's prior

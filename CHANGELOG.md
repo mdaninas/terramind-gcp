@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- Verified hosted synthetic PR publishing and rerun behavior, real Eventarc
+  synchronization of twelve documents, durable receipts, replay deduplication
+  and expired-lease recovery under explicit owner approval.
+- Deployed the durable private portal and verified real Google login, four owned
+  reports, JSON/Markdown export, history filters, logout and persistence across
+  Cloud Run revisions. Corrected proxy hostname configuration and the Google
+  form navigation while retaining the strict same-origin form policy.
+- Recorded six analysis submissions, core advisory success, optional-pack safe
+  fallback and the failed latest strict advisory smoke separately. Disabled
+  billing after testing, retained the project and stopped the private proxy.
+  See the [hosted results](docs/live-integrations-verification.md).
+
 - Added opt-in Storage and Cloud SQL hardening packs with four additional
   deterministic rules, bounded schema 1.1 facts and local before/after comparison.
   Core rules remain mandatory; unchanged weak settings do not trigger these new
@@ -9,7 +21,7 @@
 - Added packaged portal hardening scenarios, eight-rule history filters and two
   synthetic runbooks. Incident Memory explicitly reports the new rules as lacking
   curated incident coverage. The expanded corpus and policy packs are locally
-  verified; no cloud deployment, ingestion, IAM or billing changes were made.
+  verified in their original implementation; hosted follow-up results are recorded above.
 
 - Added synthetic Incident Memory using local TF-IDF cosine similarity, source
   provenance and explicit tabletop-evidence labels. Four frozen policy queries
@@ -19,8 +31,8 @@
   risk/rule/UTC-date filtering. Report JSON/Markdown and incident sources preserve
   the user ownership boundary.
 - Verified local portal flows and the real google-auth verifier against locally
-  signed synthetic tokens. Live Google login and hosted portal deployment remain
-  unverified; no new billing, IAM or paid model operations were performed.
+  signed synthetic tokens during the original local implementation. Live Google
+  login and hosted deployment were verified subsequently as recorded above.
 
 - Added a manual trusted-main workflow for synthetic PR fixture analysis, one
   managed bot comment and a neutral check bound to the reviewed head. Read-only
@@ -29,8 +41,8 @@
   packaged synthetic corpus, durable receipts and transactionally fenced index
   updates. Terraform defaults keep the new service, trigger and IAM disabled.
 - Verified new integrations with local API/SDK doubles and infrastructure mock
-  plans. Hosted comment/check publication and live Eventarc delivery remain
-  unverified. Billing stays disabled and the existing project is retained.
+  plans during the original implementation. Hosted publication and Eventarc
+  delivery were verified subsequently, followed by another billing shutdown.
 
 - Added actual local desktop/mobile report screenshots, the full architecture flow
   and a timed walkthrough, with local and cloud evidence labeled separately.

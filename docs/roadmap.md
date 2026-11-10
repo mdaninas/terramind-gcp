@@ -2,11 +2,12 @@
 
 The offline analyzer, synthetic retrieval and private analysis API are implemented
 and verified. Protected GitHub Actions deployment through WIF passed. Portfolio
-release verification passed for the documented source. Billing was disabled and
-subsequently reactivated on 2026-11-10 under the owner's prior approval for live
-verification. The project was retained; resource deletion has not been verified.
-See the current [activation plan](live-activation-plan.md) and
-[preparation record](evaluations/live-preparation-2026-11-10.json).
+release verification passed for the documented source. The approved 2026-11-10
+window exercised hosted PR review, Eventarc indexing, real Google portal login
+and durable owned reports. Billing was disabled again after six analysis
+submissions, with the project retained. The latest image promotion succeeded but
+its strict advisory smoke failed; optional-pack live advisories used fallback.
+See the [hosted results](live-integrations-verification.md) for these limits.
 
 | Area | Scope | Status |
 | --- | --- | --- |
@@ -15,11 +16,11 @@ See the current [activation plan](live-activation-plan.md) and
 | Retrieval and explanations | Synthetic runbooks, Firestore vector retrieval and Gemini explanations | CLI implemented and verified locally and on GCP |
 | API and delivery | Analysis API, private report page and GitHub Actions deployment | Deployed and verified; protected WIF delivery and cloud analysis passed |
 | Release verification | End-to-end evaluation, walkthrough and deployment documentation | Fresh-clone commands, screenshots, walkthrough and cost/cleanup record verified |
-| Synthetic PR review | Manual trusted workflow, managed bot comment and neutral head check | Implemented and verified locally; hosted publishing unverified |
-| Eventarc source indexing | Private generation-bound receiver, fenced ingestion and durable receipts | Implemented and verified locally; opt-in Terraform validated; cloud activation unverified |
+| Synthetic PR review | Manual trusted workflow, managed bot comment and neutral head check | Hosted publication and rerun without duplicate comment verified |
+| Eventarc source indexing | Private generation-bound receiver, fenced ingestion and durable receipts | Live twelve-document synchronization, receipts, replay and expired-lease recovery verified |
 | Incident Memory | Local TF-IDF similarity over fabricated incidents with provenance and evidence labels | Implemented; four curated top-one retrieval cases passed |
-| User portal | Google OIDC configuration, synthetic demo login, owned reports and paginated filters | Implemented and verified locally; live Google login and managed deployment unverified |
-| Optional policy packs | Cloud Storage access controls and Cloud SQL connectivity/TLS, four additional rules | Implemented and verified locally; cloud rollout unverified |
+| User portal | Google OIDC, local demo login, owned reports and paginated filters | Real Google login, private Firestore reports, exports, filters, logout and revision persistence verified |
+| Optional policy packs | Cloud Storage access controls and Cloud SQL connectivity/TLS, four additional rules | Expected live findings and retrieval verified; successful live pack advisories unverified |
 
 ## Offline analyzer
 
@@ -45,7 +46,7 @@ At verification time, the vector index was READY and the expiry policy was ACTIV
 
 ## Retrieval and explanations
 
-Ten synthetic Markdown documents, heading-aware chunks, idempotent ingestion,
+Twelve synthetic Markdown documents, heading-aware chunks, idempotent ingestion,
 768-dimensional Google embeddings, Firestore vector retrieval and structured
 Gemini explanations are implemented behind the optional knowledge CLI. Model
 names and endpoints remain configurable.
@@ -100,8 +101,8 @@ The MVP does not apply infrastructure changes or approve deployments. Paid resou
 and cloud IAM changes require explicit owner approval. After MVP verification,
 the owner requested synthetic PR review and Eventarc indexing. See their
 [security design](pr-integration.md), [indexing contract](eventarc-indexing.md) and
-[local verification](integrations-verification.md). Neither new integration has
-been exercised against its live hosted destination.
+[local verification](integrations-verification.md). Subsequent
+[hosted verification](live-integrations-verification.md) exercised both integrations.
 
 The subsequent [Incident Memory](incident-memory.md) and
 [single-host portal](user-portal.md) implement the requested local incident,
@@ -109,8 +110,9 @@ login, dashboard and history workflows. See their [verification record](portal-v
 The [optional policy packs](policy-packs.md) add storage and database hardening
 checks, selected explicitly while the four core rules always remain active.
 See their [local verification](policy-packs-verification.md). The expanded
-twelve-document corpus has not been ingested or deployed on GCP. Live Google
-login, hosted PR publication, Eventarc delivery and managed portal deployment
-remain unverified. A durable Firestore portal adapter and private Cloud Run
-environment are now prepared and locally tested. Billing was reactivated for
-live preparation; no new resource or IAM apply has yet been performed.
+twelve-document corpus was synchronized on GCP through Eventarc. Real Google login
+and four owned portal report flows passed. Cross-owner isolation and pagination
+beyond the four live reports remain covered by local tests. Core advisory delivery
+succeeded, while the latest strict deployment smoke and both optional-pack
+advisories fell back. No further analysis was run after the six-request limit.
+Billing is disabled; future paid evaluations require a newly approved window.

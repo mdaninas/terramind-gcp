@@ -32,10 +32,10 @@ All included examples and hosted analysis workflows use synthetic data.
 | Traceable reports | Resource aliases, observed facts, severity, remediation and explicit limitations |
 | Offline analysis | A local CLI with JSON and Markdown output, without Google credentials or model calls |
 | Private analysis API | IAM-protected Cloud Run delivery, expiring reports, a browser interface and export endpoints |
-| Synthetic PR review | Opt-in manual workflow for fixture comments and neutral checks; locally tested, hosted publishing unverified |
-| Eventarc source indexing | Generation-bound synthetic corpus receiver with durable deduplication; locally tested, cloud activation unverified |
+| Synthetic PR review | Opt-in trusted workflow with a real managed bot comment, neutral head check and verified rerun behavior |
+| Eventarc source indexing | Generation-bound synthetic receiver with live delivery, durable receipts, replay deduplication and expired-lease recovery |
 | Incident Memory | Local lexical similarity over fabricated incidents, with explicit evidence labels and source hashes |
-| User portal | Google OIDC configuration, loopback demo accounts, owned reports and filtered history on a single host; live Google login unverified |
+| User portal | Verified Google login, owned Firestore reports, filtered history, exports and persistence across private Cloud Run revisions; local SQLite demo also available |
 
 Retrieval or model failures preserve the deterministic findings and produce a
 visible fallback. Terramind never approves or applies infrastructure changes.
@@ -182,17 +182,18 @@ retrieval/model failures do not change policy severity.
 
 ## Deployment
 
-The optional [user portal](docs/user-portal.md) runs separately with SQLite for
-local use. A durable Firestore adapter and private Cloud Run environment are
-prepared and locally verified. Hosted rollout and live Google sign-in remain
-pending the [activation plan](docs/live-activation-plan.md).
+The separate [user portal](docs/user-portal.md) uses SQLite locally or Firestore
+on private Cloud Run. Real Google login, four synthetic report scenarios, exports,
+filters, logout and persistence across revisions were exercised on 2026-11-10.
+See the [hosted verification record](docs/live-integrations-verification.md).
 
-Current operational status: billing was reactivated on 2026-11-10 under the
-owner's prior approval to complete live verification. The project was retained;
-the new Eventarc and portal resources have not been applied. See the
-[preparation record](docs/evaluations/live-preparation-2026-11-10.json), earlier
-[shutdown record](docs/evaluations/billing-disabled-2026-11-10.json) and
-[cost controls](docs/cost-and-cleanup.md). Resource deletion has not been verified.
+Current operational status: **billing is disabled and the project is retained**.
+The approved live window ended after six analysis submissions. The core portal
+sample returned a validated Gemini advisory; both hardening samples used visible
+fallback with their policy findings preserved. The latest deployment promoted its
+image successfully but failed its strict advisory smoke. Hosted services are
+paused. See the [evidence](docs/evaluations/live-integrations-2026-11-10.json) and
+[cost controls](docs/cost-and-cleanup.md). Resource deletion is not claimed.
 
 Terraform configurations define the private Cloud Run service, Firestore vector
 index, runbook storage, scoped identities and runtime settings. GitHub Actions
@@ -201,7 +202,7 @@ delivery promotes an immutable image from its own trusted build; pull request CI
 receives no Google credentials.
 
 Cloud Run invoker IAM protects every hosted route, including assets and exports.
-The local server binds to loopback and does not implement Google authentication.
+The local analysis API binds to loopback and does not implement Google authentication.
 For authorized browser access to a deployed instance, follow the
 [authenticated proxy instructions](docs/analysis-api.md#authentication-and-presentation).
 
@@ -250,11 +251,11 @@ backend or apply.
 | Integrations | [Synthetic PR review](docs/pr-integration.md), [Eventarc indexing](docs/eventarc-indexing.md), [integration checks](docs/integrations-verification.md) |
 | User workspace | [Incident Memory](docs/incident-memory.md), [user portal](docs/user-portal.md), [portal verification](docs/portal-verification.md) |
 | Additional policies | [Pack definitions and usage](docs/policy-packs.md), [local verification](docs/policy-packs-verification.md) |
-| Verification | [Evaluations](docs/evaluation.md), [retrieval checks](docs/retrieval-verification.md), [cloud foundation](docs/cloud-foundation-verification.md), [release checks](docs/release-verification.md) |
+| Verification | [Hosted integrations](docs/live-integrations-verification.md), [evaluations](docs/evaluation.md), [retrieval checks](docs/retrieval-verification.md), [cloud foundation](docs/cloud-foundation-verification.md), [release checks](docs/release-verification.md) |
 | Project | [Roadmap](docs/roadmap.md), [changelog](CHANGELOG.md), [security exceptions](docs/security-exceptions.md) |
 
 PR review, Eventarc indexing, synthetic incident similarity and the user portal
-are implemented, with verification scopes documented separately. New hosted
-integrations and live Google login remain unverified. Optional storage and database
-hardening packs are implemented and tested locally; their updated corpus has not
-been deployed or ingested on GCP.
+are implemented, with local and hosted verification scopes documented separately.
+The twelve-document corpus was synchronized through real Eventarc delivery.
+Optional packs produced their expected findings on GCP; successful live advisory
+output for those two packs remains unverified. Billing is disabled after testing.

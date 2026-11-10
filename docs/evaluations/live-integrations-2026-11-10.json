@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-10",
+  "data": "synthetic only",
+  "application_source": "47bb7a3bb0d61f1e1960b30137ea16118ad833e7",
+  "image_digest": "sha256:ad1c87ca41ee08cdeb9b44a196894d5421fbed805506c66bf980306ace6a92a0",
+  "quality": {
+    "python_tests": 493,
+    "normalization_policy_coverage_percent": 97.19,
+    "portal_terraform_cases": 6,
+    "pr_ci_run": 42795988592,
+    "main_ci_run": 42796646126,
+    "ci_result": "passed"
+  },
+  "pr_review": {
+    "pull_request": 1,
+    "reviewed_head": "9c241a7cb49dba84808aec2681343c2aaf59f049",
+    "workflow_run": 42788780002,
+    "successful_attempts": 2,
+    "managed_comment_count": 1,
+    "head_check_conclusion": "neutral",
+    "rule_count": 8
+  },
+  "delivery": {
+    "first_run": 42790086598,
+    "first_result": "passed with validated advisory",
+    "latest_run": 42796722087,
+    "latest_image_promotion": "passed",
+    "latest_strict_smoke": "failed, stored report retained four HIGH findings and available retrieval but no validated advisory",
+    "protection_bypassed": false
+  },
+  "eventarc": {
+    "documents_before": 10,
+    "documents_after": 12,
+    "chunks_after": 12,
+    "canonical_sources_verified": 12,
+    "published_generations": 3,
+    "receipts_after_replay": 3,
+    "acknowledged_pushes_including_replay_and_ignored_source": 7,
+    "expired_lease_recovered": true,
+    "knowledge_update_times_unchanged_after_initial_sync": true,
+    "acked_message_retention_restored": true,
+    "concurrent_stale_commit_fencing": "local tests only",
+    "independent_embedding_call_count": "not measured"
+  },
+  "portal": {
+    "real_google_login": true,
+    "approved_real_accounts": 1,
+    "firestore_owned_reports": 4,
+    "total_findings": 8,
+    "high_risk_reports": 2,
+    "core_advisory": "validated Gemini 3.5 Flash output",
+    "optional_pack_advisories": "fallback, live advisory output not successfully validated",
+    "json_round_trip": true,
+    "core_markdown_export": true,
+    "session_and_report_survived_revision": true,
+    "risk_rule_date_filters": true,
+    "empty_filter_state": true,
+    "owner_parameter_rejected": true,
+    "logout_revoked_history_access": true,
+    "cross_owner_and_large_pagination": "local tests only",
+    "expiry_policies": "ACTIVE",
+    "report_index": "READY"
+  },
+  "usage": {
+    "analysis_submission_limit": 6,
+    "analysis_submissions": 6,
+    "validated_advisories": 2,
+    "policy_preserving_fallbacks": 3,
+    "no_model_required": 1,
+    "isolated_model_rpc_latency": "not measured"
+  },
+  "shutdown": {
+    "billing_enabled": false,
+    "billing_account_association": "empty",
+    "verified_at": "2026-11-10T15:35:40Z",
+    "project_retained": true,
+    "individual_resource_deletion_verified": false,
+    "private_proxy_stopped": true
+  }
+}

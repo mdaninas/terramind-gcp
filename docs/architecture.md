@@ -1,18 +1,19 @@
 # Architecture decisions
 
 The later [single-host portal](user-portal.md) is a separate application with
-server-side sessions, owner-scoped SQLite records and paginated filters. Its
+server-side sessions, owner-scoped records and paginated filters. Its
 namespace is separate from the original shared-demo API. Google OIDC configuration
-and local synthetic login are implemented; live provider login and managed portal
-hosting are unverified. [Incident Memory](incident-memory.md) reads the same
+and local synthetic login are implemented. Real Google login and managed portal
+hosting were exercised in the approved window. [Incident Memory](incident-memory.md) reads the same
 packaged synthetic corpus through a local lexical matcher and never changes
 deterministic findings. See the [local verification](portal-verification.md).
 
 The subsequent [live activation preparation](live-activation-plan.md) adds a
 Firestore portal adapter and a separate private Cloud Run environment. This
 durable configuration uses a separate state database, Google OAuth credentials
-from Secret Manager and an authenticated loopback proxy. It is locally verified;
-hosted application and provider behavior remain unverified until activation.
+from Secret Manager and an authenticated loopback proxy. Real sessions and reports
+survived a Cloud Run revision change. See the [hosted results](live-integrations-verification.md),
+including advisory fallback and the final disabled-billing state.
 
 Offline analysis is implemented and verified locally. The isolated GCP foundation
 and private Cloud Run analysis API are deployed, with real authentication and
@@ -126,5 +127,8 @@ Pull request jobs have no Google credentials or OIDC permission. A manual main-o
 workflow verifies environment protection, tests/builds trusted source without cloud
 credentials, then promotes that same run's image through a protected job with WIF.
 Only the image digest is updated; Terraform apply stays an approved operator action.
-No queues, public login service, report history dashboard or pull request comments
-are included. See [API composition](analysis-api.md) and [controlled delivery](delivery.md).
+The separate portal adds owned report history and Google application login behind
+Cloud Run invoker IAM. A trusted manual PR workflow publishes managed synthetic
+reviews, and the internal Eventarc receiver updates synthetic knowledge. These do
+not expose a public login service or grant PR code deployment credentials. See
+[API composition](analysis-api.md) and [controlled delivery](delivery.md).

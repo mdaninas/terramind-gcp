@@ -1,5 +1,9 @@
 # Optional policy pack verification
 
+Historical local record. The later [hosted verification](live-integrations-verification.md)
+records live corpus synchronization and expected pack findings, together with
+advisory fallback rather than successful generated pack explanations.
+
 Local verification ran on 2026-11-10 using Python 3.12.13 on Windows. The source
 baseline is `bc787489661e8964653a7e068ffedafe3ce71b42`, plus the uncommitted
 policy-pack changes. This record does not claim a cloud rollout. The content-free

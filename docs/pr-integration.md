@@ -3,8 +3,9 @@
 The manual `Review synthetic PR fixtures` workflow prepares a deterministic review
 of an open pull request targeting `main`, then publishes one managed bot comment
 and a neutral check on the reviewed head commit. Implementation, fake-API tests
-and workflow syntax are verified locally. No live comment or check was published
-during implementation; a hosted integration run remains unverified.
+and workflow syntax are verified locally. Subsequent hosted verification on PR #1
+published the exact-head review and neutral checks. Two successful attempts
+retained one managed comment. See the [hosted record](live-integrations-verification.md).
 
 ## Supported input
 

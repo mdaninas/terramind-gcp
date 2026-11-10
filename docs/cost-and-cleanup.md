@@ -1,11 +1,20 @@
 # Cost controls, rollback and cleanup
 
-Current update, 2026-11-10: billing was re-linked to the existing account under
-the owner's prior approval to activate it when required for live verification.
-The current [preparation record](evaluations/live-preparation-2026-11-10.json)
-and [activation proposal](live-activation-plan.md) supersede the operating state
-in the historical shutdown section below. New resources and IAM have not yet
-been applied. Charges can accrue while billing is active.
+Current update, 2026-11-10: the approved live integration window finished and
+**billing is disabled again**. At 15:35 UTC (22:35 Asia/Jakarta), an unlink and
+independent read confirmed `billingEnabled: false` and no billing-account
+association. The console also showed that the project has no billing account.
+The project is retained; resource deletion and future data recoverability are
+not claimed. See the [hosted verification](live-integrations-verification.md) and
+[evidence](evaluations/live-integrations-2026-11-10.json). The local proxy was stopped.
+
+The window applied the reviewed Eventarc and durable portal resources. Each of
+the three Cloud Run services retained zero minimum and one maximum instance.
+Six analysis submissions included two validated advisories, three safe fallbacks
+and one no-change sample without retrieval/model calls. Twelve canonical source
+documents, their object generations, one obsolete-path synthetic test object,
+twelve knowledge chunks and four portal reports were observed before shutdown.
+Actual accrued charges can appear after shutdown; no zero-cost claim is made.
 
 ## Earlier billing shutdown
 

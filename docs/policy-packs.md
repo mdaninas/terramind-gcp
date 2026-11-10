@@ -2,7 +2,10 @@
 
 The four `gcp-core` rules always run. Two optional packs add four deterministic
 change checks. They are implemented and tested locally with synthetic data.
-No cloud rollout or live validation of the expanded corpus has been performed.
+The expanded twelve-document corpus was synchronized on GCP, and hosted portal
+samples returned the expected pack findings with available retrieval. Their live
+advisories used fallback, so successful generated pack explanations remain
+unverified. See the [hosted record](live-integrations-verification.md).
 
 | Pack | Rule | Trigger | Severity and status |
 | --- | --- | --- | --- |

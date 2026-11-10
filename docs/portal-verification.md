@@ -1,5 +1,9 @@
 # Incident Memory and user portal verification
 
+Historical local record. Subsequent real Google login, Firestore report workflows
+and revision persistence are documented in the
+[hosted verification](live-integrations-verification.md).
+
 The local Incident Memory and user portal implementations were verified on
 2026-11-10 (Asia/Jakarta), in the existing Windows checkout based on
 `018fc5dc139c7eda4719ea689898b317f8d02a6f`, before committing these changes.

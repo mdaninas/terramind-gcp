@@ -1,5 +1,8 @@
 # PR review and Eventarc verification
 
+Historical local record. Subsequent real PR publication and Eventarc delivery are
+documented in the [hosted verification](live-integrations-verification.md).
+
 The synthetic PR review and Eventarc indexing implementations passed local
 verification on 2026-11-10 (Asia/Jakarta). Changes were tested in the existing
 Windows checkout based on `899b73760eaad852332af16fb9a01b4ea620d991`, before
