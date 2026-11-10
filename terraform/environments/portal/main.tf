@@ -100,10 +100,19 @@ variable "gemini_model" {
     error_message = "Use a supported publisher model ID."
   }
 }
+variable "transport_host" {
+  type        = string
+  default     = null
+  description = "Exact hostname returned by Cloud Run and used by its authenticated proxy."
+  validation {
+    condition     = var.transport_host == null || can(regex("^${var.name}-[a-z0-9.-]+\\.run\\.app$", var.transport_host))
+    error_message = "Use this service's exact Cloud Run hostname, without scheme, port or path."
+  }
+}
 
 locals {
   labels         = { application = "terramind", environment = "dev", data = "synthetic" }
-  transport_host = "${var.name}-${var.project_number}.${var.region}.run.app"
+  transport_host = coalesce(var.transport_host, "${var.name}-${var.project_number}.${var.region}.run.app")
 }
 
 resource "google_project_service" "secrets" {

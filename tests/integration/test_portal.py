@@ -249,9 +249,10 @@ def test_google_callback_binds_state_rotates_session_and_prevents_replay(tmp_pat
     old = client.cookies[settings.cookie_name]
     assert client.post("/auth/demo", data={}).status_code == 404
     start = client.post("/auth/google", data={"csrf": token}, headers={"Origin": ORIGIN})
-    assert start.status_code == 303 and start.headers["location"].startswith(
-        "https://accounts.google.com/"
-    )
+    assert start.status_code == 200 and "location" not in start.headers
+    assert 'href="https://accounts.google.com/o/oauth2/v2/auth?state=' in start.text
+    assert "Continue with Google" in start.text
+    assert "form-action 'self'" in start.headers["content-security-policy"]
     state = provider.flows[-1][0]
     assert (
         client.get(

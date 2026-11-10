@@ -6,3 +6,5 @@ oauth_secret_name    = "synthetic-oauth-client"
 oauth_secret_version = "1"
 allowed_emails       = ["analyst@example.invalid"]
 invoker_members      = ["user:analyst@example.invalid"]
+# After creation, use the exact hostname in service_url for the official proxy.
+# transport_host = "terramind-portal-synthetic-uc.a.run.app"

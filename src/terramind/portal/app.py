@@ -243,7 +243,8 @@ def create_app(
         values = await form(request, {"csrf"})
         csrf(request, current, values)
         state, nonce, verifier = storage.begin_flow(current)
-        return RedirectResponse(identity.authorize(state, nonce, verifier), status_code=303)
+        # A link ends the form navigation before leaving the strict same-origin CSP boundary.
+        return HTMLResponse(views.google_continue(identity.authorize(state, nonce, verifier)))
 
     @application.get("/auth/callback")
     async def callback(request: Request) -> Response:

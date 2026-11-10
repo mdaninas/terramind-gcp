@@ -60,6 +60,16 @@ def login(session: Session, *, demo: bool) -> str:
     )
 
 
+def google_continue(authorization_url: str) -> str:
+    return page(
+        "Continue to Google",
+        '<section class="panel login"><h1>Continue to Google</h1>'
+        "<p>Choose your approved Google account to sign in to Terramind.</p>"
+        f'<a class="button" rel="noreferrer" href="{escape(authorization_url, quote=True)}">'
+        "Continue with Google</a></section>",
+    )
+
+
 def dashboard(
     session: Session,
     history: dict[str, object],
