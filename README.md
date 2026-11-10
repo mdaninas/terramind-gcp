@@ -7,21 +7,33 @@
   </picture>
 </p>
 
-AI-powered Terraform risk analysis and infrastructure intelligence on Google Cloud.
+**Terraform change intelligence for Google Cloud.**
 
-Terramind reviews proposed Terraform changes with four deterministic GCP rules,
-then optionally uses Firestore vector retrieval and Gemini to explain the findings
-with traceable runbook references. The policy engine owns severity; AI output is advisory.
+Terramind analyzes proposed infrastructure changes and produces risk reports with
+affected resources, policy findings, supporting evidence and remediation guidance.
+Run deterministic checks locally, or use the private analysis API for explanations
+grounded in retrieved runbooks.
 
-Built as a personal portfolio project covering Python, FastAPI, Terraform, GCP IAM,
-Cloud Run, retrieval-augmented generation and GitHub Actions delivery.
+The policy engine determines findings and severity. Gemini adds advisory context
+with validated source references. Approval and deployment remain with the reviewer.
+All included examples and hosted analysis workflows use synthetic data.
 
-The offline CLI and private cloud analysis API are implemented and verified.
-A protected WIF deployment passed, and a live analysis preserved four HIGH findings
-with ten validated sources. See the [verification record](docs/api-delivery-verification.md).
-All examples are synthetic. Terramind checks a limited policy set and never approves
-or applies infrastructure changes. Cloud resources remain active; see
-[cost controls and cleanup](docs/cost-and-cleanup.md).
+[Quick start](#quick-start) · [Report interface](#report-interface) ·
+[Risk policies](#risk-policies) · [Architecture](#architecture) ·
+[Documentation](#documentation)
+
+## Capabilities
+
+| Capability | What it provides |
+| --- | --- |
+| Deterministic risk checks | Four GCP policies covering public storage access, administrative ingress, privileged IAM grants and destructive changes |
+| Grounded explanations | Firestore vector retrieval and Gemini advisory text with validated runbook references |
+| Traceable reports | Resource aliases, observed facts, severity, remediation and explicit limitations |
+| Offline analysis | A local CLI with JSON and Markdown output, without Google credentials or model calls |
+| Private analysis API | IAM-protected Cloud Run delivery, expiring reports, a browser interface and export endpoints |
+
+Retrieval or model failures preserve the deterministic findings and produce a
+visible fallback. Terramind never approves or applies infrastructure changes.
 
 ## Quick start
 
@@ -34,42 +46,49 @@ uv sync --locked
 uv run --locked python scripts/demo_offline.py
 ```
 
-Open `artifacts/demo-report.md` or `artifacts/demo-report.json`. Expect HIGH overall
-risk and four findings covering public bucket access, world SSH ingress, a project
-owner grant and bucket deletion. IDs and timestamps vary; policy findings are deterministic.
-No GCP credentials, Terraform CLI or model calls are needed for this demo.
-Initial dependency installation requires package downloads.
+Expected output:
 
-Run the quality checks:
-
-```sh
-uv run --locked python scripts/check.py
+```text
+HIGH: 4 deterministic findings
+Reports: artifacts/demo-report.json and artifacts/demo-report.md
 ```
 
-With GNU Make installed, the equivalent targets are `make setup`, `make lint`,
-`make test` and `make demo-offline`. The direct uv commands also work in PowerShell.
-A [fresh GitHub clone](docs/release-verification.md) passed all 297 tests, both
-command paths and package builds without Google credentials.
+Open either report to inspect the synthetic changes and their findings. No GCP
+credentials, Terraform installation or model access are required. Dependency
+installation downloads packages; the analysis itself makes no provider calls.
 
-## Report preview
+The commands above also work in PowerShell. With GNU Make installed, `make setup`
+and `make demo-offline` provide the equivalent setup and sample analysis.
+
+## Report interface
+
+Start the local API and report interface:
 
 ```sh
 uv run --locked --extra api python -m terramind.api
 ```
 
-Open `http://127.0.0.1:8080/demo` and select **Analyze synthetic sample**. The report
-includes risk, changed resources, evidence, remediation, limitations and JSON/Markdown
-exports. Local mode keeps up to 128 expiring reports in memory, clears them on
-restart and makes no Google service calls.
+Open [the local interface](http://127.0.0.1:8080/demo) and select
+**Analyze synthetic sample**. The saved report includes overall risk, changed
+resources, individual findings, evidence and remediation. Export it as Markdown
+or inspect the JSON response from the same page.
 
-![Local offline report with four HIGH findings](docs/images/report-desktop.png)
+Local mode makes no Google service calls. It holds at most 128 expiring reports
+in memory and discards them on restart.
 
-Actual local offline UI capture at 1440 x 1080. This screenshot does not show a
-cloud-generated advisory. See [finding details](docs/images/findings-desktop.png),
-[mobile view](docs/images/report-mobile.png) and the [two-minute walkthrough](docs/demo-script.md).
-For a real grounded explanation, inspect the
-[synthetic Gemini report](examples/generated-reports/grounded-synthetic.md) and
-[cloud API evidence](docs/evaluations/api-delivery-2026-11-10.json).
+<details>
+<summary>View findings from a synthetic sample</summary>
+
+![Deterministic findings with observed facts and remediation](docs/images/findings-desktop.png)
+
+Actual findings from the local offline interface. This sample contains no
+model-generated advisory text.
+
+</details>
+
+For an example with grounded explanations and validated source references, see
+the [synthetic Gemini report](examples/generated-reports/grounded-synthetic.md).
+The [walkthrough](docs/demo-script.md) covers the complete analysis and export flow.
 
 In a second terminal, verify the running local API:
 
@@ -77,11 +96,7 @@ In a second terminal, verify the running local API:
 uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local
 ```
 
-Cloud Run enforces Google invoker IAM on every hosted route. A local server does
-not implement Google authentication. For an authorized browser session, use the
-[authenticated proxy instructions](docs/analysis-api.md#authentication-and-presentation).
-
-## Rules and privacy
+## Risk policies
 
 | Rule | Supported change | Outcome |
 | --- | --- | --- |
@@ -90,74 +105,133 @@ not implement Google authentication. For an authorized browser session, use the
 | TM-GCP-003 | Newly granted project owner/editor | HIGH; least-privilege review |
 | TM-GCP-004 | Bucket/database/persistent-resource deletion or replacement | HIGH / REVIEW; backup state is not inferred |
 
-No match produces `NO_KNOWN_FINDINGS`. REVIEW still contributes to overall HIGH
-risk. Model failures preserve deterministic findings with a visible fallback.
-Storage failures return a controlled error. See the
-[supported scope](docs/normalization.md) and [threat model](docs/threat-model.md).
+`REVIEW` is a finding status that requires human investigation and contributes to
+overall HIGH risk. When no supported rule matches, the report returns
+`NO_KNOWN_FINDINGS`; this is not a guarantee that a change is safe.
+
+See the [normalization contract](docs/normalization.md) for the supported inputs
+and the [threat model](docs/threat-model.md) for analysis boundaries.
+
+## CLI usage
+
+Analyze a packaged normalized plan and write a Markdown report:
 
 ```sh
 uv run --locked terramind analyze --input examples/normalized-plans/public_bucket.json --output artifacts/public-bucket.md --format markdown
+```
+
+Use `--format json` for structured output. The offline CLI analyzes normalized
+facts and does not invoke retrieval, models or cloud storage.
+
+To normalize a local `terraform show -json` file, keep both files outside the
+repository and pass their paths explicitly:
+
+```sh
 uv run --locked terramind normalize --input /local/private/tfplan.json --output /local/private/normalized.json
 ```
 
-Raw `terraform show -json` output can contain plaintext secrets. Keep it outside
-the repository. The local normalizer projects allowlisted facts, rejects input over
-5 MiB or 100 changes and emits at most 256 KiB. It removes private identifiers,
-prior values, outputs and unsupported fields. Never upload raw plans, state or
-credentials. The hosted demo accepts synthetic normalized facts only; a source
-label cannot prove arbitrary caller data is non-sensitive.
+Normalized local plans are for offline analysis. The hosted API accepts only the
+synthetic request contract described in the [API reference](docs/analysis-api.md).
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    A[Local private plan] --> B[Bounded allowlist normalizer]
-    B --> C[Pure policy engine]
+    A[Local Terraform plan] --> B[Bounded allowlist normalizer]
+    B --> C[Deterministic policies]
     C --> D[Offline JSON and Markdown]
-    S[Packaged synthetic facts] --> E[Private FastAPI on Cloud Run]
-    E --> F[Same deterministic rules]
+    S[Synthetic normalized input] --> E[Private API on Cloud Run]
+    E --> F[Deterministic policies]
     F --> G[Firestore vector retrieval]
     G --> H[Gemini advisory]
     H --> I[Citation validation]
     F --> J[Expiring Firestore reports]
     I --> J
-    J --> K[JSON, Markdown and HTML]
-    L[Synthetic runbooks] --> M[Explicit ingestion and 768d embeddings]
-    M --> G
-    N[Protected GitHub Actions and WIF] --> E
+    J --> K[HTML, JSON and Markdown]
+    L[Synthetic runbooks] --> G
 ```
 
 Typed contracts keep policies independent of HTTP and cloud SDKs. Separate adapters
-handle storage, retrieval and model calls. Terraform manages private storage, the
-vector index, scoped identities and runtime configuration. The manual deployment
-workflow promotes only an immutable image from its own trusted build; pull request
-CI receives no Google credentials.
+handle storage, retrieval and model calls. The API uses FastAPI; cloud storage and
+retrieval use Firestore and Cloud Storage; Gemini produces advisory explanations.
+Citation validation checks source references before the advisory is included in a
+report. Local and hosted analysis share the same deterministic policy rules.
 
-Cloud Run uses minimum zero and maximum one instance in the active deployment.
-The monthly IDR 180,000 alert does not cap spending. Storage, retrieval and model
-calls remain metered. Cleanup is documented and has not been executed.
+See [architecture decisions](docs/architecture.md) and
+[retrieval and explanations](docs/retrieval-and-explanations.md) for the full design.
 
-## Development and evidence
+## Data handling
+
+All committed fixtures, runbooks and example reports use synthetic data. Hosted
+requests must also contain synthetic facts; a source label alone cannot establish
+that arbitrary caller data is safe.
+
+Raw Terraform plans can contain plaintext secrets. Keep plan JSON, state and
+credentials outside the repository and hosted API. The local normalizer removes
+private identifiers, prior values, outputs and unsupported fields. It rejects
+inputs over 5 MiB or 100 changes and emits at most 256 KiB.
+
+Reports check a defined policy set. They do not establish deployed exposure,
+backup readiness or complete security coverage. AI output is advisory, and
+retrieval/model failures do not change policy severity.
+
+## Deployment
+
+Terraform configurations define the private Cloud Run service, Firestore vector
+index, runbook storage, scoped identities and runtime settings. GitHub Actions
+uses Workload Identity Federation for short-lived deployment credentials. Manual
+delivery promotes an immutable image from its own trusted build; pull request CI
+receives no Google credentials.
+
+Cloud Run invoker IAM protects every hosted route, including assets and exports.
+The local server binds to loopback and does not implement Google authentication.
+For authorized browser access to a deployed instance, follow the
+[authenticated proxy instructions](docs/analysis-api.md#authentication-and-presentation).
+
+Start with [GCP setup](docs/setup-gcp.md), then follow the
+[delivery workflow](docs/delivery.md). Review [cost controls and cleanup](docs/cost-and-cleanup.md)
+before provisioning: budget alerts notify but do not cap spending. Provisioning,
+IAM changes, Terraform apply, ingestion and paid model calls require explicit approval.
+
+Recorded deployment and analysis results are available in the
+[API verification record](docs/api-delivery-verification.md), including the tested
+source, delivery configuration and synthetic end-to-end analysis.
+
+## Development
+
+Run lint, formatting, type checks, schema checks and tests:
+
+```sh
+uv run --locked python scripts/check.py
+```
+
+With GNU Make installed, the equivalent check targets are `make lint` and `make test`.
+The [release verification record](docs/release-verification.md) documents command
+reproduction and package build results.
+
+Additional checks and local workflows:
 
 ```sh
 uv run --locked terramind-knowledge plan
 uv run --locked python scripts/demo_retrieval.py
+uv run --locked python scripts/check_public_files.py
 uv run --locked python scripts/check_infrastructure.py --scan
 ```
 
-The retrieval demo uses labeled local test doubles and makes no provider calls.
-Infrastructure verification needs Terraform on PATH (or `--terraform /absolute/path/to/terraform`)
-and uses mock plans, without a remote backend or apply. Cloud ingestion, model
-requests, provisioning and IAM changes require explicit approval.
+The retrieval workflow above uses labeled local test doubles and makes no provider
+calls. Infrastructure checks require Terraform on PATH (or
+`--terraform /absolute/path/to/terraform`) and use mock plans, without a remote
+backend or apply.
 
-- [Walkthrough](docs/demo-script.md) and [release verification](docs/release-verification.md)
-- [Architecture decisions](docs/architecture.md) and [roadmap](docs/roadmap.md)
-- [Evaluation results](docs/evaluation.md) and [retrieval verification](docs/retrieval-verification.md)
-- [Retrieval and explanations](docs/retrieval-and-explanations.md)
-- [Analysis API](docs/analysis-api.md) and [delivery workflow](docs/delivery.md)
-- [Cloud setup](docs/setup-gcp.md) and [foundation verification](docs/cloud-foundation-verification.md)
-- [Cost, rollback and cleanup](docs/cost-and-cleanup.md)
-- [Security exceptions](docs/security-exceptions.md) and [changelog](CHANGELOG.md)
+## Documentation
 
-Pull request comments, Eventarc indexing, additional policies and a full dashboard
-are deferred beyond the MVP.
+| Topic | References |
+| --- | --- |
+| Usage | [Walkthrough](docs/demo-script.md), [analysis API](docs/analysis-api.md), [normalization](docs/normalization.md) |
+| Design | [Architecture](docs/architecture.md), [retrieval and explanations](docs/retrieval-and-explanations.md), [threat model](docs/threat-model.md) |
+| Operations | [GCP setup](docs/setup-gcp.md), [delivery](docs/delivery.md), [cost and cleanup](docs/cost-and-cleanup.md) |
+| Verification | [Evaluations](docs/evaluation.md), [retrieval checks](docs/retrieval-verification.md), [cloud foundation](docs/cloud-foundation-verification.md), [release checks](docs/release-verification.md) |
+| Project | [Roadmap](docs/roadmap.md), [changelog](CHANGELOG.md), [security exceptions](docs/security-exceptions.md) |
+
+Pull request comments, event-driven runbook indexing, additional policies and a
+dashboard are planned extensions. They are not included in the current release.
