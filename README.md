@@ -33,6 +33,8 @@ All included examples and hosted analysis workflows use synthetic data.
 | Private analysis API | IAM-protected Cloud Run delivery, expiring reports, a browser interface and export endpoints |
 | Synthetic PR review | Opt-in manual workflow for fixture comments and neutral checks; locally tested, hosted publishing unverified |
 | Eventarc source indexing | Generation-bound synthetic corpus receiver with durable deduplication; locally tested, cloud activation unverified |
+| Incident Memory | Local lexical similarity over fabricated incidents, with explicit evidence labels and source hashes |
+| User portal | Google OIDC configuration, loopback demo accounts, owned reports and filtered history on a single host; live Google login unverified |
 
 Retrieval or model failures preserve the deterministic findings and produce a
 visible fallback. Terramind never approves or applies infrastructure changes.
@@ -179,6 +181,10 @@ retrieval/model failures do not change policy severity.
 
 ## Deployment
 
+The optional [user portal](docs/user-portal.md) runs separately with a private
+SQLite database. Its synthetic login, dashboard and ownership checks are verified
+locally. Managed hosting and live Google sign-in have not been verified.
+
 Current operational status: project billing was disabled on 2026-11-10
 (Asia/Jakarta), and the project was retained. The hosted demo is not maintained
 as an active service. The offline CLI and local API remain available. See the
@@ -240,9 +246,11 @@ backend or apply.
 | Design | [Architecture](docs/architecture.md), [retrieval and explanations](docs/retrieval-and-explanations.md), [threat model](docs/threat-model.md) |
 | Operations | [GCP setup](docs/setup-gcp.md), [delivery](docs/delivery.md), [cost and cleanup](docs/cost-and-cleanup.md) |
 | Integrations | [Synthetic PR review](docs/pr-integration.md), [Eventarc indexing](docs/eventarc-indexing.md), [integration checks](docs/integrations-verification.md) |
+| User workspace | [Incident Memory](docs/incident-memory.md), [user portal](docs/user-portal.md), [portal verification](docs/portal-verification.md) |
 | Verification | [Evaluations](docs/evaluation.md), [retrieval checks](docs/retrieval-verification.md), [cloud foundation](docs/cloud-foundation-verification.md), [release checks](docs/release-verification.md) |
 | Project | [Roadmap](docs/roadmap.md), [changelog](CHANGELOG.md), [security exceptions](docs/security-exceptions.md) |
 
-Synthetic PR review and Eventarc indexing are implemented and verified locally;
-their hosted activation remains unverified. Historical incident similarity,
-additional policies and a user dashboard remain planned extensions.
+PR review, Eventarc indexing, synthetic incident similarity and the user portal
+are implemented, with verification scopes documented separately. New hosted
+integrations and live Google login remain unverified. Additional policy packs
+are the next planned extension.

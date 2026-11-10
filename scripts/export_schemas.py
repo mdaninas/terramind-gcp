@@ -5,7 +5,9 @@ import json
 import sys
 from pathlib import Path
 
+from terramind.incidents.search import IncidentMemory
 from terramind.llm.contracts import ModelNarrative
+from terramind.portal.store import PortalAnalysis
 from terramind.rag.contracts import Chunk
 from terramind.schemas.api import AnalysisRequest
 from terramind.schemas.normalized import NormalizedPlan
@@ -22,6 +24,8 @@ def main() -> int:
         ("report.v1", Report),
         ("knowledge-chunk.v1", Chunk),
         ("advisory-response.v1", ModelNarrative),
+        ("incident-memory.v1", IncidentMemory),
+        ("portal-analysis.v1", PortalAnalysis),
     ):
         path = Path("schemas") / f"{name}.schema.json"
         content = json.dumps(model.model_json_schema(), indent=2, sort_keys=True) + "\n"

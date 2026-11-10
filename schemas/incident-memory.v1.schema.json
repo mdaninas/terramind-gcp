@@ -1,0 +1,120 @@
+{
+  "$defs": {
+    "IncidentMatch": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "doc_id": {
+          "pattern": "^[a-z0-9][a-z0-9-]{0,79}$",
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "evidence_label": {
+          "const": "Synthetic tabletop incident, contextual similarity only; not evidence of a real incident.",
+          "default": "Synthetic tabletop incident, contextual similarity only; not evidence of a real incident.",
+          "title": "Evidence Label",
+          "type": "string"
+        },
+        "excerpt": {
+          "maxLength": 600,
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        },
+        "related_rules": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Related Rules",
+          "type": "array"
+        },
+        "similarity": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Similarity",
+          "type": "number"
+        },
+        "source_path": {
+          "pattern": "^incidents/[a-z0-9-]+\\.md$",
+          "title": "Source Path",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "doc_id",
+        "title",
+        "source_path",
+        "content_hash",
+        "version",
+        "similarity",
+        "related_rules",
+        "excerpt"
+      ],
+      "title": "IncidentMatch",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "matches": {
+      "items": {
+        "$ref": "#/$defs/IncidentMatch"
+      },
+      "maxItems": 5,
+      "title": "Matches",
+      "type": "array"
+    },
+    "method": {
+      "const": "local-tfidf-cosine",
+      "default": "local-tfidf-cosine",
+      "title": "Method",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "available",
+        "not_requested",
+        "partial"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "matches",
+    "limitations"
+  ],
+  "title": "IncidentMemory",
+  "type": "object"
+}

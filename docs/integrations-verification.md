@@ -72,6 +72,11 @@ logs and local artifacts remain ignored.
 
 ## Hosted verification still required
 
+After the integration changes were committed and pushed, hosted CI for
+`018fc5dc139c7eda4719ea689898b317f8d02a6f` completed successfully. See the
+[CI run](https://github.com/mdaninas/terramind-gcp/actions/runs/42757795778).
+This is CI execution evidence, not live PR publishing or Eventarc delivery.
+
 No workflow was dispatched, no PR comment/check was published, no event trigger
 or receiver was deployed, and no IAM, billing or cloud resources were changed
 during integration implementation. No embedding or Gemini calls were made.
@@ -83,6 +88,7 @@ activation must verify Eventarc transport, private receiver IAM, storage-generat
 reads, Firestore transactions and receipts, retry behavior and cost. Local
 SDK/mock-plan results do not substitute for those checks.
 
-Historical incident similarity, user login/dashboard/history and additional
-policies remain the next requested development work. They are not implemented
-by this change.
+Historical incident similarity and user login/dashboard/history were implemented
+subsequently in the [portal verification](portal-verification.md). Additional
+policies remain the next requested development work. These later features are
+separate from the integration source verified above.

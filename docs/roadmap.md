@@ -15,6 +15,8 @@ deletion has not been verified. See the [shutdown record](evaluations/billing-di
 | Release verification | End-to-end evaluation, walkthrough and deployment documentation | Fresh-clone commands, screenshots, walkthrough and cost/cleanup record verified |
 | Synthetic PR review | Manual trusted workflow, managed bot comment and neutral head check | Implemented and verified locally; hosted publishing unverified |
 | Eventarc source indexing | Private generation-bound receiver, fenced ingestion and durable receipts | Implemented and verified locally; opt-in Terraform validated; cloud activation unverified |
+| Incident Memory | Local TF-IDF similarity over fabricated incidents with provenance and evidence labels | Implemented; four curated top-one retrieval cases passed |
+| User portal | Google OIDC configuration, synthetic demo login, owned reports and paginated filters | Implemented and verified locally; live Google login and managed deployment unverified |
 
 ## Offline analyzer
 
@@ -98,5 +100,7 @@ the owner requested synthetic PR review and Eventarc indexing. See their
 [local verification](integrations-verification.md). Neither new integration has
 been exercised against its live hosted destination.
 
-Historical incident similarity, user login/dashboard/history and additional
-policy packs remain planned follow-up work in the requested implementation order.
+The subsequent [Incident Memory](incident-memory.md) and
+[single-host portal](user-portal.md) implement the requested local incident,
+login, dashboard and history workflows. See their [verification record](portal-verification.md).
+Additional policy packs remain the next requested development work.

@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Added synthetic Incident Memory using local TF-IDF cosine similarity, source
+  provenance and explicit tabletop-evidence labels. Four frozen policy queries
+  ranked the intended fabricated incident first without changing policy findings.
+- Added a separate single-host portal with Google OIDC configuration, loopback-only
+  synthetic login, server-side sessions, owned reports, paginated history and
+  risk/rule/UTC-date filtering. Report JSON/Markdown and incident sources preserve
+  the user ownership boundary.
+- Verified local portal flows and the real google-auth verifier against locally
+  signed synthetic tokens. Live Google login and hosted portal deployment remain
+  unverified; no new billing, IAM or paid model operations were performed.
+
 - Added a manual trusted-main workflow for synthetic PR fixture analysis, one
   managed bot comment and a neutral check bound to the reviewed head. Read-only
   analysis is separated from publishing permissions; PR code is never executed.

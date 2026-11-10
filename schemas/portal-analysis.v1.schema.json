@@ -1,0 +1,487 @@
+{
+  "$defs": {
+    "Advisory": {
+      "additionalProperties": false,
+      "properties": {
+        "citations": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9:._-]{0,159}$",
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Citations",
+          "type": "array"
+        },
+        "explanations": {
+          "items": {
+            "$ref": "#/$defs/FindingExplanation"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Explanations",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "maxLength": 1200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 8,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "model_id": {
+          "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "rag_status": {
+          "enum": [
+            "available",
+            "partial",
+            "unavailable"
+          ],
+          "title": "Rag Status",
+          "type": "string"
+        },
+        "recommendations": {
+          "items": {
+            "maxLength": 1200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Recommendations",
+          "type": "array"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceCitation"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        },
+        "summary": {
+          "maxLength": 1200,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "summary",
+        "explanations",
+        "recommendations",
+        "citations",
+        "limitations",
+        "model_id",
+        "rag_status",
+        "sources"
+      ],
+      "title": "Advisory",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        },
+        "remediation": {
+          "title": "Remediation",
+          "type": "string"
+        },
+        "resource": {
+          "title": "Resource",
+          "type": "string"
+        },
+        "rule_id": {
+          "enum": [
+            "TM-GCP-001",
+            "TM-GCP-002",
+            "TM-GCP-003",
+            "TM-GCP-004"
+          ],
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "severity": {
+          "default": "HIGH",
+          "enum": [
+            "CRITICAL",
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "INFO"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "FAIL",
+            "REVIEW"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "resource",
+        "title",
+        "rationale",
+        "evidence",
+        "remediation",
+        "status"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "FindingExplanation": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9:._-]{0,159}$",
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Citation Ids",
+          "type": "array"
+        },
+        "finding_id": {
+          "pattern": "^TM-GCP-00[1-4]:google_[a-z0-9_]+\\.resource_[0-9]{4}$",
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 1200,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "text",
+        "citation_ids"
+      ],
+      "title": "FindingExplanation",
+      "type": "object"
+    },
+    "IncidentMatch": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "doc_id": {
+          "pattern": "^[a-z0-9][a-z0-9-]{0,79}$",
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "evidence_label": {
+          "const": "Synthetic tabletop incident, contextual similarity only; not evidence of a real incident.",
+          "default": "Synthetic tabletop incident, contextual similarity only; not evidence of a real incident.",
+          "title": "Evidence Label",
+          "type": "string"
+        },
+        "excerpt": {
+          "maxLength": 600,
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        },
+        "related_rules": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Related Rules",
+          "type": "array"
+        },
+        "similarity": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Similarity",
+          "type": "number"
+        },
+        "source_path": {
+          "pattern": "^incidents/[a-z0-9-]+\\.md$",
+          "title": "Source Path",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "doc_id",
+        "title",
+        "source_path",
+        "content_hash",
+        "version",
+        "similarity",
+        "related_rules",
+        "excerpt"
+      ],
+      "title": "IncidentMatch",
+      "type": "object"
+    },
+    "IncidentMemory": {
+      "additionalProperties": false,
+      "properties": {
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "matches": {
+          "items": {
+            "$ref": "#/$defs/IncidentMatch"
+          },
+          "maxItems": 5,
+          "title": "Matches",
+          "type": "array"
+        },
+        "method": {
+          "const": "local-tfidf-cosine",
+          "default": "local-tfidf-cosine",
+          "title": "Method",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "available",
+            "not_requested",
+            "partial"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "matches",
+        "limitations"
+      ],
+      "title": "IncidentMemory",
+      "type": "object"
+    },
+    "Report": {
+      "additionalProperties": false,
+      "properties": {
+        "advisory": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Advisory"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "analysis_id": {
+          "title": "Analysis Id",
+          "type": "string"
+        },
+        "changed_resources": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Changed Resources",
+          "type": "array"
+        },
+        "citations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Citations",
+          "type": "array"
+        },
+        "explanation": {
+          "title": "Explanation",
+          "type": "string"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "model_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Id"
+        },
+        "overall_risk": {
+          "enum": [
+            "CRITICAL",
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "INFO",
+            "NO_KNOWN_FINDINGS"
+          ],
+          "title": "Overall Risk",
+          "type": "string"
+        },
+        "policy_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "rag_status": {
+          "default": "not_requested",
+          "enum": [
+            "not_requested",
+            "available",
+            "partial",
+            "unavailable"
+          ],
+          "title": "Rag Status",
+          "type": "string"
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "type": "string"
+        }
+      },
+      "required": [
+        "analysis_id",
+        "timestamp",
+        "overall_risk",
+        "findings",
+        "changed_resources",
+        "explanation",
+        "limitations"
+      ],
+      "title": "Report",
+      "type": "object"
+    },
+    "SourceCitation": {
+      "additionalProperties": false,
+      "properties": {
+        "chunk_id": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Chunk Id",
+          "type": "string"
+        },
+        "citation_id": {
+          "pattern": "^[a-z0-9][a-z0-9:._-]{0,159}$",
+          "title": "Citation Id",
+          "type": "string"
+        },
+        "content_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "doc_id": {
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "section_id": {
+          "title": "Section Id",
+          "type": "string"
+        },
+        "source_path": {
+          "title": "Source Path",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "citation_id",
+        "chunk_id",
+        "doc_id",
+        "section_id",
+        "title",
+        "version",
+        "source_path",
+        "content_hash"
+      ],
+      "title": "SourceCitation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "incident_memory": {
+      "$ref": "#/$defs/IncidentMemory"
+    },
+    "report": {
+      "$ref": "#/$defs/Report"
+    }
+  },
+  "required": [
+    "report",
+    "incident_memory"
+  ],
+  "title": "PortalAnalysis",
+  "type": "object"
+}

@@ -1,5 +1,13 @@
 # Architecture decisions
 
+The later [single-host portal](user-portal.md) is a separate application with
+server-side sessions, owner-scoped SQLite records and paginated filters. Its
+namespace is separate from the original shared-demo API. Google OIDC configuration
+and local synthetic login are implemented; live provider login and managed portal
+hosting are unverified. [Incident Memory](incident-memory.md) reads the same
+packaged synthetic corpus through a local lexical matcher and never changes
+deterministic findings. See the [local verification](portal-verification.md).
+
 Offline analysis is implemented and verified locally. The isolated GCP foundation
 and private Cloud Run analysis API are deployed, with real authentication and
 end-to-end report checks. Protected GitHub delivery through WIF is verified.

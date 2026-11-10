@@ -40,3 +40,24 @@ def test_unknown_service_cannot_select_arbitrary_import_target(monkeypatch):
     monkeypatch.setenv("PORT", "8080")
     with pytest.raises(SystemExit, match="TERRAMIND_SERVICE"):
         main()
+
+
+def test_demo_portal_cannot_bind_to_a_public_interface(monkeypatch):
+    monkeypatch.setenv("PORT", "8080")
+    monkeypatch.setenv("TERRAMIND_SERVICE", "portal")
+    monkeypatch.setenv("PORTAL_AUTH_MODE", "demo")
+    monkeypatch.setenv("HOST", "0.0.0.0")
+    with pytest.raises(SystemExit, match="loopback"):
+        main()
+
+
+def test_portal_entrypoint_selects_the_owned_report_application(monkeypatch):
+    captured = []
+    monkeypatch.setenv("PORT", "8080")
+    monkeypatch.setenv("HOST", "127.0.0.1")
+    monkeypatch.setenv("TERRAMIND_SERVICE", "portal")
+    monkeypatch.setattr(
+        "terramind.api.__main__.uvicorn.run", lambda app, **kwargs: captured.append(app)
+    )
+    main()
+    assert captured == ["terramind.portal.app:app"]

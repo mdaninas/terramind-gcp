@@ -1,0 +1,110 @@
+{
+  "verified_date": "2026-11-10",
+  "timezone": "Asia/Jakarta",
+  "base_source_sha": "018fc5dc139c7eda4719ea689898b317f8d02a6f",
+  "source_scope": "existing Windows checkout with uncommitted portal and Incident Memory changes",
+  "synthetic_infrastructure_data_only": true,
+  "full_suite": {
+    "tests_passed": 435,
+    "test_seconds": 11.97,
+    "normalization_policy_coverage_percent": 97.58,
+    "ruff": "passed",
+    "strict_mypy": "passed, 64 source files",
+    "schemas_and_corpus_drift": "passed"
+  },
+  "targeted_suite": {
+    "tests_passed": 67,
+    "portal_incident_module_coverage_percent": 91.31
+  },
+  "incident_evaluation": {
+    "method": "local-tfidf-cosine",
+    "hits_at_one": 4,
+    "queries": [
+      {
+        "fixture": "public_bucket",
+        "expected_doc_id": "inc-public-exposure",
+        "observed_doc_id": "inc-public-exposure",
+        "lexical_cosine": 0.346811,
+        "passed": true
+      },
+      {
+        "fixture": "ssh_open_world",
+        "expected_doc_id": "inc-admin-ingress",
+        "observed_doc_id": "inc-admin-ingress",
+        "lexical_cosine": 0.403212,
+        "passed": true
+      },
+      {
+        "fixture": "project_owner_grant",
+        "expected_doc_id": "inc-basic-role-expansion",
+        "observed_doc_id": "inc-basic-role-expansion",
+        "lexical_cosine": 0.368036,
+        "passed": true
+      },
+      {
+        "fixture": "bucket_delete",
+        "expected_doc_id": "inc-destructive-replacement",
+        "observed_doc_id": "inc-destructive-replacement",
+        "lexical_cosine": 0.31109,
+        "passed": true
+      }
+    ]
+  },
+  "oauth_verification": {
+    "method": "real google-auth verifier, ephemeral local RSA tokens, stubbed HTTPS responses",
+    "live_google_login": false,
+    "real_credentials_or_provider_tokens_persisted_in_repository": false
+  },
+  "browser": {
+    "mode": "loopback synthetic demo",
+    "login": true,
+    "session_and_reports_survived_server_restart": true,
+    "risk_and_benign_scenarios": true,
+    "risk_and_rule_filter": true,
+    "markdown_download": true,
+    "logout": true,
+    "other_account_history_empty": true,
+    "console_errors": 0,
+    "small_breakpoint_dom": {
+      "document_width": 417,
+      "content_width": 417,
+      "visual_screenshot_verified": false,
+      "limitation": "Browser screenshot capture timed out at the small viewport; override was reset"
+    },
+    "screenshot": {
+      "path": "docs/images/portal-desktop.jpg",
+      "sha256": "4b27e5d99b48eba49941d3a962d0dbdb5fcd2cfd660509c09420f6c807ed2b9d"
+    }
+  },
+  "package_build": {
+    "source_archive": true,
+    "wheel": true,
+    "base_only_installed_wheel_imports": true
+  },
+  "dependency_audit": "no known vulnerabilities, non-fatal Windows cache-write warning",
+  "dockerfile_checkov": {
+    "passed": 48,
+    "failed": 0,
+    "skipped": 0
+  },
+  "actionlint": "passed three existing workflows, ShellCheck integration disabled",
+  "hosted_prior_integration_ci": {
+    "source_sha": "018fc5dc139c7eda4719ea689898b317f8d02a6f",
+    "conclusion": "success",
+    "url": "https://github.com/mdaninas/terramind-gcp/actions/runs/42757795778"
+  },
+  "cloud_changes_during_this_work": {
+    "billing_changes": 0,
+    "iam_changes": 0,
+    "resource_provisioning": 0,
+    "paid_model_requests": 0,
+    "hosted_portal_deployment": false
+  },
+  "remaining_verification": [
+    "Live Google OAuth client and sign-in",
+    "Managed hosting and durable backend review before any cloud portal deployment",
+    "Visual mobile capture",
+    "Additional policy packs remain the next implementation work"
+  ],
+  "temporary_portal_server_stopped": true
+}

@@ -27,7 +27,21 @@ def main() -> int:
         if not path.is_file():
             continue
         forbidden = (
-            path.suffix in {".tfstate", ".tfplan", ".plan", ".tfvars", ".tfbackend"}
+            path.suffix in {".sqlite", ".sqlite3", ".db"}
+            or name.endswith(
+                (
+                    ".sqlite-wal",
+                    ".sqlite-shm",
+                    ".sqlite3-wal",
+                    ".sqlite3-shm",
+                    ".sqlite-journal",
+                    ".sqlite3-journal",
+                    ".db-wal",
+                    ".db-shm",
+                    ".db-journal",
+                )
+            )
+            or path.suffix in {".tfstate", ".tfplan", ".plan", ".tfvars", ".tfbackend"}
             or ".tfstate." in name
             or name.endswith(".tfvars.json")
             or path.name == "backend.hcl"
@@ -35,6 +49,7 @@ def main() -> int:
             or name.startswith(("artifacts/", "gha-creds-"))
         )
         data = path.read_bytes()
+        forbidden |= data.startswith(b"SQLite format 3\0")
         if path.suffix == ".json":
             import json
 

@@ -24,6 +24,11 @@ cloud = [
     "google-cloud-storage>=3,<4",
     "google-genai>=1.50,<3",
 ]
+portal = [
+    "fastapi>=0.118,<1",
+    "uvicorn>=0.35,<1",
+    "google-auth[requests]>=2.40,<3",
+]
 
 [dependency-groups]
 dev = [
@@ -40,6 +45,7 @@ dev = [
     "google-cloud-firestore>=2.21,<3",
     "google-cloud-storage>=3,<4",
     "pyyaml>=6,<7",
+    "google-auth[requests]>=2.40,<3",
 ]
 
 [tool.hatch.build.targets.wheel]

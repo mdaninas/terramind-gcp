@@ -31,6 +31,11 @@ def main(argv: list[str] | None = None) -> int:
     analyzer.add_argument("--input", type=Path, required=True)
     analyzer.add_argument("--output", type=Path, required=True)
     analyzer.add_argument("--format", choices=("json", "markdown"), default="json")
+    incidents = subparsers.add_parser(
+        "incidents", help="Find similar packaged synthetic incidents offline"
+    )
+    incidents.add_argument("--input", type=Path, required=True)
+    incidents.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     try:
         if args.input.resolve() == args.output.resolve():
@@ -41,6 +46,11 @@ def main(argv: list[str] | None = None) -> int:
         else:
             plan = load_normalized(read_bounded(args.input, MAX_REQUEST_BYTES))
             report = build_report(plan)
+            if args.command == "incidents":
+                from terramind.incidents.search import IncidentSearcher
+
+                _write(args.output, IncidentSearcher().search(report).model_dump_json(indent=2))
+                return 0
             result = (
                 markdown(report) if args.format == "markdown" else report.model_dump_json(indent=2)
             )
