@@ -1,9 +1,25 @@
 # Cost controls, rollback and cleanup
 
-An isolated portfolio project has been created with owner approval. The deployment
-remains active for development; cleanup has not been executed. Its private resource
-inventory is kept outside version control. Remove the dedicated resources when the
-portfolio work is finished, following the order below.
+An isolated portfolio project was created and deployed with owner approval.
+On 2026-11-10 (Asia/Jakarta), the owner chose to disable billing and retain the
+project. The Google Cloud console confirmed `Billing is disabled` for the
+Terramind project and showed a successful disable notification. See the
+[content-free shutdown record](evaluations/billing-disabled-2026-11-10.json).
+
+Billable services stop when project billing is disabled. This action does not
+establish that each resource was deleted or that stored data will be recoverable:
+Google may remove some resources. Charges accrued before disabling billing may
+still appear later. See [Google's billing documentation](https://docs.cloud.google.com/billing/docs/how-to/modify-project#disable_billing_for_a_project).
+The shared billing account and other projects were not changed.
+
+No Terraform apply/destroy, project deletion or individual resource deletion was
+performed in this shutdown. The private inventory and screenshot are retained
+outside version control. Billing was changed in the console, so Terraform's
+earlier project configuration/state may no longer match the billing association.
+Review any future plan; re-enabling billing or resuming paid workloads needs
+explicit owner approval. The resource-specific controls and usage estimates below
+describe the earlier deployment. The cleanup order remains guidance for a future
+full deletion, not a record of executed cleanup.
 
 ## Cost drivers and controls
 

@@ -1,12 +1,18 @@
 # Portfolio release verification
 
+Current operational status: after the checks below, the owner disabled project
+billing on 2026-11-10 (Asia/Jakarta) and retained the project. The console confirmed
+the change. Individual resource deletion was not performed or verified. See the
+[billing shutdown record](evaluations/billing-disabled-2026-11-10.json).
+
 The MVP implementation and its portfolio documentation are verified. The offline
 reproduction used a fresh GitHub clone of source
 `280f6e339a39f11e1d20a5bf49b6a3324bfbdb81` on 2026-11-10 (Asia/Jakarta), with a
 separate virtual environment and no Google credentials supplied. Application code
 was unchanged during this documentation pass. No release tag was published.
 
-The dedicated GCP deployment remains active. No provisioning, IAM changes,
+At the time of this release verification, the dedicated GCP deployment was active.
+No provisioning, IAM changes,
 Terraform apply, ingestion or paid model requests were performed during this pass.
 A read-only Cloud Run description confirmed the same deployed digest is Ready
 with minimum zero and maximum one instance. Fresh service and project IAM reads

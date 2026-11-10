@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Added a manual trusted-main workflow for synthetic PR fixture analysis, one
+  managed bot comment and a neutral check bound to the reviewed head. Read-only
+  analysis is separated from publishing permissions; PR code is never executed.
+- Added a separate opt-in Eventarc receiver with generation-bound source checks,
+  packaged synthetic corpus, durable receipts and transactionally fenced index
+  updates. Terraform defaults keep the new service, trigger and IAM disabled.
+- Verified new integrations with local API/SDK doubles and infrastructure mock
+  plans. Hosted comment/check publication and live Eventarc delivery remain
+  unverified. Billing stays disabled and the existing project is retained.
+
 - Added actual local desktop/mobile report screenshots, the full architecture flow
   and a timed walkthrough, with local and cloud evidence labeled separately.
 - Verified fresh-clone setup, lint/types/schemas, all 297 tests, package builds,

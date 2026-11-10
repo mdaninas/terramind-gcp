@@ -31,6 +31,8 @@ All included examples and hosted analysis workflows use synthetic data.
 | Traceable reports | Resource aliases, observed facts, severity, remediation and explicit limitations |
 | Offline analysis | A local CLI with JSON and Markdown output, without Google credentials or model calls |
 | Private analysis API | IAM-protected Cloud Run delivery, expiring reports, a browser interface and export endpoints |
+| Synthetic PR review | Opt-in manual workflow for fixture comments and neutral checks; locally tested, hosted publishing unverified |
+| Eventarc source indexing | Generation-bound synthetic corpus receiver with durable deduplication; locally tested, cloud activation unverified |
 
 Retrieval or model failures preserve the deterministic findings and produce a
 visible fallback. Terramind never approves or applies infrastructure changes.
@@ -177,6 +179,13 @@ retrieval/model failures do not change policy severity.
 
 ## Deployment
 
+Current operational status: project billing was disabled on 2026-11-10
+(Asia/Jakarta), and the project was retained. The hosted demo is not maintained
+as an active service. The offline CLI and local API remain available. See the
+[billing shutdown record](docs/evaluations/billing-disabled-2026-11-10.json) and
+[cost controls and cleanup](docs/cost-and-cleanup.md). Resource deletion has not
+been verified.
+
 Terraform configurations define the private Cloud Run service, Firestore vector
 index, runbook storage, scoped identities and runtime settings. GitHub Actions
 uses Workload Identity Federation for short-lived deployment credentials. Manual
@@ -230,8 +239,10 @@ backend or apply.
 | Usage | [Walkthrough](docs/demo-script.md), [analysis API](docs/analysis-api.md), [normalization](docs/normalization.md) |
 | Design | [Architecture](docs/architecture.md), [retrieval and explanations](docs/retrieval-and-explanations.md), [threat model](docs/threat-model.md) |
 | Operations | [GCP setup](docs/setup-gcp.md), [delivery](docs/delivery.md), [cost and cleanup](docs/cost-and-cleanup.md) |
+| Integrations | [Synthetic PR review](docs/pr-integration.md), [Eventarc indexing](docs/eventarc-indexing.md), [integration checks](docs/integrations-verification.md) |
 | Verification | [Evaluations](docs/evaluation.md), [retrieval checks](docs/retrieval-verification.md), [cloud foundation](docs/cloud-foundation-verification.md), [release checks](docs/release-verification.md) |
 | Project | [Roadmap](docs/roadmap.md), [changelog](CHANGELOG.md), [security exceptions](docs/security-exceptions.md) |
 
-Pull request comments, event-driven runbook indexing, additional policies and a
-dashboard are planned extensions. They are not included in the current release.
+Synthetic PR review and Eventarc indexing are implemented and verified locally;
+their hosted activation remains unverified. Historical incident similarity,
+additional policies and a user dashboard remain planned extensions.

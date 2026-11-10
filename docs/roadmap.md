@@ -2,7 +2,9 @@
 
 The offline analyzer, synthetic retrieval and private analysis API are implemented
 and verified. Protected GitHub Actions deployment through WIF passed. Portfolio
-release verification passed for the documented source; cloud resources are active.
+release verification passed for the documented source. Project billing was
+disabled on 2026-11-10 (Asia/Jakarta); the project was retained and resource
+deletion has not been verified. See the [shutdown record](evaluations/billing-disabled-2026-11-10.json).
 
 | Area | Scope | Status |
 | --- | --- | --- |
@@ -11,6 +13,8 @@ release verification passed for the documented source; cloud resources are activ
 | Retrieval and explanations | Synthetic runbooks, Firestore vector retrieval and Gemini explanations | CLI implemented and verified locally and on GCP |
 | API and delivery | Analysis API, private report page and GitHub Actions deployment | Deployed and verified; protected WIF delivery and cloud analysis passed |
 | Release verification | End-to-end evaluation, walkthrough and deployment documentation | Fresh-clone commands, screenshots, walkthrough and cost/cleanup record verified |
+| Synthetic PR review | Manual trusted workflow, managed bot comment and neutral head check | Implemented and verified locally; hosted publishing unverified |
+| Eventarc source indexing | Private generation-bound receiver, fenced ingestion and durable receipts | Implemented and verified locally; opt-in Terraform validated; cloud activation unverified |
 
 ## Offline analyzer
 
@@ -31,7 +35,7 @@ Formatting, validation, mock plans and security scans are available locally.
 Acceptance criteria: Terraform formatting, validation and security scans pass;
 an authenticated deployed request succeeds; unauthenticated requests fail; storage
 buckets remain private. These checks passed in an approved dedicated project.
-The vector index is READY and the expiry policy is ACTIVE. See
+At verification time, the vector index was READY and the expiry policy was ACTIVE. See
 [verification evidence](cloud-foundation-verification.md) and [setup instructions](setup-gcp.md).
 
 ## Retrieval and explanations
@@ -75,17 +79,24 @@ GitHub clone passed setup, lint/types/schemas, all 297 tests, package builds and
 local HTTP flow without Google credentials. All four documented Make targets passed.
 See the [release verification record](release-verification.md).
 
-The existing cloud deployment remains active with explicit cost controls and
-cleanup instructions. Release tagging and final resource deletion are owner actions;
-no new cloud deployment or paid model evaluation was needed for this documentation pass.
+After verification, the owner chose to disable billing and retain the project.
+The console confirmed that billing was disabled. This stops billable services;
+individual resource deletion and recovery were not verified. Release tagging and
+any future full resource cleanup remain owner actions. No new cloud deployment
+or paid model evaluation was needed for the billing shutdown.
 
 Acceptance criteria: documented commands work for a new developer, no credentials
-or raw plans enter version control, and cloud resources are documented as active or
-verified as removed.
+or raw plans enter version control, and the cloud lifecycle is documented with
+billing status and any resource removal claims supported by evidence.
 
 ## Scope boundaries
 
 The MVP does not apply infrastructure changes or approve deployments. Paid resources
-and cloud IAM changes require explicit owner approval. Pull request commenting,
-Eventarc indexing triggers, expanded policy packs and a full dashboard are deferred
-until the MVP is complete.
+and cloud IAM changes require explicit owner approval. After MVP verification,
+the owner requested synthetic PR review and Eventarc indexing. See their
+[security design](pr-integration.md), [indexing contract](eventarc-indexing.md) and
+[local verification](integrations-verification.md). Neither new integration has
+been exercised against its live hosted destination.
+
+Historical incident similarity, user login/dashboard/history and additional
+policy packs remain planned follow-up work in the requested implementation order.

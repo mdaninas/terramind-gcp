@@ -1,11 +1,11 @@
 locals {
   labels = { application = "terramind", environment = "dev", data = "synthetic" }
-  apis = toset([
+  apis = toset(concat([
     "run.googleapis.com", "artifactregistry.googleapis.com", "iam.googleapis.com",
     "iamcredentials.googleapis.com", "sts.googleapis.com", "aiplatform.googleapis.com",
     "firestore.googleapis.com", "firebaserules.googleapis.com",
     "logging.googleapis.com", "monitoring.googleapis.com",
-  ])
+  ], var.enable_eventarc_indexing ? ["eventarc.googleapis.com", "pubsub.googleapis.com", "storage.googleapis.com"] : []))
 }
 
 resource "google_project_service" "required" {
@@ -127,4 +127,18 @@ resource "google_monitoring_alert_policy" "server_errors" {
   }
   alert_strategy { auto_close = "1800s" }
   depends_on = [module.cloud_run]
+}
+
+module "eventarc" {
+  count               = var.enable_eventarc_indexing ? 1 : 0
+  source              = "../../modules/eventarc"
+  project_id          = var.project_id
+  region              = var.region
+  name                = var.name_prefix
+  image               = var.container_image
+  bucket              = module.storage.name
+  database            = module.firestore.name
+  labels              = local.labels
+  deletion_protection = var.deletion_protection
+  depends_on          = [google_project_service.required]
 }

@@ -122,3 +122,45 @@ run "analysis_runtime_is_scoped" {
     error_message = "Cloud mode must configure retention and authenticated deployment smoke checks."
   }
 }
+
+run "eventarc_disabled_by_default" {
+  command = plan
+  assert {
+    condition     = length(module.eventarc) == 0 && !contains(keys(google_project_service.required), "eventarc.googleapis.com")
+    error_message = "Eventarc resources, APIs and permissions must require opt-in."
+  }
+}
+
+run "eventarc_scoped_and_cost_bounded" {
+  command = plan
+  variables { enable_eventarc_indexing = true }
+  assert {
+    condition     = module.eventarc[0].security_settings.iam_enforced && module.eventarc[0].security_settings.ingress == "INGRESS_TRAFFIC_INTERNAL_ONLY"
+    error_message = "The event receiver must enforce IAM and internal ingress."
+  }
+  assert {
+    condition     = module.eventarc[0].security_settings.min_instances == 0 && module.eventarc[0].security_settings.max_instances == 1 && module.eventarc[0].security_settings.concurrency == 1
+    error_message = "Indexing must scale to zero and cap concurrency and instances."
+  }
+  assert {
+    condition     = module.eventarc[0].security_settings.data_condition == "resource.name == 'projects/terramind-demo/databases/terramind-dev'" && module.eventarc[0].security_settings.source_access_role == "roles/storage.objectViewer"
+    error_message = "The indexer must use database-scoped writes and bucket-only read access."
+  }
+  assert {
+    condition     = contains(module.eventarc[0].security_settings.data_permissions, "datastore.databases.get")
+    error_message = "Firestore ingestion transactions require database get for begin and rollback."
+  }
+  assert {
+    condition     = module.eventarc[0].security_settings.source_bucket == "terramind-demo-terramind-dev-runbooks" && module.eventarc[0].security_settings.endpoint == "/events/storage"
+    error_message = "The trigger must bind the configured source bucket and dedicated receiver route."
+  }
+}
+
+run "eventarc_requires_immutable_image" {
+  command = plan
+  variables {
+    enable_eventarc_indexing = true
+    container_image          = null
+  }
+  expect_failures = [var.enable_eventarc_indexing]
+}

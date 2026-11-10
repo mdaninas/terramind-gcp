@@ -14,6 +14,8 @@ as Terraform JSON. Repository examples are handcrafted synthetic normalized fact
 | Incorrect exposure claim | Explicit protocol/ports/source facts; prevention-aware REVIEW; no live reachability or backup claims | Hierarchical firewall precedence, IAM deny/conditions, unsupported resource types and custom roles need human review |
 | Model downgrades policy | Offline rules remain independent; model schema excludes policy fields; immutable findings survive malformed, injected and unavailable responses | Advisory prose can still be wrong; lexical approval guards are defensive rather than semantic proof |
 | Supply-chain dependency risk | uv lock with hashes, Ruff/mypy, pip-audit and bounded runtime dependencies | Audits report only known vulnerabilities; online setup/audit contact package services |
+| PR code or artifact injection | Manual main-only review checks out trusted code; read-only blob analysis; separate publisher validates a bounded same-run artifact and current SHAs | Fixture review covers synthetic normalized JSON only; hosted publishing unverified; maintainer access and trusted main must remain protected |
+| Event replay or stale index writes | Exact bucket/generation/source allowlist, packaged corpus checks, durable receipts and atomically fenced Firestore writes | Embeddings can repeat after a failed commit; TTL is asynchronous; new event deployment and delivery remain unverified |
 | Accidental cloud mutation | No apply endpoint; deployment workflow is manual/main/protected-environment only and changes an image digest; infrastructure checks use mock plans | Operator Terraform apply and IAM changes require explicit approval and verified parameters |
 | Unauthorized service invocation | Cloud Run invoker IAM requires explicit callers; deployed health/demo/analysis rejected anonymous calls; authenticated report reads returned 200 | Project/service policies contain no public principals; organization inheritance needs separate review |
 | Overprivileged service identity | Runtime analysis roles are explicit opt-in and activated with custom permissions; deployment and ingestion use separate identities | Runtime data IAM isolates a database, not collections; model invocation is project-scoped |
@@ -39,7 +41,9 @@ expiry timestamp and refuses expired reads before physical TTL deletion. See [se
 for scanner exceptions and logging boundaries. Retrieval/model adapters operate
 through the synthetic cloud CLI and deployed API. The runtime has named-database
 get/list/create and project-scoped prediction/quota use, without update/delete or
-administration. Hosted CI and cloud report delivery passed; final cleanup remains
-pending. Indexed synthetic sources incur metered
+administration. Hosted CI and cloud report delivery passed. The owner subsequently
+disabled project billing, retaining the project; individual resource deletion
+was not verified. See the [billing shutdown record](evaluations/billing-disabled-2026-11-10.json).
+If billing is re-enabled, indexed synthetic sources incur metered
 storage and read/write usage; model calls have explicit time, attempt and token
 limits. Budget alerts do not stop spending.

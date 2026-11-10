@@ -1,0 +1,30 @@
+{
+  "verified_date": "2026-11-10",
+  "timezone": "Asia/Jakarta",
+  "project_id": "terramind-gcp-mdaninas",
+  "action": "disable project billing and retain the project",
+  "authorization": "owner explicitly selected disable billing and retain project",
+  "method": "Google Cloud console, Billing > Your projects > Terramind > Disable billing",
+  "observed_result": {
+    "project_row_status": "Billing is disabled",
+    "billing_account_association": "none displayed",
+    "success_notification": "Billing for project Terramind was disabled",
+    "project_retained": true
+  },
+  "verification_scope": "console billing association and success notification",
+  "individual_resource_deletion_verified": false,
+  "service_shutdown_propagation_verified": false,
+  "zero_outstanding_charges_verified": false,
+  "terraform_apply_or_destroy_executed": false,
+  "project_deletion_requested": false,
+  "other_projects_or_shared_billing_account_changed": false,
+  "model_requests": 0,
+  "private_evidence": "screenshot and deployment inventory retained under ignored artifacts",
+  "limitations": [
+    "Billing was disabled through the console, not reconciled with Terraform state or configuration",
+    "Some resources may be deleted by the provider after billing is disabled",
+    "Charges accrued before disabling billing may be reported later",
+    "No claim that all resources were destroyed, data is recoverable, or outstanding charges are zero"
+  ],
+  "reference": "https://docs.cloud.google.com/billing/docs/how-to/modify-project#disable_billing_for_a_project"
+}

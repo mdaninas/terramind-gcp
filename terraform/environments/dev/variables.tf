@@ -124,3 +124,13 @@ variable "explanation_language" {
     error_message = "Choose en or id."
   }
 }
+
+variable "enable_eventarc_indexing" {
+  type        = bool
+  default     = false
+  description = "Opt in to a separate private Eventarc indexer and its IAM. Requires approval and active billing."
+  validation {
+    condition     = !var.enable_eventarc_indexing || var.container_image != null
+    error_message = "Eventarc indexing requires an approved immutable container image."
+  }
+}

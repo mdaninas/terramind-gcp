@@ -11,4 +11,5 @@ invoker_members      = ["user:operator@example.invalid"]
 container_image = null
 # Enable only after reviewing runtime IAM and the current provider/model availability.
 enable_analysis_api = false
+enable_eventarc_indexing = false
 max_instances       = 1

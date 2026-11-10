@@ -3,7 +3,8 @@
 The synchronous API and report page are verified locally, in the hosted CI
 container and on private Cloud Run. Protected delivery through WIF deployed an
 immutable image and passed the live synthetic analysis, storage and export checks.
-See the [deployment evidence](api-delivery-verification.md). Resources remain active.
+See the [deployment evidence](api-delivery-verification.md). Project billing was
+subsequently disabled with owner approval; see the [current operating status](cost-and-cleanup.md).
 
 ## Local demonstration
 

@@ -1,5 +1,9 @@
 # API and delivery verification
 
+Current operational status: project billing was subsequently disabled with owner
+approval on 2026-11-10 (Asia/Jakarta), retaining the project. The checks below are
+historical deployment evidence. See the [shutdown record](evaluations/billing-disabled-2026-11-10.json).
+
 The private analysis API is deployed and verified on GCP. On 2026-11-10
 (Asia/Jakarta), the protected GitHub workflow exchanged its identity through WIF,
 published an immutable image and passed an authenticated end-to-end analysis.

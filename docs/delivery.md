@@ -4,7 +4,12 @@ Hosted CI and private analysis deployment passed. The development environment ha
 a required owner reviewer and exactly one allowed deployment branch, main. A real
 OIDC exchange through WIF, immutable image promotion and live Firestore/Gemini
 analysis were verified on 2026-11-10 (Asia/Jakarta). See the
-[deployment record](api-delivery-verification.md). Resources remain active.
+[deployment record](api-delivery-verification.md). Project billing was subsequently
+disabled with owner approval. See the [current operating status](cost-and-cleanup.md).
+
+The separate manual [synthetic PR review](pr-integration.md) workflow is implemented
+and locally tested. Its comment/check publishing has not been run on GitHub.
+The optional [Eventarc receiver](eventarc-indexing.md) also remains undeployed.
 
 ## Pull request CI
 
