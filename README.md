@@ -1,5 +1,12 @@
 # Terramind
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/terramind-logo-dark.png">
+    <img src="docs/brand/terramind-logo.png" alt="Terramind" width="540">
+  </picture>
+</p>
+
 AI-powered Terraform risk analysis and infrastructure intelligence on Google Cloud.
 
 Terramind reviews proposed Terraform changes with four deterministic GCP rules,

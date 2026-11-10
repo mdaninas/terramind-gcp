@@ -79,8 +79,12 @@ def report_page(
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         "<title>Terramind | Terraform risk report</title>"
+        '<link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon">'
+        '<link rel="icon" href="/assets/terramind-icon.png" type="image/png" sizes="512x512">'
+        '<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" sizes="180x180">'
         '<link rel="stylesheet" href="/assets/report.css"></head><body>'
-        '<header><a href="/demo" class="brand">Terramind</a>'
+        '<header><a href="/demo" class="brand">'
+        '<img src="/assets/terramind-logo.png" alt="Terramind" width="216" height="72"></a>'
         '<span class="muted">Terraform change intelligence</span></header><main>'
         '<div class="eyebrow">Synthetic portfolio demonstration</div>'
         "<h1>Understand the risk<br>before infrastructure changes.</h1>"

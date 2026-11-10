@@ -123,7 +123,7 @@ def create_app(service: AnalysisService | None = None) -> FastAPI:
         response.headers["Referrer-Policy"] = "no-referrer"
         response.headers["Content-Security-Policy"] = (
             "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; "
-            "base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+            "img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
         )
         route = request.scope.get("route")
         route_path = getattr(route, "path", "unmatched")
@@ -133,6 +133,10 @@ def create_app(service: AnalysisService | None = None) -> FastAPI:
             "/demo",
             "/assets/report.css",
             "/assets/demo.js",
+            "/assets/terramind-logo.png",
+            "/assets/terramind-icon.png",
+            "/assets/apple-touch-icon.png",
+            "/favicon.ico",
             "/v1/analyses",
             "/v1/analyses/{analysis_id}",
             "/v1/analyses/{analysis_id}/markdown",
@@ -236,6 +240,34 @@ def create_app(service: AnalysisService | None = None) -> FastAPI:
         return Response(
             files("terramind.api").joinpath("assets/demo.js").read_text(),
             media_type="text/javascript",
+        )
+
+    @application.get("/assets/terramind-logo.png")
+    async def logo() -> Response:
+        return Response(
+            files("terramind.api").joinpath("assets/terramind-logo.png").read_bytes(),
+            media_type="image/png",
+        )
+
+    @application.get("/assets/terramind-icon.png")
+    async def icon() -> Response:
+        return Response(
+            files("terramind.api").joinpath("assets/terramind-icon.png").read_bytes(),
+            media_type="image/png",
+        )
+
+    @application.get("/assets/apple-touch-icon.png")
+    async def touch_icon() -> Response:
+        return Response(
+            files("terramind.api").joinpath("assets/apple-touch-icon.png").read_bytes(),
+            media_type="image/png",
+        )
+
+    @application.get("/favicon.ico")
+    async def favicon() -> Response:
+        return Response(
+            files("terramind.api").joinpath("assets/favicon.ico").read_bytes(),
+            media_type="image/vnd.microsoft.icon",
         )
 
     return application

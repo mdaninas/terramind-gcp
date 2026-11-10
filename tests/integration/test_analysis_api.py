@@ -238,12 +238,28 @@ def test_provider_initialization_failure_returns_policy_fallback(monkeypatch):
 def test_demo_preview_and_assets_never_run_analysis():
     service, client = system(lambda plan: pytest.fail("Preview invoked model"))
     with client:
-        for path in ("/demo", "/assets/report.css", "/assets/demo.js", "/health"):
+        for path in (
+            "/demo",
+            "/assets/report.css",
+            "/assets/demo.js",
+            "/assets/terramind-logo.png",
+            "/assets/terramind-icon.png",
+            "/assets/apple-touch-icon.png",
+            "/favicon.ico",
+            "/health",
+        ):
             response = client.get(path)
             assert response.status_code == 200
             assert response.headers["cache-control"] == "no-store"
             assert response.headers["x-frame-options"] == "DENY"
             assert "default-src 'none'" in response.headers["content-security-policy"]
+            assert "img-src 'self'" in response.headers["content-security-policy"]
+            if path.endswith(".png"):
+                assert response.headers["content-type"] == "image/png"
+                assert response.content.startswith(b"\x89PNG\r\n\x1a\n")
+            elif path.endswith(".ico"):
+                assert response.headers["content-type"] == "image/vnd.microsoft.icon"
+                assert response.content.startswith(b"\x00\x00\x01\x00")
         assert (
             client.options(
                 "/v1/analyses",
