@@ -182,16 +182,17 @@ retrieval/model failures do not change policy severity.
 
 ## Deployment
 
-The optional [user portal](docs/user-portal.md) runs separately with a private
-SQLite database. Its synthetic login, dashboard and ownership checks are verified
-locally. Managed hosting and live Google sign-in have not been verified.
+The optional [user portal](docs/user-portal.md) runs separately with SQLite for
+local use. A durable Firestore adapter and private Cloud Run environment are
+prepared and locally verified. Hosted rollout and live Google sign-in remain
+pending the [activation plan](docs/live-activation-plan.md).
 
-Current operational status: project billing was disabled on 2026-11-10
-(Asia/Jakarta), and the project was retained. The hosted demo is not maintained
-as an active service. The offline CLI and local API remain available. See the
-[billing shutdown record](docs/evaluations/billing-disabled-2026-11-10.json) and
-[cost controls and cleanup](docs/cost-and-cleanup.md). Resource deletion has not
-been verified.
+Current operational status: billing was reactivated on 2026-11-10 under the
+owner's prior approval to complete live verification. The project was retained;
+the new Eventarc and portal resources have not been applied. See the
+[preparation record](docs/evaluations/live-preparation-2026-11-10.json), earlier
+[shutdown record](docs/evaluations/billing-disabled-2026-11-10.json) and
+[cost controls](docs/cost-and-cleanup.md). Resource deletion has not been verified.
 
 Terraform configurations define the private Cloud Run service, Firestore vector
 index, runbook storage, scoped identities and runtime settings. GitHub Actions

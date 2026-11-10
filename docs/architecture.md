@@ -8,6 +8,12 @@ hosting are unverified. [Incident Memory](incident-memory.md) reads the same
 packaged synthetic corpus through a local lexical matcher and never changes
 deterministic findings. See the [local verification](portal-verification.md).
 
+The subsequent [live activation preparation](live-activation-plan.md) adds a
+Firestore portal adapter and a separate private Cloud Run environment. This
+durable configuration uses a separate state database, Google OAuth credentials
+from Secret Manager and an authenticated loopback proxy. It is locally verified;
+hosted application and provider behavior remain unverified until activation.
+
 Offline analysis is implemented and verified locally. The isolated GCP foundation
 and private Cloud Run analysis API are deployed, with real authentication and
 end-to-end report checks. Protected GitHub delivery through WIF is verified.

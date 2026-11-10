@@ -112,6 +112,12 @@ controls are not enterprise rate limiting or tenant isolation.
 
 ## Optional cloud analysis and hosting limits
 
+The subsequent [live activation plan](live-activation-plan.md) provides a durable
+Firestore adapter and standalone private Cloud Run configuration. Local checks
+pass; this configuration has not yet been applied. Billing was reactivated for
+live preparation under the owner's prior approval. The original single-host
+verification below remains historical evidence, not a deployment claim.
+
 Offline is the default. `PORTAL_ANALYSIS_MODE=cloud` requires Google authentication,
 the cloud extras, approved GCP configuration/credentials and active billing for
 the metered services. It reuses the existing bounded retrieval/Gemini adapter and
@@ -120,19 +126,25 @@ the report page includes advisory text and validated source references when pres
 Both scenarios are generated server-side from synthetic facts. There is no
 arbitrary plan upload or production-data submission flow.
 
-SQLite makes this a single-host portal with private persistent disk. No new
-Firestore history adapter, distributed session backend or Cloud Run portal
-deployment is claimed. A managed hosted rollout needs a separate durable-storage
-and ingress review. Cloud Run invoker IAM is independent of the portal's Google
-session: a browser cookie does not replace a Google invoker token. Use an approved
-authenticated proxy/access layer for a private hosted service; do not disable IAM
-to make a login page reachable.
+The default SQLite adapter remains for single-host use. Set
+`PORTAL_STORAGE_BACKEND=firestore` and `PORTAL_FIRESTORE_DATABASE` only with Google
+authentication and approved cloud configuration. A Cloud Run portal refuses
+SQLite storage. The new environment uses a separate portal database and retains
+Cloud Run invoker IAM independently of Google application login.
 
-No billing, cloud IAM, OAuth settings or paid resources were changed for this
-implementation. The earlier billing shutdown remains the last verified cloud
-operating state. Additional hosting, credentials and paid calls require an
-explicitly reviewed activation. All cloud/provider claims here are separated
-from the local and mocked verification results.
+For the prepared operator-only rollout, run the official authenticated proxy on
+`127.0.0.1:8091`; register that exact origin's `/auth/callback` with the reviewed
+OAuth web client. `PORTAL_TRANSPORT_HOST` allowlists one exact Cloud Run hostname
+to accommodate the proxy's Host rewrite. The original Origin/CSRF boundary stays
+fixed to the loopback origin. No forwarded host or identity header grants access.
+This is a private hosted operator demo, not a public login website. An HTTPS
+public-facing rollout would need its own ingress and OAuth review.
+
+During the original single-host implementation no billing, cloud IAM, OAuth
+settings or paid resources changed. During subsequent activation preparation,
+billing was re-enabled; the OAuth branding form is prepared but has not been
+submitted. New IAM, credentials, resource provisioning and paid model calls remain
+pending explicit review. Provider login and hosted persistence are still unverified.
 
 References: [Google OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect),
 [google-auth token verifier](https://googleapis.dev/python/google-auth/latest/reference/google.oauth2.id_token.html),

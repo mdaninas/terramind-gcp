@@ -14,6 +14,10 @@ class PortalSettings:
     database: Path = Path("artifacts/portal.sqlite3")
     auth_mode: Literal["demo", "google"] = "demo"
     analysis_mode: Literal["offline", "cloud"] = "offline"
+    storage_backend: Literal["sqlite", "firestore"] = "sqlite"
+    project: str = ""
+    firestore_database: str = ""
+    transport_host: str = ""
     client_id: str = ""
     client_secret: str = field(default="", repr=False)
     allowed_emails: tuple[str, ...] = field(default=(), repr=False)
@@ -41,6 +45,22 @@ class PortalSettings:
             raise ValueError("Unsupported portal authentication mode")
         if self.analysis_mode not in {"offline", "cloud"}:
             raise ValueError("Unsupported portal analysis mode")
+        if self.storage_backend not in {"sqlite", "firestore"}:
+            raise ValueError("Unsupported portal storage backend")
+        if self.storage_backend == "firestore" and (
+            self.auth_mode != "google"
+            or not re.fullmatch(r"[a-z][a-z0-9-]{4,61}[a-z0-9]", self.project)
+            or not re.fullmatch(r"[a-z][a-z0-9-]{2,61}[a-z0-9]", self.firestore_database)
+        ):
+            raise ValueError("Cloud portal storage requires Google login and a named database")
+        if os.environ.get("K_SERVICE") and self.storage_backend != "firestore":
+            raise ValueError("Cloud Run portal requires durable Firestore storage")
+        if self.transport_host and (
+            self.auth_mode != "google"
+            or self.storage_backend != "firestore"
+            or not re.fullmatch(r"[a-z0-9][a-z0-9.-]{0,200}\.run\.app", self.transport_host)
+        ):
+            raise ValueError("Portal transport host must be an exact private Cloud Run hostname")
         if self.analysis_mode == "cloud" and self.auth_mode != "google":
             raise ValueError("Paid cloud analysis requires Google authentication")
         if self.auth_mode == "demo" and (not local or os.environ.get("K_SERVICE")):
@@ -79,6 +99,10 @@ class PortalSettings:
             database=Path(os.environ.get("PORTAL_DATABASE", "artifacts/portal.sqlite3")),
             auth_mode=os.environ.get("PORTAL_AUTH_MODE", "demo"),  # type: ignore[arg-type]
             analysis_mode=os.environ.get("PORTAL_ANALYSIS_MODE", "offline"),  # type: ignore[arg-type]
+            storage_backend=os.environ.get("PORTAL_STORAGE_BACKEND", "sqlite"),  # type: ignore[arg-type]
+            project=os.environ.get("GCP_PROJECT_ID", ""),
+            firestore_database=os.environ.get("PORTAL_FIRESTORE_DATABASE", ""),
+            transport_host=os.environ.get("PORTAL_TRANSPORT_HOST", ""),
             client_id=os.environ.get("GOOGLE_OAUTH_CLIENT_ID", ""),
             client_secret=os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET", ""),
             allowed_emails=tuple(

@@ -1,0 +1,2 @@
+bucket = "REPLACE_WITH_EXISTING_PRIVATE_STATE_BUCKET"
+prefix = "terramind/portal"
