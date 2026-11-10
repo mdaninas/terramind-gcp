@@ -1,10 +1,12 @@
-"""Schema v1.0: only bounded, risk-relevant facts may cross the trust boundary."""
+"""Schemas 1.0 and 1.1: only bounded risk facts may cross the trust boundary."""
 
 import re
 from enum import StrEnum
 from typing import Annotated, Any, Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+from terramind.policies.catalog import ExtraPack
 
 MAX_PLAN_BYTES = 5 * 1024 * 1024
 MAX_REQUEST_BYTES = 256 * 1024
@@ -89,6 +91,31 @@ class Attributes(ClosedModel):
     disabled: bool | None = None
     source_ranges: tuple[Literal["0.0.0.0/0", "::/0"], ...] = Field(default=(), max_length=2)
     allow: tuple[Allow, ...] = Field(default=(), max_length=100)
+    uniform_bucket_level_access: bool | None = None
+    newly_disabled_uniform_access: bool | None = None
+    newly_inherited_prevention: bool | None = None
+    ipv4_enabled: bool | None = None
+    world_authorized_network: bool | None = None
+    newly_world_accessible: bool | None = None
+    ssl_mode: Literal[
+        "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
+        "ENCRYPTED_ONLY",
+        "TRUSTED_CLIENT_CERTIFICATE_REQUIRED",
+        "unknown",
+    ] = "unknown"
+    newly_unencrypted: bool | None = None
+
+
+HARDENING_FIELDS = {
+    "uniform_bucket_level_access",
+    "newly_disabled_uniform_access",
+    "newly_inherited_prevention",
+    "ipv4_enabled",
+    "world_authorized_network",
+    "newly_world_accessible",
+    "ssl_mode",
+    "newly_unencrypted",
+}
 
 
 def _change_schema(schema: dict[str, Any]) -> None:
@@ -130,7 +157,20 @@ def _attribute_fields(kind: ResourceType) -> set[str]:
             else {"grants"}
         )
     if kind == ResourceType.BUCKET:
-        return {"public_access_prevention"}
+        return {
+            "public_access_prevention",
+            "uniform_bucket_level_access",
+            "newly_disabled_uniform_access",
+            "newly_inherited_prevention",
+        }
+    if kind == ResourceType.SQL:
+        return {
+            "ipv4_enabled",
+            "world_authorized_network",
+            "newly_world_accessible",
+            "ssl_mode",
+            "newly_unencrypted",
+        }
     if kind == ResourceType.FIREWALL:
         return {"direction", "disabled", "source_ranges", "allow"}
     return set()
@@ -170,14 +210,51 @@ class Change(ClosedModel):
         return self
 
 
+def _plan_schema(schema: dict[str, Any]) -> None:
+    schema["allOf"] = [
+        {
+            "if": {"properties": {"schema_version": {"const": "1.0"}}},
+            "then": {
+                "properties": {
+                    "policy_packs": {"maxItems": 0},
+                    "changes": {
+                        "items": {
+                            "properties": {
+                                "attributes": {
+                                    "propertyNames": {"not": {"enum": sorted(HARDENING_FIELDS)}}
+                                }
+                            }
+                        }
+                    },
+                }
+            },
+        }
+    ]
+    schema["properties"]["policy_packs"]["uniqueItems"] = True
+
+
 class NormalizedPlan(ClosedModel):
-    schema_version: Literal["1.0"]
+    model_config = ConfigDict(
+        extra="forbid",
+        frozen=True,
+        strict=True,
+        json_schema_extra=_plan_schema,
+    )
+    schema_version: Literal["1.0", "1.1"]
     source: Literal["synthetic-demo", "local-normalizer"]
+    policy_packs: tuple[ExtraPack, ...] = Field(default=(), max_length=2)
     changes: tuple[Change, ...] = Field(max_length=MAX_CHANGES)
     notes: tuple[Note, ...] = Field(default=(), max_length=6)
 
     @model_validator(mode="after")
     def unique_addresses(self) -> Self:
+        if len(set(self.policy_packs)) != len(self.policy_packs):
+            raise ValueError("Duplicate policy packs")
+        if self.schema_version == "1.0" and (
+            self.policy_packs
+            or any(change.attributes.model_fields_set & HARDENING_FIELDS for change in self.changes)
+        ):
+            raise ValueError("Additional policy packs and facts require normalized schema 1.1")
         addresses = [change.address for change in self.changes]
         if len(addresses) != len(set(addresses)):
             raise ValueError("Duplicate resource aliases")

@@ -7,6 +7,10 @@ RULE_QUERIES = {
     "TM-GCP-002": "Firewall world ingress SSH RDP administrative ports hardening review",
     "TM-GCP-003": "IAM project owner editor basic role least privilege scoped permissions review",
     "TM-GCP-004": "Persistent bucket database deletion replacement backup restore retention review",
+    "TM-GCP-005": "Cloud Storage uniform bucket level access disabled object ACL hardening",
+    "TM-GCP-006": "Cloud Storage inherited public access prevention organization policy hardening",
+    "TM-GCP-007": "Cloud SQL public IPv4 world authorized networks private connectivity hardening",
+    "TM-GCP-008": "Cloud SQL SSL TLS unencrypted encrypted only client certificate hardening",
 }
 
 

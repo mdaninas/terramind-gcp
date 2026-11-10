@@ -100,7 +100,8 @@ def report_page(
         "</section><section><h2>Analysis summary</h2>"
         f'<p>{escape(report.explanation)}</p><p class="muted">Model: '
         f"{escape(report.model_id or 'none')} / Policy "
-        f"{escape(report.policy_version)}</p></section>"
+        f"{escape(report.policy_version)} / Packs: "
+        f"{escape(', '.join(report.policy_packs))}</p></section>"
         f"<section><h2>Changed resources</h2>{_items(report.changed_resources)}</section>"
         "<section><h2>Findings</h2>"
         f"{findings or '<p>No known findings. Review the limitations.</p>'}"

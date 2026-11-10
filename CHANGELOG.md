@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Added opt-in Storage and Cloud SQL hardening packs with four additional
+  deterministic rules, bounded schema 1.1 facts and local before/after comparison.
+  Core rules remain mandatory; unchanged weak settings do not trigger these new
+  change rules. Reports and PR summaries retain selected pack names.
+- Added packaged portal hardening scenarios, eight-rule history filters and two
+  synthetic runbooks. Incident Memory explicitly reports the new rules as lacking
+  curated incident coverage. The expanded corpus and policy packs are locally
+  verified; no cloud deployment, ingestion, IAM or billing changes were made.
+
 - Added synthetic Incident Memory using local TF-IDF cosine similarity, source
   provenance and explicit tabletop-evidence labels. Four frozen policy queries
   ranked the intended fabricated incident first without changing policy findings.

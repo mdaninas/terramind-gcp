@@ -47,6 +47,34 @@ def portal():
     database.close()
 
 
+@pytest.mark.parametrize(
+    ("scenario", "risk", "rule"),
+    [
+        ("storage-hardening", "MEDIUM", "TM-GCP-005"),
+        ("database-hardening", "HIGH", "TM-GCP-008"),
+    ],
+)
+def test_optional_packs_keep_owned_history_and_explain_incident_gap(portal, scenario, risk, rule):
+    client, other, _ = portal
+    login(client)
+    login(other, "reviewer")
+    result = analyze(client, scenario)
+    assert result.status_code == 303
+    path = result.headers["location"]
+    bundle = client.get(path + "/json").json()
+    assert bundle["report"]["policy_packs"] == ["gcp-core", scenario]
+    assert bundle["report"]["overall_risk"] == risk
+    assert bundle["incident_memory"]["status"] == "partial"
+    assert not bundle["incident_memory"]["matches"]
+    assert "Search status: partial" in client.get(path).text
+    history = client.get(f"/api/history?rule={rule}&risk={risk}").json()
+    assert len(history["items"]) == 1
+    assert client.get(path + "/markdown").status_code == 200
+    assert scenario in client.get(path + "/markdown").text
+    assert other.get(path + "/json").status_code == 404
+    assert not other.get(f"/api/history?rule={rule}").json()["items"]
+
+
 def test_portal_login_report_incidents_history_exports_and_logout(portal):
     client, _, _ = portal
     assert client.get("/dashboard").headers["location"] == "/login"

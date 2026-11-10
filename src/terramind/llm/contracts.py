@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 NarrativeText = Annotated[str, Field(min_length=1, max_length=1200)]
 CitationId = Annotated[str, Field(pattern=r"^[a-z0-9][a-z0-9:._-]{0,159}$")]
-FindingId = Annotated[str, Field(pattern=r"^TM-GCP-00[1-4]:google_[a-z0-9_]+\.resource_[0-9]{4}$")]
+FindingId = Annotated[str, Field(pattern=r"^TM-GCP-00[1-8]:google_[a-z0-9_]+\.resource_[0-9]{4}$")]
 RagStatus = Literal["available", "partial", "unavailable"]
 
 

@@ -3,10 +3,12 @@
 import argparse
 import sys
 from pathlib import Path
+from typing import cast
 
 from terramind.errors import InputError
 from terramind.normalizer.io import load_normalized, read_bounded
 from terramind.normalizer.plan import normalize
+from terramind.policies.catalog import EXTRA_PACKS, ExtraPack
 from terramind.reports.render import build_report, markdown
 from terramind.schemas.normalized import MAX_PLAN_BYTES, MAX_REQUEST_BYTES, serialize_plan
 
@@ -27,6 +29,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     normalizer.add_argument("--input", type=Path, required=True)
     normalizer.add_argument("--output", type=Path, required=True)
+    normalizer.add_argument("--policy-pack", choices=EXTRA_PACKS, action="append", default=[])
     analyzer = subparsers.add_parser("analyze", help="Analyze strictly normalized JSON offline")
     analyzer.add_argument("--input", type=Path, required=True)
     analyzer.add_argument("--output", type=Path, required=True)
@@ -41,7 +44,10 @@ def main(argv: list[str] | None = None) -> int:
         if args.input.resolve() == args.output.resolve():
             raise InputError("Input and output must be different files")
         if args.command == "normalize":
-            plan = normalize(read_bounded(args.input, MAX_PLAN_BYTES))
+            plan = normalize(
+                read_bounded(args.input, MAX_PLAN_BYTES),
+                policy_packs=cast(tuple[ExtraPack, ...], tuple(args.policy_pack)),
+            )
             _write(args.output, serialize_plan(plan))
         else:
             plan = load_normalized(read_bounded(args.input, MAX_REQUEST_BYTES))

@@ -8,7 +8,9 @@ from typing import Any
 from pydantic import ValidationError
 
 from terramind.errors import InputError
+from terramind.normalizer.hardening import bucket_attributes, sql_attributes
 from terramind.normalizer.io import parse_json
+from terramind.policies.catalog import EXTRA_PACKS, ExtraPack
 from terramind.schemas.normalized import (
     MAX_CHANGES,
     MAX_PLAN_BYTES,
@@ -207,8 +209,12 @@ def _firewall_attributes(
     return result
 
 
-def normalize(data: bytes) -> NormalizedPlan:
+def normalize(data: bytes, *, policy_packs: tuple[ExtraPack, ...] = ()) -> NormalizedPlan:
     """Normalize a local plan. Unsupported resource types are retained as opaque aliases."""
+    if len(set(policy_packs)) != len(policy_packs) or any(
+        pack not in EXTRA_PACKS for pack in policy_packs
+    ):
+        raise InputError("Invalid or duplicate policy pack selection")
     raw = parse_json(data, MAX_PLAN_BYTES)
     version = raw.get("format_version")
     if not isinstance(version, str) or not re.fullmatch(r"1\.[0-9]+", version):
@@ -283,6 +289,10 @@ def normalize(data: bytes) -> NormalizedPlan:
             }
         elif resource_type == ResourceType.FIREWALL:
             attributes = _firewall_attributes(change, after, notes)
+        if resource_type == ResourceType.BUCKET and "storage-hardening" in policy_packs:
+            attributes.update(bucket_attributes(change))
+        elif resource_type == ResourceType.SQL and "database-hardening" in policy_packs:
+            attributes.update(sql_attributes(change))
         try:
             # JSON validation admits JSON arrays while keeping strict primitive types.
             attrs = Attributes.model_validate_json(json.dumps(attributes))
@@ -301,8 +311,9 @@ def normalize(data: bytes) -> NormalizedPlan:
     if raw.get("complete") is False or raw.get("deferred_changes") or raw.get("errored") is True:
         plan_notes = ("incomplete_plan",)
     plan = NormalizedPlan(
-        schema_version="1.0",
+        schema_version="1.1" if policy_packs else "1.0",
         source="local-normalizer",
+        **({"policy_packs": policy_packs} if policy_packs else {}),
         changes=tuple(changes),
         notes=plan_notes,
     )

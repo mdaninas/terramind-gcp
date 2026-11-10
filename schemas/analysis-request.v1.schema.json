@@ -75,6 +75,66 @@
           "title": "Grants",
           "type": "array"
         },
+        "ipv4_enabled": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ipv4 Enabled"
+        },
+        "newly_disabled_uniform_access": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Newly Disabled Uniform Access"
+        },
+        "newly_inherited_prevention": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Newly Inherited Prevention"
+        },
+        "newly_unencrypted": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Newly Unencrypted"
+        },
+        "newly_world_accessible": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Newly World Accessible"
+        },
         "public_access_prevention": {
           "default": "unknown",
           "enum": [
@@ -97,6 +157,41 @@
           "maxItems": 2,
           "title": "Source Ranges",
           "type": "array"
+        },
+        "ssl_mode": {
+          "default": "unknown",
+          "enum": [
+            "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
+            "ENCRYPTED_ONLY",
+            "TRUSTED_CLIENT_CERTIFICATE_REQUIRED",
+            "unknown"
+          ],
+          "title": "Ssl Mode",
+          "type": "string"
+        },
+        "uniform_bucket_level_access": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Uniform Bucket Level Access"
+        },
+        "world_authorized_network": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "World Authorized Network"
         }
       },
       "title": "Attributes",
@@ -121,7 +216,10 @@
               "attributes": {
                 "propertyNames": {
                   "enum": [
-                    "public_access_prevention"
+                    "newly_disabled_uniform_access",
+                    "newly_inherited_prevention",
+                    "public_access_prevention",
+                    "uniform_bucket_level_access"
                   ]
                 }
               }
@@ -309,7 +407,15 @@
                 "pattern": "^google_sql_database_instance\\.resource_[0-9]{4}$"
               },
               "attributes": {
-                "propertyNames": false
+                "propertyNames": {
+                  "enum": [
+                    "ipv4_enabled",
+                    "newly_unencrypted",
+                    "newly_world_accessible",
+                    "ssl_mode",
+                    "world_authorized_network"
+                  ]
+                }
               }
             }
           }
@@ -644,6 +750,46 @@
     }
   },
   "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": "1.0"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "changes": {
+            "items": {
+              "properties": {
+                "attributes": {
+                  "propertyNames": {
+                    "not": {
+                      "enum": [
+                        "ipv4_enabled",
+                        "newly_disabled_uniform_access",
+                        "newly_inherited_prevention",
+                        "newly_unencrypted",
+                        "newly_world_accessible",
+                        "ssl_mode",
+                        "uniform_bucket_level_access",
+                        "world_authorized_network"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "policy_packs": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
   "properties": {
     "changes": {
       "items": {
@@ -670,8 +816,25 @@
       "title": "Notes",
       "type": "array"
     },
+    "policy_packs": {
+      "default": [],
+      "items": {
+        "enum": [
+          "storage-hardening",
+          "database-hardening"
+        ],
+        "type": "string"
+      },
+      "maxItems": 2,
+      "title": "Policy Packs",
+      "type": "array",
+      "uniqueItems": true
+    },
     "schema_version": {
-      "const": "1.0",
+      "enum": [
+        "1.0",
+        "1.1"
+      ],
       "title": "Schema Version",
       "type": "string"
     },

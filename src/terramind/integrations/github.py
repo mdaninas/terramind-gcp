@@ -12,6 +12,7 @@ from pydantic import Field
 
 from terramind.errors import InputError
 from terramind.normalizer.io import load_normalized
+from terramind.policies.catalog import PackName, RuleId
 from terramind.reports.render import build_report
 from terramind.schemas.normalized import MAX_REQUEST_BYTES, ClosedModel
 
@@ -19,14 +20,14 @@ MARKER = "<!-- terramind-synthetic-review:v1 -->"
 REPOSITORY = r"[A-Za-z0-9_-]+/[A-Za-z0-9_.-]+"
 PLAN_PATH = r"examples/normalized-plans/[a-z0-9_-]{1,64}\.json"
 SHA = Annotated[str, Field(pattern=r"^[a-f0-9]{40}$")]
-Rule = Literal["TM-GCP-001", "TM-GCP-002", "TM-GCP-003", "TM-GCP-004"]
 
 
 class PlanSummary(ClosedModel):
     path: Annotated[str, Field(pattern=rf"^{PLAN_PATH}$")]
     blob_sha: SHA
-    findings: Annotated[int, Field(ge=0, le=400)]
-    rules: tuple[Rule, ...] = Field(max_length=4)
+    findings: Annotated[int, Field(ge=0, le=800)]
+    rules: tuple[RuleId, ...] = Field(max_length=8)
+    policy_packs: tuple[PackName, ...] = Field(default=("gcp-core",), max_length=3)
     risk: Literal["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO", "NO_KNOWN_FINDINGS"]
 
 
@@ -152,6 +153,7 @@ def prepare_review(
                 findings=len(report.findings),
                 rules=tuple(sorted({finding.rule_id for finding in report.findings})),
                 risk=report.overall_risk,
+                policy_packs=report.policy_packs,
             )
         )
     review = PullRequestReview(
@@ -180,9 +182,13 @@ def review_markdown(review: PullRequestReview) -> str:
         "",
     ]
     if review.plans:
-        lines += ["| Synthetic fixture | Risk | Findings | Rules |", "| --- | --- | --- | --- |"]
         lines += [
-            f"| `{plan.path}` | {plan.risk} | {plan.findings} | {', '.join(plan.rules) or 'None'} |"
+            "| Synthetic fixture | Risk | Findings | Rules | Policy packs |",
+            "| --- | --- | --- | --- | --- |",
+        ]
+        lines += [
+            f"| `{plan.path}` | {plan.risk} | {plan.findings} | "
+            f"{', '.join(plan.rules) or 'None'} | {', '.join(plan.policy_packs)} |"
             for plan in review.plans
         ]
     else:

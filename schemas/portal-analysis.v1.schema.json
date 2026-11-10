@@ -113,7 +113,11 @@
             "TM-GCP-001",
             "TM-GCP-002",
             "TM-GCP-003",
-            "TM-GCP-004"
+            "TM-GCP-004",
+            "TM-GCP-005",
+            "TM-GCP-006",
+            "TM-GCP-007",
+            "TM-GCP-008"
           ],
           "title": "Rule Id",
           "type": "string"
@@ -169,7 +173,7 @@
           "type": "array"
         },
         "finding_id": {
-          "pattern": "^TM-GCP-00[1-4]:google_[a-z0-9_]+\\.resource_[0-9]{4}$",
+          "pattern": "^TM-GCP-00[1-8]:google_[a-z0-9_]+\\.resource_[0-9]{4}$",
           "title": "Finding Id",
           "type": "string"
         },
@@ -382,9 +386,27 @@
           "title": "Overall Risk",
           "type": "string"
         },
+        "policy_packs": {
+          "default": [
+            "gcp-core"
+          ],
+          "items": {
+            "enum": [
+              "gcp-core",
+              "storage-hardening",
+              "database-hardening"
+            ],
+            "type": "string"
+          },
+          "title": "Policy Packs",
+          "type": "array"
+        },
         "policy_version": {
-          "const": "1.0",
           "default": "1.0",
+          "enum": [
+            "1.0",
+            "1.1"
+          ],
           "title": "Policy Version",
           "type": "string"
         },

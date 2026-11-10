@@ -13,8 +13,8 @@ def test_local_corpus_plan_makes_no_network_calls(monkeypatch, capsys):
     assert main(["plan"]) == 0
     assert json.loads(capsys.readouterr().out) == {
         "mode": "local-corpus-plan",
-        "documents": 10,
-        "chunks": 10,
+        "documents": 12,
+        "chunks": 12,
         "cloud_calls": 0,
     }
 

@@ -27,6 +27,7 @@ All included examples and hosted analysis workflows use synthetic data.
 | Capability | What it provides |
 | --- | --- |
 | Deterministic risk checks | Four GCP policies covering public storage access, administrative ingress, privileged IAM grants and destructive changes |
+| Optional policy packs | Two storage and two database hardening checks, explicitly selected with normalized schema 1.1 |
 | Grounded explanations | Firestore vector retrieval and Gemini advisory text with validated runbook references |
 | Traceable reports | Resource aliases, observed facts, severity, remediation and explicit limitations |
 | Offline analysis | A local CLI with JSON and Markdown output, without Google credentials or model calls |
@@ -247,10 +248,12 @@ backend or apply.
 | Operations | [GCP setup](docs/setup-gcp.md), [delivery](docs/delivery.md), [cost and cleanup](docs/cost-and-cleanup.md) |
 | Integrations | [Synthetic PR review](docs/pr-integration.md), [Eventarc indexing](docs/eventarc-indexing.md), [integration checks](docs/integrations-verification.md) |
 | User workspace | [Incident Memory](docs/incident-memory.md), [user portal](docs/user-portal.md), [portal verification](docs/portal-verification.md) |
+| Additional policies | [Pack definitions and usage](docs/policy-packs.md), [local verification](docs/policy-packs-verification.md) |
 | Verification | [Evaluations](docs/evaluation.md), [retrieval checks](docs/retrieval-verification.md), [cloud foundation](docs/cloud-foundation-verification.md), [release checks](docs/release-verification.md) |
 | Project | [Roadmap](docs/roadmap.md), [changelog](CHANGELOG.md), [security exceptions](docs/security-exceptions.md) |
 
 PR review, Eventarc indexing, synthetic incident similarity and the user portal
 are implemented, with verification scopes documented separately. New hosted
-integrations and live Google login remain unverified. Additional policy packs
-are the next planned extension.
+integrations and live Google login remain unverified. Optional storage and database
+hardening packs are implemented and tested locally; their updated corpus has not
+been deployed or ingested on GCP.

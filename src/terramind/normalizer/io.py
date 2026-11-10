@@ -60,4 +60,4 @@ def load_normalized(data: bytes) -> NormalizedPlan:
     try:
         return NormalizedPlan.model_validate_json(data)
     except ValidationError:
-        raise InputError("Normalized schema validation failed; see schema v1.0") from None
+        raise InputError("Normalized schema validation failed; see normalized contract") from None

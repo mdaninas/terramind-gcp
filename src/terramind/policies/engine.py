@@ -1,5 +1,6 @@
 """Stable evaluation order and maximum deterministic severity."""
 
+from terramind.policies.hardening import database, storage
 from terramind.policies.rules import (
     open_admin_ports,
     persistent_deletion,
@@ -14,10 +15,15 @@ SEVERITY_ORDER: dict[Severity, int] = {"INFO": 0, "LOW": 1, "MEDIUM": 2, "HIGH":
 
 
 def evaluate(plan: NormalizedPlan) -> tuple[Finding, ...]:
+    rules = (
+        *RULES,
+        *((storage,) if "storage-hardening" in plan.policy_packs else ()),
+        *((database,) if "database-hardening" in plan.policy_packs else ()),
+    )
     return tuple(
         finding
         for change in sorted(plan.changes, key=lambda item: item.address)
-        for rule in RULES
+        for rule in rules
         for finding in rule(change)
     )
 

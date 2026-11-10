@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.1",
+  "source": "synthetic-demo",
+  "policy_packs": [
+    "storage-hardening"
+  ],
+  "changes": [
+    {
+      "address": "google_storage_bucket.resource_0001",
+      "type": "google_storage_bucket",
+      "actions": [
+        "create"
+      ],
+      "attributes": {
+        "public_access_prevention": "inherited",
+        "uniform_bucket_level_access": false,
+        "newly_disabled_uniform_access": true,
+        "newly_inherited_prevention": true
+      }
+    }
+  ]
+}

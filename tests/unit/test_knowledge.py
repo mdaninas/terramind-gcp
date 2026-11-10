@@ -22,7 +22,7 @@ def changed(document, **updates):
 
 def test_corpus_has_synthetic_provenance_and_repeatable_chunks():
     documents = load_corpus(Path("knowledge-base"))
-    assert len(documents) == 10
+    assert len(documents) == 12
     assert sum(d.source_path.startswith("incidents/") for d in documents) == 4
     chunks = corpus_chunks(documents)
     assert chunks == corpus_chunks(load_corpus(Path("knowledge-base")))
@@ -86,7 +86,7 @@ def test_ingestion_rerun_does_not_embed_or_write_unchanged_content():
     result = ingest(changed_documents, embedder, store)
     assert result.embedded == 1 and result.changed
     result = ingest(changed_documents[1:], embedder, store)
-    assert result.deleted == 1 and len(store.snapshot()) == 9
+    assert result.deleted == 1 and len(store.snapshot()) == 11
 
 
 def test_embedding_profile_and_title_changes_force_reembedding():

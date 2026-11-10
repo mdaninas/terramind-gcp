@@ -97,7 +97,7 @@ def test_packaged_synthetic_manifest_matches_reviewed_markdown():
 def test_duplicate_delivery_survives_a_new_worker_without_embedding_or_source_reads():
     indexer, event = system()
     first = indexer.handle(event)
-    assert first.status == "indexed" and first.ingestion.embedded == 10
+    assert first.status == "indexed" and first.ingestion.embedded == 12
     indexer.embedder.calls.clear()
     indexer.reader.calls.clear()
     restarted = EventIndexer(
@@ -174,7 +174,7 @@ def test_receiver_processes_binary_cloudevent_and_duplicates():
     headers, data = envelope(event)
     client = TestClient(create_app(indexer, event.bucket))
     first = client.post("/events/storage", headers=headers, json=data)
-    assert first.status_code == 200 and first.json()["ingestion"]["embedded"] == 10
+    assert first.status_code == 200 and first.json()["ingestion"]["embedded"] == 12
     headers["ce-id"] = "different-delivery-id"
     assert (
         client.post("/events/storage", headers=headers, json=data).json()["status"] == "duplicate"

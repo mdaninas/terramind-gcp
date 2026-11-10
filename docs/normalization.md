@@ -1,4 +1,4 @@
-# Normalized schema v1.0
+# Normalized schemas 1.0 and 1.1
 
 The [committed schema](../schemas/normalized-plan.v1.schema.json) is the structural
 contract. The [report schema](../schemas/report.v1.schema.json) describes output.
@@ -6,6 +6,14 @@ Extra fields are rejected at every normalized object boundary. Pydantic also
 checks port bounds/order, action sequences, address/type agreement, type-specific
 attributes and unique aliases. JSON Schema covers the structural cross-field rules;
 numeric port-range ordering and unique alias semantics require runtime validation.
+
+Default normalization retains schema 1.0 and the four core rules. Explicit
+`normalize --policy-pack storage-hardening` or
+`--policy-pack database-hardening` produces schema 1.1 and the additional closed
+facts described in [policy packs](policy-packs.md). Both flags can be supplied.
+Pack names are unique, allowlisted and retained in the normalized plan; analysis
+uses that selection and always includes core rules. Schema 1.0 rejects new facts
+and nonempty pack selections. Both versions share the major-version schema files.
 
 ## Limits and error behavior
 
@@ -26,6 +34,10 @@ numeric port-range ordering and unique alias semantics require runtime validatio
   deposed-object correlation is not currently implemented.
 
 ## Facts preserved
+
+The following table describes core schema 1.0. Schema 1.1 additionally allows the
+bounded hardening fields documented in the pack definitions, including boolean
+before/after comparison outcomes. Raw before values never leave normalization.
 
 | Resource scope | Allowed attributes |
 | --- | --- |

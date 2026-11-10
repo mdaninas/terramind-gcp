@@ -17,6 +17,7 @@ deletion has not been verified. See the [shutdown record](evaluations/billing-di
 | Eventarc source indexing | Private generation-bound receiver, fenced ingestion and durable receipts | Implemented and verified locally; opt-in Terraform validated; cloud activation unverified |
 | Incident Memory | Local TF-IDF similarity over fabricated incidents with provenance and evidence labels | Implemented; four curated top-one retrieval cases passed |
 | User portal | Google OIDC configuration, synthetic demo login, owned reports and paginated filters | Implemented and verified locally; live Google login and managed deployment unverified |
+| Optional policy packs | Cloud Storage access controls and Cloud SQL connectivity/TLS, four additional rules | Implemented and verified locally; cloud rollout unverified |
 
 ## Offline analyzer
 
@@ -103,4 +104,10 @@ been exercised against its live hosted destination.
 The subsequent [Incident Memory](incident-memory.md) and
 [single-host portal](user-portal.md) implement the requested local incident,
 login, dashboard and history workflows. See their [verification record](portal-verification.md).
-Additional policy packs remain the next requested development work.
+The [optional policy packs](policy-packs.md) add storage and database hardening
+checks, selected explicitly while the four core rules always remain active.
+See their [local verification](policy-packs-verification.md). The expanded
+twelve-document corpus has not been ingested or deployed on GCP. Live Google
+login, hosted PR publication, Eventarc delivery and managed portal deployment
+remain unverified. Billing remains disabled; no cloud resources were provisioned
+for these extensions.

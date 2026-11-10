@@ -5,13 +5,14 @@ from typing import Annotated, Literal
 from pydantic import Field
 
 from terramind.llm.contracts import Advisory
+from terramind.policies.catalog import PackName, RuleId
 from terramind.schemas.normalized import ClosedModel
 
 Severity = Literal["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]
 
 
 class Finding(ClosedModel):
-    rule_id: Literal["TM-GCP-001", "TM-GCP-002", "TM-GCP-003", "TM-GCP-004"]
+    rule_id: RuleId
     resource: str
     severity: Severity = "HIGH"
     title: str
@@ -32,5 +33,6 @@ class Report(ClosedModel):
     model_id: Annotated[str, Field(pattern=r"^[a-z0-9][a-z0-9.-]{0,79}$")] | None = None
     rag_status: Literal["not_requested", "available", "partial", "unavailable"] = "not_requested"
     advisory: Advisory | None = None
-    policy_version: Literal["1.0"] = "1.0"
+    policy_version: Literal["1.0", "1.1"] = "1.0"
+    policy_packs: tuple[PackName, ...] = ("gcp-core",)
     limitations: tuple[str, ...]

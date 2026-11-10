@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.1",
+  "source": "synthetic-demo",
+  "policy_packs": [
+    "database-hardening"
+  ],
+  "changes": [
+    {
+      "address": "google_sql_database_instance.resource_0001",
+      "type": "google_sql_database_instance",
+      "actions": [
+        "create"
+      ],
+      "attributes": {
+        "ipv4_enabled": true,
+        "world_authorized_network": true,
+        "newly_world_accessible": true,
+        "ssl_mode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
+        "newly_unencrypted": true
+      }
+    }
+  ]
+}

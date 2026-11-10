@@ -1,8 +1,10 @@
 """Escaped, server-rendered portal with no external assets or browser token storage."""
 
 from html import escape
+from typing import get_args
 from urllib.parse import urlencode
 
+from terramind.policies.catalog import RuleId
 from terramind.portal.store import HistoryFilters, PortalAnalysis, Session
 
 
@@ -81,7 +83,7 @@ def dashboard(
     )
     rule_options = "".join(
         f'<option value="{rule}"{" selected" if filters.rule == rule else ""}>{rule}</option>'
-        for rule in ("TM-GCP-001", "TM-GCP-002", "TM-GCP-003", "TM-GCP-004")
+        for rule in get_args(RuleId)
     )
     items = history["items"]
     assert isinstance(items, list)
@@ -122,6 +124,8 @@ def dashboard(
         f'<form class="actions" method="post" action="/analyses">{csrf(session)}'
         '<label>Scenario<select name="scenario">'
         '<option value="risk-demo">Four risk findings</option>'
+        '<option value="storage-hardening">Storage hardening</option>'
+        '<option value="database-hardening">Database hardening</option>'
         '<option value="benign">No proposed changes</option></select></label>'
         '<button type="submit">Analyze synthetic sample</button></form></section>'
         '<section><h2>Report history</h2><form class="filters" method="get" action="/dashboard">'
@@ -193,10 +197,13 @@ def analysis_page(session: Session, analysis: PortalAnalysis) -> str:
         f"<article><span>Findings</span><strong>{len(report.findings)}</strong></article>"
         f"<article><span>Related incidents</span><strong>{len(memory.matches)}</strong>"
         "</article></section>"
+        f"<p>Policy version: {escape(report.policy_version)}. "
+        f"Packs: {escape(', '.join(report.policy_packs))}.</p>"
         f"{context}"
         f"<section><h2>Policy findings</h2>{findings or no_findings}</section>"
         "<section><h2>Incident Memory</h2><p>Fabricated tabletop exercises selected by "
         "local lexical similarity. These are not real incident evidence or predictions.</p>"
+        f"<p>Search status: {escape(memory.status)}.</p>"
         f"{matches or no_matches}</section>"
         "<section><h2>Limitations</h2><ul>"
         + "".join(f"<li>{escape(item)}</li>" for item in (*report.limitations, *memory.limitations))

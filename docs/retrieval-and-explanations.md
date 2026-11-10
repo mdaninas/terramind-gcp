@@ -9,7 +9,7 @@ offline analyzer still runs with Pydantic alone and makes no cloud calls.
 
 | Component | Responsibility |
 | --- | --- |
-| `knowledge-base/runbooks/` and `knowledge-base/incidents/` | Six synthetic runbooks and four fabricated tabletop incidents |
+| `knowledge-base/runbooks/` and `knowledge-base/incidents/` | Eight synthetic runbooks and four fabricated tabletop incidents; the expanded corpus is locally verified and has not been ingested on GCP |
 | `rag/corpus.py` | Bounded loading, strict synthetic metadata, heading-aware chunks and hashes |
 | `rag/ingestion.py` | Embed changed text, reuse matching profiles and synchronize stable chunk IDs |
 | `cloud/google.py` | Official Google SDK adapters for embeddings, Firestore, source storage and Gemini |

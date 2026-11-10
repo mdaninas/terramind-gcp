@@ -142,7 +142,7 @@ def test_firestore_lease_receipt_and_index_changes_commit_together(monkeypatch):
     indexer, event = system()
     indexer.handle(event)
     target.commit(lease, (), indexer.coordinator.records)
-    assert len(target.snapshot()) == 10
+    assert len(target.snapshot()) == 12
     assert "ingestion_control/corpus" not in client.data
     assert target.claim("a" * 64) is None
     newer = target.claim("b" * 64)

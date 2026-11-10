@@ -22,7 +22,12 @@ uv run --locked --extra portal python -m terramind.api
 ```
 
 Open `http://127.0.0.1:8080/login`. Choose the synthetic analyst or reviewer,
-create either packaged sample and inspect its report, incident context and exports.
+select the core risk sample, no-change sample, Storage hardening or Database
+hardening, and inspect its report, incident context and exports. Hardening samples
+explicitly select their respective optional pack. Reports show policy version and
+pack selection, and history supports all eight rule IDs. Incident Memory reports
+partial coverage for the new rules because the four curated incidents cover only
+the core rules. See [policy packs](policy-packs.md).
 Sign out and choose the other account to see a separate history. These disposable
 accounts demonstrate ownership behavior; they are not identity verification.
 Demo mode rejects non-loopback client connections and Cloud Run environments,

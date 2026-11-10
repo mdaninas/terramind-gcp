@@ -21,6 +21,7 @@ from terramind.cloud.budget import DependencyUnavailable
 from terramind.cloud.settings import CloudSettings
 from terramind.events.service import packaged_corpus
 from terramind.incidents.search import IncidentSearcher
+from terramind.policies.samples import hardening_sample
 from terramind.portal import views
 from terramind.portal.oidc import GoogleOIDC, IdentityProvider
 from terramind.portal.settings import PortalSettings
@@ -295,6 +296,8 @@ def create_app(
             plan = (
                 demo_plan()
                 if scenario == "risk-demo"
+                else hardening_sample(scenario)
+                if scenario in {"storage-hardening", "database-hardening"}
                 else NormalizedPlan(
                     schema_version="1.0",
                     source="synthetic-demo",
@@ -311,7 +314,12 @@ def create_app(
         current = session(request)
         values = await form(request, {"csrf", "scenario"})
         csrf(request, current, values)
-        if values["scenario"] not in {"risk-demo", "benign"}:
+        if values["scenario"] not in {
+            "risk-demo",
+            "benign",
+            "storage-hardening",
+            "database-hardening",
+        }:
             raise HTTPException(400, "Unknown synthetic scenario")
         bundle = await run_in_threadpool(create_analysis, current.owner or "", values["scenario"])
         return RedirectResponse(f"/reports/{bundle.report.analysis_id}", status_code=303)

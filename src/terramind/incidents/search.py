@@ -9,6 +9,7 @@ from typing import Annotated, Final, Literal
 from pydantic import Field
 
 from terramind.events.service import packaged_corpus
+from terramind.policies.catalog import CORE_RULES
 from terramind.rag.contracts import Digest, Document, Identifier
 from terramind.rag.local import STOP_WORDS
 from terramind.rag.retrieval import RULE_QUERIES
@@ -85,7 +86,7 @@ class IncidentSearcher:
             raise ValueError("Incident result limit must be between one and five")
         rules = sorted({finding.rule_id for finding in report.findings})
         queries = {
-            rule: self._vector(words(RULE_QUERIES[rule])) for rule in rules if rule in RULE_QUERIES
+            rule: self._vector(words(RULE_QUERIES[rule])) for rule in rules if rule in CORE_RULES
         }
         matches = []
         for document, vector in zip(self.documents, self.vectors, strict=True):
@@ -120,6 +121,8 @@ class IncidentSearcher:
                 LABEL,
                 "Scores measure lexical overlap, not probability, causation or semantic proof.",
                 "Only supported policy queries and the packaged fabricated corpus are searched.",
+                "The four incident cases cover core rules; additional hardening rules "
+                "have no curated incident coverage.",
                 "Incident similarity cannot remove, downgrade or approve policy findings.",
             ),
         )

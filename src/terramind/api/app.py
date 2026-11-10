@@ -74,7 +74,9 @@ async def read_plan(request: Request) -> NormalizedPlan:
     try:
         plan = AnalysisRequest.model_validate_json(data)
     except ValidationError:
-        raise HTTPException(422, "Normalized schema validation failed; see schema v1.0") from None
+        raise HTTPException(
+            422, "Normalized schema validation failed; see normalized contract"
+        ) from None
     return plan
 
 

@@ -24,7 +24,16 @@ from terramind.schemas.normalized import ClosedModel
 from terramind.schemas.report import Report
 
 Risk = Literal["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO", "NO_KNOWN_FINDINGS"]
-Rule = Literal["TM-GCP-001", "TM-GCP-002", "TM-GCP-003", "TM-GCP-004"]
+Rule = Literal[
+    "TM-GCP-001",
+    "TM-GCP-002",
+    "TM-GCP-003",
+    "TM-GCP-004",
+    "TM-GCP-005",
+    "TM-GCP-006",
+    "TM-GCP-007",
+    "TM-GCP-008",
+]
 
 
 def owner_key(provider: str, subject: str) -> str:

@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-10",
+  "source_baseline": "bc787489661e8964653a7e068ffedafe3ce71b42",
+  "includes_uncommitted_policy_pack_changes": true,
+  "scope": "local synthetic verification only",
+  "python": "3.12.13",
+  "quality_gate": {
+    "command": "uv run --locked python scripts/check.py",
+    "passed": true,
+    "tests": 481,
+    "seconds": 12.88,
+    "normalization_policy_coverage_percent": 97.19,
+    "hardening_policy_coverage_percent": 100,
+    "ruff_format_files": 143,
+    "mypy_source_files": 68,
+    "schema_drift": "passed",
+    "packaged_corpus_drift": "passed"
+  },
+  "policy_scope": {
+    "mandatory_pack": "gcp-core",
+    "optional_packs": ["storage-hardening", "database-hardening"],
+    "core_rules": 4,
+    "additional_rules": 4,
+    "normalized_versions": ["1.0", "1.1"],
+    "default_normalized_version": "1.0",
+    "unchanged_weak_setting_updates": "no new hardening findings",
+    "unknown_before_setting": "REVIEW",
+    "unknown_or_sensitive_after_setting": "not asserted"
+  },
+  "local_integration_checks": {
+    "cli_exports": "passed",
+    "api_samples": "passed",
+    "portal_scenarios_history_and_ownership": "passed",
+    "pr_summary_pack_names_and_neutral_check": "passed",
+    "new_rule_runbook_top_one_cases": 4,
+    "model_override_fallback": "passed",
+    "existing_retrieval_and_incident_evaluations": "passed",
+    "new_rule_incident_coverage": "partial, no curated incidents"
+  },
+  "corpus": {
+    "synthetic_documents": 12,
+    "synthetic_runbooks": 8,
+    "fabricated_incidents": 4,
+    "chunks": 12,
+    "expanded_corpus_cloud_ingestion": "not performed"
+  },
+  "packaging": {
+    "sdist": "built",
+    "wheel": "built",
+    "new_modules_and_corpus_in_wheel": "verified",
+    "public_file_privacy": "passed",
+    "diff_whitespace": "passed"
+  },
+  "preceding_commit_ci": {
+    "commit": "bc787489661e8964653a7e068ffedafe3ce71b42",
+    "co_author_trailer": false,
+    "status": "success",
+    "url": "https://github.com/mdaninas/terramind-gcp/actions/runs/42771807375"
+  },
+  "cloud_changes": {
+    "billing_enabled": false,
+    "paid_calls": false,
+    "iam_changes": false,
+    "terraform_apply": false,
+    "deployment": false
+  },
+  "unverified": [
+    "Cloud rollout and ingestion of the expanded corpus",
+    "Live Google login and hosted portal deployment",
+    "Hosted PR comment and check publication",
+    "Live Eventarc delivery",
+    "New browser and mobile visual verification for the hardening scenarios"
+  ]
+}

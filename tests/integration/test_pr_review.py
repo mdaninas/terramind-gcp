@@ -77,6 +77,21 @@ def publish(client, review):
     publish_review(client, review, repository=REPOSITORY, repository_id=123, run_id="12345")
 
 
+@pytest.mark.parametrize("pack", ["storage-hardening", "database-hardening"])
+def test_optional_pack_pr_summary_preserves_scope_and_neutral_result(pack):
+    client = FakeGitHub(Path(f"examples/normalized-plans/{pack}.json").read_bytes())
+    client.files[0]["filename"] = f"examples/normalized-plans/{pack}.json"
+    review = prepare(client)
+    assert review.plans[0].findings == 2
+    assert review.plans[0].policy_packs == ("gcp-core", pack)
+    assert pack in review_markdown(review)
+    assert PullRequestReview.model_validate_json(review.model_dump_json()) == review
+    publish(client, review)
+    check = client.calls[-1][2]
+    assert check["conclusion"] == "neutral"
+    assert pack in check["output"]["summary"]
+
+
 def test_fork_fixture_is_read_as_blob_without_execution_or_cloud():
     client = FakeGitHub()
     result = prepare(client)
