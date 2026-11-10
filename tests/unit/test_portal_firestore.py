@@ -298,7 +298,11 @@ def test_private_proxy_keeps_fixed_origin_and_durable_owned_reports(cloud_store)
     login = client.get("/login")
     token = re.search(r'name="csrf" value="([^"]+)"', login.text).group(1)
     auth = client.post("/auth/google", data={"csrf": token}, headers={"Origin": origin})
-    state = parse_qs(urlsplit(auth.headers["location"]).query)["state"][0]
+    assert auth.status_code == 200
+    authorization_url = re.search(r'href="(https://accounts.google.com/[^\"]+)"', auth.text).group(
+        1
+    )
+    state = parse_qs(urlsplit(authorization_url).query)["state"][0]
     assert client.get("/auth/callback?state=" + state + "&code=synthetic").status_code == 303
     dashboard = client.get("/dashboard")
     token = re.search(r'name="csrf" value="([^"]+)"', dashboard.text).group(1)

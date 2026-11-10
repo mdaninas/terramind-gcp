@@ -52,3 +52,18 @@ run "reject_mutable_image" {
   variables { image = "us-central1-docker.pkg.dev/synthetic-project/terramind-dev/terramind:latest" }
   expect_failures = [var.image]
 }
+
+run "exact_proxy_transport_host" {
+  command = plan
+  variables { transport_host = "terramind-portal-synthetic-uc.a.run.app" }
+  assert {
+    condition     = local.transport_host == "terramind-portal-synthetic-uc.a.run.app"
+    error_message = "The official proxy's exact service hostname must be configurable."
+  }
+}
+
+run "reject_other_transport_host" {
+  command = plan
+  variables { transport_host = "unrelated.example.invalid" }
+  expect_failures = [var.transport_host]
+}

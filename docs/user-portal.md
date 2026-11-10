@@ -60,7 +60,10 @@ Supply these values through private environment or secret storage:
   email addresses. Wildcard/domain-wide admission is not supported.
 
 The authorization request uses code flow with state, nonce and an S256 PKCE
-challenge. A pending flow is bound to the browser's anonymous server session,
+challenge. The protected sign-in form opens a same-origin continuation page;
+its explicit Google link starts a new navigation. This preserves the strict
+`form-action 'self'` policy in browsers that also check a form's redirect chain.
+A pending flow is bound to the browser's anonymous server session,
 expires after five minutes and is consumed once before exchange. Redirect URIs
 come only from configuration. The token exchange uses Google's fixed HTTPS
 endpoint and does not follow redirects. Certificate requests have a five-second
