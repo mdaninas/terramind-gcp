@@ -1,40 +1,77 @@
-# Two-minute offline walkthrough
+# Two-minute walkthrough
 
-Prerequisites: Python 3.12+, uv, terminal in repository root. No GCP credentials.
-Install dependencies once with `uv sync --locked`.
+Use this sequence for a short portfolio demonstration. All inputs are packaged
+synthetic examples. Install dependencies before recording so setup time does not
+interrupt the walkthrough. No cloud access is needed for the default demonstration.
 
-1. Run `uv run --locked python scripts/demo_offline.py` (or `make demo-offline`).
-2. Open `artifacts/demo-report.md`. Expect HIGH overall and exactly these findings:
-   TM-GCP-001 public object-read grant, TM-GCP-002 world SSH ingress,
-   TM-GCP-003 project owner grant, TM-GCP-004 bucket deletion (REVIEW).
-3. Open `artifacts/demo-report.json` to inspect rule IDs, evidence, remediation,
-   policy version and explicit `rag_status=not_requested`, `model_id=null`.
-4. Run a benign example:
+## Prepare
 
-   ```sh
-   uv run --locked terramind analyze --input examples/normalized-plans/no_changes.json --output artifacts/benign.md --format markdown
-   ```
+```sh
+uv sync --locked
+uv run --locked python scripts/demo_offline.py
+uv run --locked --extra api python -m terramind.api
+```
 
-5. Open `artifacts/benign.md`: `NO_KNOWN_FINDINGS` plus visible limitations.
-6. Run `uv run --locked python scripts/check.py` to reproduce lint/type/schema/test
-   verification. This is local verification, not a successful GitHub Actions run.
+Keep the server terminal open and visit `http://127.0.0.1:8080/demo`. Local mode
+has no cloud/model calls. Reports are held in memory and disappear on restart or expiry.
 
-Demonstrate prevention-aware behavior with `public_bucket_pap_enforced.json`:
-TM-GCP-001 remains HIGH but status is REVIEW; the report says prevention blocks the
-public grant, avoiding an assertion of actual exposed data.
+## Present
 
-The demo reads packaged synthetic normalized fixtures only. A real local plan is
-not needed. No Terraform CLI, API enablement or infrastructure provisioning occurs.
+| Time | Action | Point to explain |
+| --- | --- | --- |
+| 0:00-0:20 | Show the README architecture and demo preview | Terraform values stay local; the hosted demonstration uses synthetic facts |
+| 0:20-0:40 | Select Analyze synthetic sample | Four deterministic findings produce overall HIGH risk |
+| 0:40-1:10 | Scroll through findings and observed facts | Stable rule IDs, evidence, remediation and REVIEW status; no claim of deployed exposure or backup readiness |
+| 1:10-1:30 | Download Markdown and open View JSON | Both exports derive from the same saved report; offline retrieval is not_requested and model is null |
+| 1:30-1:45 | Show the published synthetic Gemini report | Advisory explanations cite reviewed documents and cannot change deterministic severity |
+| 1:45-2:00 | Show deployment and release evidence | 297 tests, 10/10 retrieval queries, protected WIF delivery, private API and documented cost/cleanup limits |
 
-## Local report page
+Suggested opening: "Terramind reviews proposed infrastructure changes using
+four deterministic GCP rules. Gemini explains those existing findings using
+retrieved synthetic runbooks. It never approves or applies a change."
 
-Run `uv run --locked --extra api python -m terramind.api`, open
-`http://127.0.0.1:8080/demo` and select **Analyze synthetic sample**. Expect the same
-four findings, a JSON link and a Markdown download. This mode uses process memory
-and makes no provider calls. In another terminal, run
-`uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local`
-to verify the HTTP flow. Reports disappear on restart or expiry.
+![Actual local report overview](images/report-desktop.png)
 
-The cloud CLI has verified Gemini explanations and Firestore retrieval separately.
-The hosted analysis API and protected deployment workflow still need activation
-and live verification. See the [cloud demonstration instructions](delivery.md#cloud-demonstration).
+The [finding details](images/findings-desktop.png) and [mobile capture](images/report-mobile.png)
+come from the same local offline report. They are actual browser captures, not
+mockups or a claim of cloud model execution.
+
+## Reproduce the API and benign case
+
+In a second terminal:
+
+```sh
+uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local
+uv run --locked terramind analyze --input examples/normalized-plans/no_changes.json --output artifacts/benign.md --format markdown
+```
+
+The HTTP check must preserve all four findings and verify stored JSON, Markdown
+and HTML. The benign report must show `NO_KNOWN_FINDINGS`, with visible limitations.
+For prevention-aware behavior, analyze `public_bucket_pap_enforced.json`:
+TM-GCP-001 remains HIGH with REVIEW, without asserting actual public exposure.
+
+## Explain the cloud result
+
+The [cloud API verification](api-delivery-verification.md) records a real protected
+deployment, successful WIF exchange and one authenticated Gemini/Firestore analysis.
+It preserved four findings, validated ten sources and took 10.898 seconds in that
+observation. This is separate from the local screenshots and is not a latency SLA.
+The [published advisory](../examples/generated-reports/grounded-synthetic.md) was
+produced by the earlier live CLI evaluation, not by the screenshot session.
+
+For authorized read access, use the [Cloud Run proxy](analysis-api.md#authentication-and-presentation)
+and inspect an existing unexpired report. The demo preview and saved-report reads
+do not request model generation. Selecting Analyze on the cloud demo does.
+Do not rerun paid ingestion or synthesis just to present existing evidence.
+
+A new approved live analysis can use `make demo-cloud` with a short-lived identity
+token held only in the environment, following [controlled delivery](delivery.md#cloud-demonstration).
+Never put tokens in URLs, recordings, screenshots or browser storage.
+
+## Close with limitations
+
+The analyzer covers four policies and synthetic demonstration data only. AI prose
+can be wrong even when citations are valid. The private demo has shared report
+access for authorized invokers, not per-user ownership. Cloud resources remain
+active with minimum zero and maximum one instance. Alerts do not stop spending;
+[cleanup](cost-and-cleanup.md#cleanup-order) remains an explicit operator task.

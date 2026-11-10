@@ -2,54 +2,81 @@
 
 AI-powered Terraform risk analysis and infrastructure intelligence on Google Cloud.
 
-Terramind is a personal portfolio project demonstrating cloud engineering,
-infrastructure security and applied AI through a reproducible Terraform review workflow.
+Terramind reviews proposed Terraform changes with four deterministic GCP rules,
+then optionally uses Firestore vector retrieval and Gemini to explain the findings
+with traceable runbook references. The policy engine owns severity; AI output is advisory.
 
-**Available:** four deterministic GCP rules, a local allowlist normalizer,
-JSON/Markdown reports, synthetic runbook ingestion, Firestore vector retrieval and
-validated Gemini advisory output with deterministic fallback. The private Cloud Run
-analysis API, expiring report storage and minimal report page are deployed and
-verified. Protected GitHub Actions delivery uses short-lived WIF credentials and
-immutable image digests. Hosted CI passes, including the restricted container.
-A live cloud analysis preserved all four HIGH findings and validated ten sources;
-its saved JSON, Markdown and HTML passed authenticated checks. Anonymous access was
-rejected. See the [deployment evidence](docs/api-delivery-verification.md).
-All repository samples are synthetic. Resources remain active with minimum zero
-and maximum one Cloud Run instance; final cleanup is pending.
-Terramind is not a full security scanner and never approves or applies changes.
+Built as a personal portfolio project covering Python, FastAPI, Terraform, GCP IAM,
+Cloud Run, retrieval-augmented generation and GitHub Actions delivery.
+
+The offline CLI and private cloud analysis API are implemented and verified.
+A protected WIF deployment passed, and a live analysis preserved four HIGH findings
+with ten validated sources. See the [verification record](docs/api-delivery-verification.md).
+All examples are synthetic. Terramind checks a limited policy set and never approves
+or applies infrastructure changes. Cloud resources remain active; see
+[cost controls and cleanup](docs/cost-and-cleanup.md).
 
 ## Quick start
 
-Install Python 3.12+ and [uv](https://docs.astral.sh/uv/getting-started/installation/).
-From the repository root:
+Install Python 3.12+ and [uv](https://docs.astral.sh/uv/getting-started/installation/), then:
 
 ```sh
+git clone https://github.com/mdaninas/terramind-gcp.git
+cd terramind-gcp
 uv sync --locked
-uv run --locked python scripts/check.py
 uv run --locked python scripts/demo_offline.py
 ```
 
-With GNU Make installed: `make setup`, `make lint`, `make test`,
-`make demo-offline`. The direct uv commands work in Windows PowerShell too.
-Setup needs package downloads; subsequent offline analysis makes no network calls.
+Open `artifacts/demo-report.md` or `artifacts/demo-report.json`. Expect HIGH overall
+risk and four findings covering public bucket access, world SSH ingress, a project
+owner grant and bucket deletion. IDs and timestamps vary; policy findings are deterministic.
+No GCP credentials, Terraform CLI or model calls are needed for this demo.
+Initial dependency installation requires package downloads.
 
-The demo writes `artifacts/demo-report.json`, `artifacts/demo-report.md` and a
-normalized combined synthetic sample. Open the Markdown report to see all four
-HIGH findings. Analysis IDs/timestamps vary; policy findings are deterministic.
+Run the quality checks:
 
 ```sh
-uv run --locked terramind analyze --input examples/normalized-plans/public_bucket.json --output artifacts/public-bucket.md --format markdown
-uv run --locked terramind normalize --input /local/private/tfplan.json --output /local/private/normalized.json
+uv run --locked python scripts/check.py
 ```
 
-Raw `terraform show -json` output can contain plaintext secrets. Keep it outside
-the repository. The CLI reads it locally, rejects files over 5 MiB or 100 change
-records, and emits at most 256 KiB. Do not upload raw plans, state or credentials.
-Only synthetic normalized data is approved for the cloud demo.
+With GNU Make installed, the equivalent targets are `make setup`, `make lint`,
+`make test` and `make demo-offline`. The direct uv commands also work in PowerShell.
+A [fresh GitHub clone](docs/release-verification.md) passed all 297 tests, both
+command paths and package builds without Google credentials.
 
-## Rules
+## Report preview
 
-| Rule | Scope | Outcome |
+```sh
+uv run --locked --extra api python -m terramind.api
+```
+
+Open `http://127.0.0.1:8080/demo` and select **Analyze synthetic sample**. The report
+includes risk, changed resources, evidence, remediation, limitations and JSON/Markdown
+exports. Local mode keeps up to 128 expiring reports in memory, clears them on
+restart and makes no Google service calls.
+
+![Local offline report with four HIGH findings](docs/images/report-desktop.png)
+
+Actual local offline UI capture at 1440 x 1080. This screenshot does not show a
+cloud-generated advisory. See [finding details](docs/images/findings-desktop.png),
+[mobile view](docs/images/report-mobile.png) and the [two-minute walkthrough](docs/demo-script.md).
+For a real grounded explanation, inspect the
+[synthetic Gemini report](examples/generated-reports/grounded-synthetic.md) and
+[cloud API evidence](docs/evaluations/api-delivery-2026-11-10.json).
+
+In a second terminal, verify the running local API:
+
+```sh
+uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local
+```
+
+Cloud Run enforces Google invoker IAM on every hosted route. A local server does
+not implement Google authentication. For an authorized browser session, use the
+[authenticated proxy instructions](docs/analysis-api.md#authentication-and-presentation).
+
+## Rules and privacy
+
+| Rule | Supported change | Outcome |
 | --- | --- | --- |
 | TM-GCP-001 | New public bucket object-read grant | HIGH; REVIEW when prevention is verified or applicability uncertain |
 | TM-GCP-002 | World ingress allowing SSH/RDP | HIGH; does not establish VM reachability |
@@ -57,61 +84,73 @@ Only synthetic normalized data is approved for the cloud demo.
 | TM-GCP-004 | Bucket/database/persistent-resource deletion or replacement | HIGH / REVIEW; backup state is not inferred |
 
 No match produces `NO_KNOWN_FINDINGS`. REVIEW still contributes to overall HIGH
-risk. No model can alter findings. See [schema and supported scope](docs/normalization.md).
+risk. Model failures preserve deterministic findings with a visible fallback.
+Storage failures return a controlled error. See the
+[supported scope](docs/normalization.md) and [threat model](docs/threat-model.md).
 
-## Architecture and roadmap
+```sh
+uv run --locked terramind analyze --input examples/normalized-plans/public_bucket.json --output artifacts/public-bucket.md --format markdown
+uv run --locked terramind normalize --input /local/private/tfplan.json --output /local/private/normalized.json
+```
+
+Raw `terraform show -json` output can contain plaintext secrets. Keep it outside
+the repository. The local normalizer projects allowlisted facts, rejects input over
+5 MiB or 100 changes and emits at most 256 KiB. It removes private identifiers,
+prior values, outputs and unsupported fields. Never upload raw plans, state or
+credentials. The hosted demo accepts synthetic normalized facts only; a source
+label cannot prove arbitrary caller data is non-sensitive.
+
+## Architecture
 
 ```mermaid
 flowchart LR
-    A[Local Terraform plan] --> B[Bounded allowlist normalizer]
-    B --> C[Versioned sanitized facts]
-    C --> D[Pure policy engine]
-    D --> E[JSON and Markdown report]
+    A[Local private plan] --> B[Bounded allowlist normalizer]
+    B --> C[Pure policy engine]
+    C --> D[Offline JSON and Markdown]
+    S[Packaged synthetic facts] --> E[Private FastAPI on Cloud Run]
+    E --> F[Same deterministic rules]
+    F --> G[Firestore vector retrieval]
+    G --> H[Gemini advisory]
+    H --> I[Citation validation]
+    F --> J[Expiring Firestore reports]
+    I --> J
+    J --> K[JSON, Markdown and HTML]
+    L[Synthetic runbooks] --> M[Explicit ingestion and 768d embeddings]
+    M --> G
+    N[Protected GitHub Actions and WIF] --> E
 ```
 
-`src/terramind/schemas` defines closed contracts; `normalizer` is the local privacy
-boundary; `policies` has pure rules; `reports` renders findings; `cli.py` is an
-adapter. Tests cover unit behavior, CLI integration and data leakage.
+Typed contracts keep policies independent of HTTP and cloud SDKs. Separate adapters
+handle storage, retrieval and model calls. Terraform manages private storage, the
+vector index, scoped identities and runtime configuration. The manual deployment
+workflow promotes only an immutable image from its own trusted build; pull request
+CI receives no Google credentials.
 
-- [Roadmap and release gates](docs/roadmap.md)
-- [Architecture decisions](docs/architecture.md)
-- [Threat model](docs/threat-model.md)
-- [Two-minute demo](docs/demo-script.md)
-- [Local evaluation](docs/evaluation.md)
-- [Retrieval and explanations](docs/retrieval-and-explanations.md)
-- [Retrieval verification](docs/retrieval-verification.md)
-- [Analysis API and local report demo](docs/analysis-api.md)
-- [Controlled delivery](docs/delivery.md)
-- [API and delivery verification](docs/api-delivery-verification.md)
-- [Cloud setup and deployment](docs/setup-gcp.md)
-- [Cost, rollback and cleanup](docs/cost-and-cleanup.md)
-- [Infrastructure security exceptions](docs/security-exceptions.md)
-- [Changelog](CHANGELOG.md)
+Cloud Run uses minimum zero and maximum one instance in the active deployment.
+The monthly IDR 180,000 alert does not cap spending. Storage, retrieval and model
+calls remain metered. Cleanup is documented and has not been executed.
 
-Run the local API with `uv run --locked --extra api python -m terramind.api`.
-It binds to `127.0.0.1:8080`; Google authentication is enforced by Cloud Run when
-deployed, not by the local development server. `/health` is the external liveness
-endpoint; `/healthz` remains available for container probes.
-
-Open `http://127.0.0.1:8080/demo` to analyze the packaged synthetic sample and view
-the report. Local mode makes no cloud calls and keeps at most 128 expiring reports
-in process memory. Verify the running API with
-`uv run --locked python scripts/demo_cloud.py --url http://127.0.0.1:8080 --local`.
-See the API guide for request limits, storage behavior and authenticated cloud use.
-
-Validate the ten synthetic knowledge documents with
-`uv run --locked terramind-knowledge plan`. Run
-`uv run --locked python scripts/demo_retrieval.py` for a credential-free integration
-demo using explicitly labeled local test doubles. The separate cloud commands
-require approved project settings and `--execute`; see the retrieval guide.
-
-Validate the infrastructure without cloud credentials:
+## Development and evidence
 
 ```sh
+uv run --locked terramind-knowledge plan
+uv run --locked python scripts/demo_retrieval.py
 uv run --locked python scripts/check_infrastructure.py --scan
 ```
 
-This requires Terraform on PATH; use `--terraform /absolute/path/to/terraform`
-otherwise. The checker uses mock-provider plans and an isolated local data directory.
-It never applies changes or initializes a remote backend. The separate, approved
-cloud deployment is recorded in [cloud verification](docs/cloud-foundation-verification.md).
+The retrieval demo uses labeled local test doubles and makes no provider calls.
+Infrastructure verification needs Terraform on PATH (or `--terraform /absolute/path/to/terraform`)
+and uses mock plans, without a remote backend or apply. Cloud ingestion, model
+requests, provisioning and IAM changes require explicit approval.
+
+- [Walkthrough](docs/demo-script.md) and [release verification](docs/release-verification.md)
+- [Architecture decisions](docs/architecture.md) and [roadmap](docs/roadmap.md)
+- [Evaluation results](docs/evaluation.md) and [retrieval verification](docs/retrieval-verification.md)
+- [Retrieval and explanations](docs/retrieval-and-explanations.md)
+- [Analysis API](docs/analysis-api.md) and [delivery workflow](docs/delivery.md)
+- [Cloud setup](docs/setup-gcp.md) and [foundation verification](docs/cloud-foundation-verification.md)
+- [Cost, rollback and cleanup](docs/cost-and-cleanup.md)
+- [Security exceptions](docs/security-exceptions.md) and [changelog](CHANGELOG.md)
+
+Pull request comments, Eventarc indexing, additional policies and a full dashboard
+are deferred beyond the MVP.

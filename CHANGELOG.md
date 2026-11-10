@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Added actual local desktop/mobile report screenshots, the full architecture flow
+  and a timed walkthrough, with local and cloud evidence labeled separately.
+- Verified fresh-clone setup, lint/types/schemas, all 297 tests, package builds,
+  local HTTP reports and all four documented Make targets without Google credentials.
+- Added a sourced usage-cost scenario, content-free release evidence and active
+  resource/cleanup status. No additional cloud deployment or model call was made.
+
 - Matched federation to GitHub's immutable owner/repository subject format and
   added a fail-closed OIDC metadata check before deployment builds.
 

@@ -52,6 +52,53 @@ and Gemini only for admitted analysis requests. Health, preview and report reads
 do not trigger model generation. A live workflow analysis took 10.898 seconds;
 independent verification reused that saved report without another model call.
 
+## Worked usage estimate
+
+Prices checked on 2026-11-10. This illustrative USD calculation uses public
+on-demand list prices before free allowances, credits, tax or currency conversion.
+It is a component estimate, not a bill forecast or spending limit.
+
+Assume 100 analyses in a month, each with one Gemini 3.5 Flash global request,
+5,000 uncached input tokens and 1,500 total billed output tokens (including reasoning).
+Assume 30 billed instance-seconds per analysis including startup/shutdown overhead,
+1 vCPU, 0.5 GiB RAM and six authenticated HTTP requests per analysis.
+These are planning assumptions, not measurements of every report.
+
+| Component | Calculation | Estimated USD |
+| --- | --- | --- |
+| Gemini input | 100 x 5,000 / 1,000,000 x $1.50 | 0.75000 |
+| Gemini output | 100 x 1,500 / 1,000,000 x $9.00 | 1.35000 |
+| Cloud Run CPU | 100 x 30 x $0.000024 | 0.07200 |
+| Cloud Run memory | 100 x 30 x 0.5 x $0.0000025 | 0.00375 |
+| Cloud Run requests | 600 / 1,000,000 x $0.40 | 0.00024 |
+| Selected component subtotal | Sum before discounts and omitted services | **2.17599** |
+
+Model rates are from [Google model pricing](https://cloud.google.com/model-garden/pricing)
+(standard global service, without caching or batch discounts). Compute rates are
+from [Cloud Run request-based pricing](https://cloud.google.com/run/pricing).
+Actual billed model output can include reasoning tokens beyond visible prose;
+retries and longer inputs change usage.
+
+The subtotal excludes embeddings, Firestore document/vector-index reads and TTL
+deletes, database/index storage, object versions and soft deletes, image storage,
+network transfer, logging/monitoring and deployment activity. They add to the bill.
+A four-rule report makes up to four query embeddings and retrieves up to three
+chunks per rule. Re-indexing changed documents adds embedding and write operations.
+Firestore vector queries can bill both returned documents and scanned index entries;
+see [Firestore billing](https://firebase.google.com/docs/firestore/pricing).
+
+Image storage persists while Cloud Run is idle. The
+[Artifact Registry pricing page](https://cloud.google.com/artifact-registry/pricing)
+lists a shared 0.5 GiB allowance and storage charges above it; immutable tagged
+images are retained until explicitly removed. State/runbook object generations
+also remain subject to [Cloud Storage pricing](https://cloud.google.com/storage/pricing).
+Free allowances can already be consumed by other projects on the billing account.
+Use the actual billing account's IDR SKUs and current usage to forecast its bill.
+
+For a zero-analysis night, no application background job requests Gemini or
+embeddings. Retained storage and other metered services can still incur charges.
+The instance cap and alert budget do not guarantee a maximum monthly cost.
+
 ## Rollback
 
 Keep the previous verified container digest. Set `container_image` to that digest,

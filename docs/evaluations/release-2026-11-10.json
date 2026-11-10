@@ -1,0 +1,153 @@
+{
+  "source_sha": "280f6e339a39f11e1d20a5bf49b6a3324bfbdb81",
+  "source": "fresh GitHub clone",
+  "platform": "Windows",
+  "python": "3.12",
+  "independent_virtual_environment": true,
+  "cloud_mutations": 0,
+  "steps": [
+    {
+      "step": "setup",
+      "command": "uv sync --locked",
+      "exit_code": 0,
+      "elapsed_seconds": 11.531
+    },
+    {
+      "step": "quality",
+      "command": "uv run --locked python scripts/check.py",
+      "exit_code": 0,
+      "elapsed_seconds": 116.032
+    },
+    {
+      "step": "offline-demo",
+      "command": "uv run --locked python scripts/demo_offline.py",
+      "exit_code": 0,
+      "elapsed_seconds": 0.797
+    },
+    {
+      "step": "retrieval-demo",
+      "command": "uv run --locked python scripts/demo_retrieval.py",
+      "exit_code": 0,
+      "elapsed_seconds": 0.859
+    },
+    {
+      "step": "benchmark",
+      "command": "uv run --locked python scripts/benchmark.py",
+      "exit_code": 0,
+      "elapsed_seconds": 0.75
+    },
+    {
+      "step": "privacy",
+      "command": "uv run --locked python scripts/check_public_files.py",
+      "exit_code": 0,
+      "elapsed_seconds": 0.625
+    },
+    {
+      "step": "build",
+      "command": "uv build",
+      "exit_code": 0,
+      "elapsed_seconds": 4.047
+    }
+  ],
+  "finding_count": 4,
+  "risk": "HIGH",
+  "offline_model_id": null,
+  "gnu_make_version": "4.4.1",
+  "make_steps": [
+    {
+      "command": "make setup",
+      "exit_code": 0,
+      "elapsed_seconds": 0.109
+    },
+    {
+      "command": "make lint",
+      "exit_code": 0,
+      "elapsed_seconds": 2.407
+    },
+    {
+      "command": "make test",
+      "exit_code": 0,
+      "elapsed_seconds": 13.14
+    },
+    {
+      "command": "make demo-offline",
+      "exit_code": 0,
+      "elapsed_seconds": 0.891
+    }
+  ],
+  "verified_date": "2026-11-10",
+  "timezone": "Asia/Jakarta",
+  "test_count": 297,
+  "normalization_policy_coverage_percent": 97.58,
+  "benchmark": {
+    "changes": 100,
+    "elapsed_seconds": 0.004588
+  },
+  "cloud_resources": "active, unchanged during portfolio verification",
+  "cleanup_executed": false,
+  "local_http": {
+    "mode": "local",
+    "anonymous_rejection_verified": false,
+    "report_round_trip_verified": true,
+    "markdown_and_page_verified": true,
+    "findings_preserved": true,
+    "finding_count": 4,
+    "source_count": 0,
+    "model_id": null,
+    "rag_status": "not_requested",
+    "analysis_request_seconds": 0.007
+  },
+  "browser": {
+    "mode": "local offline",
+    "desktop_viewport": [
+      1440,
+      1080
+    ],
+    "mobile_viewport": [
+      390,
+      844
+    ],
+    "mobile_document_width": 375,
+    "preview_to_saved_report": true,
+    "markdown_download": true,
+    "json_navigation": true,
+    "console_errors": 0,
+    "provider_calls": 0
+  },
+  "screenshots": [
+    {
+      "path": "docs/images/findings-desktop.png",
+      "width": 1057,
+      "height": 1709,
+      "sha256": "a81b5d652e8ceefef4fe84b3b435b80ecd30fddb37e5f838fbf0ad02e4283d6b"
+    },
+    {
+      "path": "docs/images/report-desktop.png",
+      "width": 1440,
+      "height": 1080,
+      "sha256": "02b50c416587fd074cbc1dc560accc8f80059d92664cc255ed66601849ca452d"
+    },
+    {
+      "path": "docs/images/report-mobile.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "80963a668fc3866a5ee301a0f88a7ba70105b7e1ceedfa65f3b2d5fbecc44c3e"
+    }
+  ],
+  "cloud_read_only_check": {
+    "existing_image_ready": true,
+    "min_instances": 0,
+    "max_instances": 1,
+    "service_and_project_no_public_principals": true,
+    "mutations": 0
+  },
+  "google_credentials_provided": false,
+  "additional_cli_examples": {
+    "no_changes": "NO_KNOWN_FINDINGS",
+    "public_bucket": "TM-GCP-001",
+    "exit_codes": [
+      0,
+      0
+    ]
+  }
+}

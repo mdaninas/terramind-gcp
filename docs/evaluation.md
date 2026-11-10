@@ -1,4 +1,4 @@
-# Local evaluation
+# Evaluation results
 
 Local checks used Python 3.12.13 on Windows; hosted CI used Python 3.12 on Linux.
 Cloud verification used a dedicated GCP project, Cloud Shell for the foundation
@@ -79,8 +79,12 @@ The recorded standalone benchmark normalized and reported 100 synthetic changes
 in 0.003826 seconds. The automated performance test also passed the two-second
 acceptance threshold. Timing depends on the machine and does not predict cloud latency.
 
-GNU Make was unavailable on the evaluation machine. Native Python/uv commands were
-verified; the corresponding Make targets were not executed.
+The portfolio verification subsequently used a fresh GitHub clone with a separate
+virtual environment on 2026-11-10. Native uv commands and GNU Make 4.4.1 targets
+`setup`, `lint`, `test` and `demo-offline` all passed. The fresh-clone benchmark was
+0.004588 seconds for 100 changes. A real local HTTP analysis took 0.007 seconds and
+passed JSON/Markdown/HTML checks, with no model call. See
+[release verification](release-verification.md) for scope and command evidence.
 The Terraform command requires an installed binary, or an explicit `--terraform`
 path. [Cloud foundation verification](cloud-foundation-verification.md) records
 the files, exact local commands and remaining checks.

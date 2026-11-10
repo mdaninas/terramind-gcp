@@ -2,7 +2,7 @@
 
 The offline analyzer, synthetic retrieval and private analysis API are implemented
 and verified. Protected GitHub Actions deployment through WIF passed. Portfolio
-release verification remains next; cloud resources are active.
+release verification passed for the documented source; cloud resources are active.
 
 | Area | Scope | Status |
 | --- | --- | --- |
@@ -10,7 +10,7 @@ release verification remains next; cloud resources are active.
 | Cloud foundation | Terraform foundation and private Cloud Run health service | Deployed and verified; federation exchange passed |
 | Retrieval and explanations | Synthetic runbooks, Firestore vector retrieval and Gemini explanations | CLI implemented and verified locally and on GCP |
 | API and delivery | Analysis API, private report page and GitHub Actions deployment | Deployed and verified; protected WIF delivery and cloud analysis passed |
-| Release verification | End-to-end evaluation, walkthrough and deployment documentation | Planned |
+| Release verification | End-to-end evaluation, walkthrough and deployment documentation | Fresh-clone commands, screenshots, walkthrough and cost/cleanup record verified |
 
 ## Offline analyzer
 
@@ -69,8 +69,15 @@ credentials.
 
 ## Release verification
 
-Complete screenshots, the walkthrough, measured evaluations, cost drivers,
-deployment and cleanup instructions, and fresh-clone reproduction.
+Actual local desktop/mobile screenshots, a timed walkthrough, the full application
+flow, measured evaluations and a sourced cost scenario are documented. A fresh
+GitHub clone passed setup, lint/types/schemas, all 297 tests, package builds and the
+local HTTP flow without Google credentials. All four documented Make targets passed.
+See the [release verification record](release-verification.md).
+
+The existing cloud deployment remains active with explicit cost controls and
+cleanup instructions. Release tagging and final resource deletion are owner actions;
+no new cloud deployment or paid model evaluation was needed for this documentation pass.
 
 Acceptance criteria: documented commands work for a new developer, no credentials
 or raw plans enter version control, and cloud resources are documented as active or

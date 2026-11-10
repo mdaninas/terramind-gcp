@@ -25,6 +25,8 @@ credentials*.json
 gha-creds-*.json
 *service-account*.json
 artifacts/
+/output/playwright/
+/.playwright-cli/
 backend.hcl
 *.tfbackend
 crash.log
