@@ -23,6 +23,7 @@ from terramind.events.service import packaged_corpus
 from terramind.incidents.search import IncidentSearcher
 from terramind.policies.samples import hardening_sample
 from terramind.portal import views
+from terramind.portal.contracts import PortalStorage
 from terramind.portal.oidc import GoogleOIDC, IdentityProvider
 from terramind.portal.settings import PortalSettings
 from terramind.portal.store import HistoryFilters, PortalAnalysis, PortalStore, Session, owner_key
@@ -93,13 +94,19 @@ def history_filters(request: Request) -> tuple[HistoryFilters, dict[str, str]]:
 
 def create_app(
     settings: PortalSettings | None = None,
-    store: PortalStore | None = None,
+    store: PortalStorage | None = None,
     provider: IdentityProvider | None = None,
     analyzer: Callable[[NormalizedPlan], Report] | None = None,
 ) -> FastAPI:
     settings = settings or PortalSettings.from_env()
     owned_store = store is None
-    store = store or PortalStore(settings.database)
+    if store is None:
+        if settings.storage_backend == "firestore":
+            from terramind.portal.firestore import FirestorePortalStore
+
+            store = FirestorePortalStore(settings.project, settings.firestore_database)
+        else:
+            store = PortalStore(settings.database)
     storage = store
     identity = provider or GoogleOIDC(settings)
     searcher = IncidentSearcher()
@@ -124,7 +131,10 @@ def create_app(
     async def boundary(
         request: Request, call_next: Callable[[Request], Awaitable[Response]]
     ) -> Response:
-        if request.headers.get("host", "").lower() != urlsplit(settings.origin).netloc.lower():
+        if request.headers.get("host", "").lower() not in {
+            urlsplit(settings.origin).netloc.lower(),
+            settings.transport_host or "\x00",
+        }:
             return JSONResponse({"detail": "Unrecognized portal host"}, status_code=400)
         if settings.auth_mode == "demo" and (
             request.client is None or request.client.host not in {"127.0.0.1", "::1"}

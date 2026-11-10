@@ -1,5 +1,14 @@
 # Cost controls, rollback and cleanup
 
+Current update, 2026-11-10: billing was re-linked to the existing account under
+the owner's prior approval to activate it when required for live verification.
+The current [preparation record](evaluations/live-preparation-2026-11-10.json)
+and [activation proposal](live-activation-plan.md) supersede the operating state
+in the historical shutdown section below. New resources and IAM have not yet
+been applied. Charges can accrue while billing is active.
+
+## Earlier billing shutdown
+
 An isolated portfolio project was created and deployed with owner approval.
 On 2026-11-10 (Asia/Jakarta), the owner chose to disable billing and retain the
 project. The Google Cloud console confirmed `Billing is disabled` for the

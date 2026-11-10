@@ -26,7 +26,7 @@ def main() -> int:
     commands: list[tuple[list[str], dict[str, str]]] = [
         ([executable, "fmt", "-check", "-recursive", "terraform"], env),
     ]
-    for name in ("project", "bootstrap", "environments/dev"):
+    for name in ("project", "bootstrap", "environments/dev", "environments/portal"):
         # Do not touch an operator's initialized backend or cached credentials.
         data_directory = workspace / "artifacts" / "terraform-validation" / name
         data_directory.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.1",
+  "source": "synthetic-demo",
+  "policy_packs": [
+    "storage-hardening",
+    "database-hardening"
+  ],
+  "changes": [
+    {
+      "address": "google_storage_bucket_iam_member.resource_0001",
+      "type": "google_storage_bucket_iam_member",
+      "actions": [
+        "create"
+      ],
+      "attributes": {
+        "grants": [
+          {
+            "role": "roles/storage.objectViewer",
+            "principal": "allUsers",
+            "newly_granted": true
+          }
+        ]
+      }
+    },
+    {
+      "address": "google_compute_firewall.resource_0002",
+      "type": "google_compute_firewall",
+      "actions": [
+        "create"
+      ],
+      "attributes": {
+        "direction": "INGRESS",
+        "disabled": false,
+        "source_ranges": [
+          "0.0.0.0/0"
+        ],
+        "allow": [
+          {
+            "protocol": "tcp",
+            "ports": [
+              "22"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "address": "google_project_iam_binding.resource_0003",
+      "type": "google_project_iam_binding",
+      "actions": [
+        "create"
+      ],
+      "attributes": {
+        "grants": [
+          {
+            "role": "roles/owner",
+            "principal": "redacted",
+            "newly_granted": true
+          }
+        ]
+      }
+    },
+    {
+      "address": "google_storage_bucket.resource_0004",
+      "type": "google_storage_bucket",
+      "actions": [
+        "delete"
+      ],
+      "attributes": {}
+    },
+    {
+      "address": "google_storage_bucket.resource_0005",
+      "type": "google_storage_bucket",
+      "actions": [
+        "create"
+      ],
+      "attributes": {
+        "public_access_prevention": "inherited",
+        "uniform_bucket_level_access": false,
+        "newly_disabled_uniform_access": true,
+        "newly_inherited_prevention": true
+      }
+    },
+    {
+      "address": "google_sql_database_instance.resource_0006",
+      "type": "google_sql_database_instance",
+      "actions": [
+        "create"
+      ],
+      "attributes": {
+        "ipv4_enabled": true,
+        "world_authorized_network": true,
+        "newly_world_accessible": true,
+        "ssl_mode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
+        "newly_unencrypted": true
+      }
+    }
+  ]
+}

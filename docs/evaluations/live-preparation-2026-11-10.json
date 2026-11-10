@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-10",
+  "source_baseline": "d7ef9b502fe30c7f900e7d787526afda62383ef8",
+  "includes_uncommitted_preparation": true,
+  "project": "terramind-gcp-mdaninas",
+  "billing": {
+    "prior_state": "disabled",
+    "verified_current_state": "enabled",
+    "association": "existing billing account",
+    "authorization": "prior owner approval to enable billing when needed",
+    "shared_billing_account_configuration_changed": false
+  },
+  "eventarc_plan": {
+    "remote_state_read": "passed after billing activation",
+    "unsafe_historical_variable_plan": "rejected, not applied",
+    "reviewed_additions": 17,
+    "reviewed_changes": 0,
+    "reviewed_deletions": 0,
+    "image": "existing digest for structural review only, replace with promoted new digest before apply",
+    "applied": false
+  },
+  "portal_preparation": {
+    "durable_backend": "Firestore adapter implemented",
+    "private_hosting": "standalone Terraform environment prepared",
+    "browser_access": "authenticated loopback Cloud Run proxy",
+    "oauth_branding": "prepared, policy agreement unchecked, not submitted",
+    "oauth_client_created": false,
+    "secrets_created": false,
+    "cloud_plan_with_final_client_and_image": "pending",
+    "deployed": false
+  },
+  "local_verification": {
+    "quality_gate": "passed",
+    "tests": 493,
+    "seconds": 16.07,
+    "normalization_policy_coverage_percent": 97.19,
+    "durable_portal_adapter_coverage_percent": 96.36,
+    "strict_mypy_files": 70,
+    "terraform_mock_cases": 19,
+    "portal_mock_cases_after_final_constraints": 4,
+    "terraform_checkov_passed": 53,
+    "terraform_checkov_failed": 0,
+    "terraform_checkov_existing_exceptions": 4,
+    "docker_checkov_passed": 48,
+    "docker_checkov_failed": 0,
+    "package_build": "sdist and wheel passed",
+    "public_file_privacy": "passed"
+  },
+  "github": {
+    "connector_branch_creation": "rejected with integration permission 403",
+    "branch_created_by_connector": false,
+    "fallback": "authenticated Git transport and browser workflow UI",
+    "synthetic_verification_fixture_prepared": true,
+    "new_commit": false,
+    "hosted_pr_review": "pending"
+  },
+  "new_cloud_iam_changes": false,
+  "terraform_apply": false,
+  "new_cloud_model_calls": false,
+  "pending_owner_approval": [
+    "New paid resources and least-privilege IAM in the reviewed activation plan",
+    "Google API Services User Data Policy acceptance and test OAuth client creation",
+    "Prepared commit, synthetic verification PR and trusted image deployment"
+  ]
+}

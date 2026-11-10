@@ -20,5 +20,5 @@ COPY --from=builder /build/.venv /opt/venv
 USER 10001:10001
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-    CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=2).read()"]
+    CMD ["python", "-c", "import os,urllib.request,urllib.parse; h=os.environ.get('PORTAL_TRANSPORT_HOST') or urllib.parse.urlsplit(os.environ.get('PORTAL_ORIGIN','http://127.0.0.1:8080')).netloc; r=urllib.request.Request('http://127.0.0.1:8080/healthz',headers={'Host':h} if os.environ.get('TERRAMIND_SERVICE')=='portal' else {}); urllib.request.urlopen(r,timeout=2).read()"]
 ENTRYPOINT ["python", "-m", "terramind.api"]

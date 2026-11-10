@@ -1,0 +1,8 @@
+project_id           = "synthetic-project"
+project_number       = "123456789012"
+image                = "us-central1-docker.pkg.dev/synthetic-project/terramind-dev/terramind@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+oauth_client_id      = "123-synthetic.apps.googleusercontent.com"
+oauth_secret_name    = "synthetic-oauth-client"
+oauth_secret_version = "1"
+allowed_emails       = ["analyst@example.invalid"]
+invoker_members      = ["user:analyst@example.invalid"]

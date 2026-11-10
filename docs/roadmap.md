@@ -2,9 +2,11 @@
 
 The offline analyzer, synthetic retrieval and private analysis API are implemented
 and verified. Protected GitHub Actions deployment through WIF passed. Portfolio
-release verification passed for the documented source. Project billing was
-disabled on 2026-11-10 (Asia/Jakarta); the project was retained and resource
-deletion has not been verified. See the [shutdown record](evaluations/billing-disabled-2026-11-10.json).
+release verification passed for the documented source. Billing was disabled and
+subsequently reactivated on 2026-11-10 under the owner's prior approval for live
+verification. The project was retained; resource deletion has not been verified.
+See the current [activation plan](live-activation-plan.md) and
+[preparation record](evaluations/live-preparation-2026-11-10.json).
 
 | Area | Scope | Status |
 | --- | --- | --- |
@@ -109,5 +111,6 @@ checks, selected explicitly while the four core rules always remain active.
 See their [local verification](policy-packs-verification.md). The expanded
 twelve-document corpus has not been ingested or deployed on GCP. Live Google
 login, hosted PR publication, Eventarc delivery and managed portal deployment
-remain unverified. Billing remains disabled; no cloud resources were provisioned
-for these extensions.
+remain unverified. A durable Firestore portal adapter and private Cloud Run
+environment are now prepared and locally tested. Billing was reactivated for
+live preparation; no new resource or IAM apply has yet been performed.
