@@ -16,7 +16,7 @@ from terramind.cloud.budget import CallBudget, DependencyUnavailable
 from terramind.cloud.settings import CloudSettings
 from terramind.llm.contracts import CitationId, FindingId, ModelNarrative
 from terramind.llm.diagnostics import AdvisoryReason
-from terramind.llm.service import SYSTEM_INSTRUCTION
+from terramind.llm.service import MAX_RESPONSE_BYTES, SYSTEM_INSTRUCTION
 from terramind.rag.contracts import MAX_CHUNKS, Document, IndexedChunk, unit_vector
 
 COLLECTION = "knowledge_chunks"
@@ -86,6 +86,75 @@ def generation_schema(prompt: str = "{}") -> dict[str, Any]:
     return result
 
 
+def generation_request(
+    prompt: str,
+) -> tuple[str, dict[str, Any], dict[str, str], dict[str, str]]:
+    """Use short request-local identifiers to keep the provider's grammar compact."""
+    schema = generation_schema(prompt)
+    payload = json.loads(prompt)
+    explanations = schema["properties"]["explanations"]["items"]["properties"]
+    ids = explanations["finding_id"].get("enum", [])
+    if not ids:
+        return prompt, schema, {}, {}
+    citations = schema["properties"]["citations"]["items"]["enum"]
+    finding_aliases = {value: f"F{index}" for index, value in enumerate(ids, 1)}
+    citation_aliases = {value: f"S{index}" for index, value in enumerate(citations, 1)}
+    for finding in payload["findings"]:
+        finding["finding_id"] = finding_aliases[finding["finding_id"]]
+        finding["allowed_citation_ids"] = [
+            citation_aliases[value] for value in finding["allowed_citation_ids"]
+        ]
+    for source in payload.get("untrusted_sources", []):
+        source["citation_id"] = citation_aliases[source["citation_id"]]
+    explanations["finding_id"]["enum"] = list(finding_aliases.values())
+    explanations["citation_ids"]["items"]["enum"] = list(citation_aliases.values())
+    schema["properties"]["citations"]["items"]["enum"] = list(citation_aliases.values())
+    return (
+        json.dumps(payload, ensure_ascii=True, separators=(",", ":")),
+        schema,
+        {alias: value for value, alias in finding_aliases.items()},
+        {alias: value for value, alias in citation_aliases.items()},
+    )
+
+
+def restore_generation(text: str, findings: dict[str, str], citations: dict[str, str]) -> str:
+    """Restore registered IDs only; retain all other output for strict validation."""
+    if len(text.encode()) > MAX_RESPONSE_BYTES:
+        raise DependencyUnavailable("Response limit", reason=AdvisoryReason.RESPONSE_SIZE)
+    if not findings:
+        return text
+    try:
+        payload = json.loads(text)
+        if not isinstance(payload, dict) or not isinstance(payload.get("explanations"), list):
+            raise ValueError("Response shape")
+        for item in payload["explanations"]:
+            if not isinstance(item, dict) or not isinstance(item.get("citation_ids"), list):
+                raise ValueError("Explanation shape")
+            key = item.get("finding_id")
+            if not isinstance(key, str) or key not in findings:
+                raise DependencyUnavailable(
+                    "Unknown finding", reason=AdvisoryReason.FINDING_COVERAGE
+                )
+            item["finding_id"] = findings[key]
+            if any(
+                not isinstance(key, str) or key not in citations for key in item["citation_ids"]
+            ):
+                raise DependencyUnavailable(
+                    "Unknown citation", reason=AdvisoryReason.CITATION_COVERAGE
+                )
+            item["citation_ids"] = [citations[key] for key in item["citation_ids"]]
+        if not isinstance(payload.get("citations"), list):
+            raise ValueError("Citation shape")
+        if any(not isinstance(key, str) or key not in citations for key in payload["citations"]):
+            raise DependencyUnavailable("Unknown citation", reason=AdvisoryReason.CITATION_COVERAGE)
+        payload["citations"] = [citations[key] for key in payload["citations"]]
+        return json.dumps(payload, ensure_ascii=True, separators=(",", ":"))
+    except (ValueError, TypeError):
+        raise DependencyUnavailable(
+            "Response shape", reason=AdvisoryReason.RESPONSE_CONTRACT
+        ) from None
+
+
 class GoogleEmbedder:
     def __init__(
         self, settings: CloudSettings, budget: CallBudget, client: genai.Client | None = None
@@ -151,15 +220,16 @@ class GeminiSynthesizer:
     def generate(self, prompt: str) -> str:
         if len(prompt.encode()) > 48 * 1024:
             raise ValueError("Model input exceeds its limit")
+        contents, schema, findings, citations = generation_request(prompt)
 
         def request(timeout: float) -> str:
             response = self.client.models.generate_content(
                 model=self.model_id,
-                contents=prompt,
+                contents=contents,
                 config=types.GenerateContentConfig(
                     system_instruction=SYSTEM_INSTRUCTION,
                     response_mime_type="application/json",
-                    response_json_schema=generation_schema(prompt),
+                    response_json_schema=schema,
                     max_output_tokens=4096,
                     # Verified model support; other configured models use their defaults.
                     thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.MINIMAL)
@@ -181,7 +251,7 @@ class GeminiSynthesizer:
                 raise DependencyUnavailable(
                     "Model did not return text", reason=AdvisoryReason.EMPTY
                 )
-            return response.text
+            return restore_generation(response.text, findings, citations)
 
         return self.budget.run(request, transient=is_transient)
 

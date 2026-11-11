@@ -17,7 +17,12 @@ from terramind.api.app import create_app, demo_plan
 from terramind.api.service import AnalysisService, ApiSettings, cloud_analysis
 from terramind.cloud import google
 from terramind.cloud.budget import CallBudget, DependencyUnavailable
-from terramind.cloud.google import generation_schema
+from terramind.cloud.google import (
+    GeminiSynthesizer,
+    generation_request,
+    generation_schema,
+    restore_generation,
+)
 from terramind.cloud.settings import CloudSettings
 from terramind.llm.diagnostics import LIMITATIONS, AdvisoryReason
 from terramind.llm.service import explain
@@ -267,3 +272,67 @@ def test_cloud_diagnostics_contain_only_fixed_outcomes_and_counts(monkeypatch, c
     assert records[0]["reason"] == "response_contract"
     assert set(records[0]) == {"event", "reason", "finding_count", "physical_calls", "duration_ms"}
     assert "private-provider-canary" not in caplog.text + report.model_dump_json()
+
+
+@pytest.mark.parametrize("sample", demo_cloud.SCENARIOS)
+def test_compact_provider_identifiers_restore_exact_grounded_contract(sample):
+    from google.genai import types
+
+    _, _, _, retriever = local_system()
+    requests = []
+    fixture = RecordingSynthesizer()
+
+    def generate_content(*, contents, config, model):
+        payload = json.loads(contents)
+        assert all(f["finding_id"].startswith("F") for f in payload["findings"])
+        assert all(s["citation_id"].startswith("S") for s in payload["untrusted_sources"])
+        assert all(
+            len(value) <= 3
+            for value in config.response_json_schema["properties"]["citations"]["items"]["enum"]
+        )
+        text = fixture.generate(contents)
+        jsonschema.validate(json.loads(text), config.response_json_schema)
+        requests.append(contents)
+        return SimpleNamespace(
+            text=text, candidates=[SimpleNamespace(finish_reason=types.FinishReason.STOP)]
+        )
+
+    client = SimpleNamespace(models=SimpleNamespace(generate_content=generate_content))
+    model = GeminiSynthesizer(CloudSettings(project_id="synthetic-project"), CallBudget(), client)
+    plan = demo_plan() if sample == "risk-demo" else hardening_sample(sample)
+    report = explain(plan, retriever, model)
+    assert report.advisory is not None and len(requests) == 1
+    assert report.findings == build_report(plan).findings
+    assert {e.finding_id for e in report.advisory.explanations} == {
+        f"{f.rule_id}:{f.resource}" for f in report.findings
+    }
+    assert all(citation.startswith(("rb-", "inc-")) for citation in report.citations)
+
+
+@pytest.mark.parametrize("fault", ["finding", "citation", "override", "unicode"])
+def test_compact_identifier_mapping_rejects_unknowns_and_retains_validation(fault):
+    _, _, _, retriever = local_system()
+    fixture = RecordingSynthesizer()
+    explain(demo_plan(), retriever, fixture)
+    prompt, _, findings, citations = generation_request(fixture.prompts[0])
+    payload = json.loads(RecordingSynthesizer().generate(prompt))
+    if fault == "finding":
+        payload["explanations"][0]["finding_id"] = "F999"
+    elif fault == "citation":
+        payload["explanations"][0]["citation_ids"] = ["S999"]
+    elif fault == "override":
+        payload["overall_risk"] = "INFO"
+    else:
+        payload["summary"] = "Synthetic Unicode punctuation \u2014 must still fail validation."
+    if fault in {"finding", "citation"}:
+        with pytest.raises(DependencyUnavailable):
+            restore_generation(json.dumps(payload), findings, citations)
+    else:
+        from pydantic import ValidationError
+
+        from terramind.llm.contracts import ModelNarrative
+
+        with pytest.raises(ValidationError):
+            ModelNarrative.model_validate_json(
+                restore_generation(json.dumps(payload), findings, citations)
+            )

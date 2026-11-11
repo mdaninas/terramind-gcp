@@ -34,6 +34,16 @@ fields, and also warns that complex schemas can be rejected. See
 [the provider's schema documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/control-generated-output#supported-schema-fields).
 Provider acceptance and live output quality still require the approved rerun.
 
+The first approved 2026-11-11 rerun validated Storage advice, but core generation
+was rejected with `INVALID_ARGUMENT` and Database advice failed its response
+contract. A follow-up uses short request-local finding/source aliases in the
+provider schema and restores only registered aliases to their original IDs before
+the unchanged strict validation. Unknown aliases, risk overrides and non-ASCII
+prose remain rejected. This reduces grammar size without removing sources or
+loosening the output contract. Prose instructions explicitly avoid terms rejected
+by the existing assertion guard. The precise earlier Database validation error
+was not retained, so this is a targeted mitigation pending the next live result.
+
 ## Local verification
 
 The new tests use explicit local HTTP and model doubles. They exercise all three
