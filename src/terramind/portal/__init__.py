@@ -1,1 +1,1 @@
-"""Single-host synthetic portfolio portal with server-side sessions and report ownership."""
+"""Single-host synthetic portal with server-side sessions and report ownership."""

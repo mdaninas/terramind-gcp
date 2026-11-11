@@ -75,7 +75,7 @@ resource "google_project" "portfolio" {
   billing_account     = var.enable_billing ? var.billing_account_id : null
   auto_create_network = false
   deletion_policy     = var.deletion_policy
-  labels              = { application = "terramind", purpose = "portfolio", data = "synthetic" }
+  labels              = { application = "terramind", purpose = "demo", data = "synthetic" }
 }
 
 resource "google_project_service" "management" {
@@ -104,7 +104,7 @@ resource "google_billing_budget" "portfolio" {
   count           = var.enable_billing ? 1 : 0
   provider        = google.budget
   billing_account = var.billing_account_id
-  display_name    = "Terramind portfolio monthly alert"
+  display_name    = "Terramind monthly alert"
   budget_filter {
     projects               = ["projects/${google_project.portfolio.number}"]
     calendar_period        = "MONTH"

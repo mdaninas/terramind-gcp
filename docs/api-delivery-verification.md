@@ -8,7 +8,7 @@ The private analysis API is deployed and verified on GCP. On 2026-11-10
 (Asia/Jakarta), the protected GitHub workflow exchanged its identity through WIF,
 published an immutable image and passed an authenticated end-to-end analysis.
 All verification data was synthetic. Resources remain active for development;
-final portfolio cleanup has not been executed.
+final resource cleanup has not been executed.
 
 ## Files and decisions
 
@@ -155,7 +155,7 @@ The monthly alert remains IDR 180,000 before credits, with 50/90/100% thresholds
 it does not stop spending. No automatic shutdown or background generation is
 configured. Storage, reads and model use remain metered.
 
-Portfolio walkthrough/screenshots and fresh-clone reproduction were subsequently
+Application walkthrough/screenshots and fresh-clone reproduction were subsequently
 completed in the [release verification record](release-verification.md). Release
 tagging and final resource cleanup remain owner actions. Budget notification
 delivery, a Monitoring notification channel and organization-inherited policies

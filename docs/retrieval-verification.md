@@ -111,4 +111,4 @@ findings, validated references and escaped rendering provide the enforceable
 boundaries. Runtime data/prediction roles, analysis routes, report storage,
 private presentation and protected deployment were subsequently activated and
 verified separately. Cloud resources and indexed synthetic documents remain active
-for development, with cleanup tracked for completion of the portfolio project.
+for development, with cleanup tracked for project shutdown.

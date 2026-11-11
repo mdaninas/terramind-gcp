@@ -2,7 +2,7 @@
 
 This record captures the foundation and liveness deployment. The service was deployed
 with owner approval in a new,
-dedicated portfolio project on 2026-11-09 (Asia/Jakarta). Cloud Run authentication,
+dedicated Terramind project on 2026-11-09 (Asia/Jakarta). Cloud Run authentication,
 private buckets and Firestore index readiness were verified. The existing lab
 project was left unchanged. Notification delivery was not tested. Federation
 exchange was untested at this stage; it subsequently passed with the protected
@@ -136,7 +136,7 @@ Private plans, logs, backend settings and inventory remain outside version contr
 ## Remaining work and operational limits
 
 The deployment is active for development. Cleanup has not been executed; follow
-the [cleanup procedure](cost-and-cleanup.md) when the portfolio work is finished.
+the [cleanup procedure](cost-and-cleanup.md) after verification is complete.
 No automatic shutdown is configured. Budget email delivery, server-error alert
 delivery, federation exchange, protected GitHub environments and organization-level
 IAM/log-sink inheritance have not been verified. The server-error policy currently

@@ -27,7 +27,7 @@ Actual accrued charges can appear after shutdown; no zero-cost claim is made.
 
 ## Earlier billing shutdown
 
-An isolated portfolio project was created and deployed with owner approval.
+An isolated Terramind project was created and deployed with owner approval.
 On 2026-11-10 (Asia/Jakarta), the owner chose to disable billing and retain the
 project. The Google Cloud console confirmed `Billing is disabled` for the
 Terramind project and showed a successful disable notification. See the
@@ -76,7 +76,7 @@ The optional `terraform/project` configuration provides monthly alerts at 50%,
 90% and 100% of an approved amount in the billing account's currency. It excludes
 promotional and other credits from the usage calculation so credit consumption is
 visible even when net billed cost is zero. A deployment may use a lower instance
-limit than the default, such as one maximum instance for a small portfolio demo.
+limit than the default, such as one maximum instance for a small synthetic demo.
 
 The current demo uses a maximum of one Cloud Run instance and a monthly alert of
 IDR 180,000, approximately the approved USD 10 target when configured. The billing

@@ -86,7 +86,7 @@ def report_page(
         '<header><a href="/demo" class="brand">'
         '<img src="/assets/terramind-logo.png" alt="Terramind" width="216" height="72"></a>'
         '<span class="muted">Terraform change intelligence</span></header><main>'
-        '<div class="eyebrow">Synthetic portfolio demonstration</div>'
+        '<div class="eyebrow">Synthetic infrastructure analysis</div>'
         "<h1>Understand the risk<br>before infrastructure changes.</h1>"
         '<p class="intro">Deterministic findings, supporting evidence '
         "and advisory explanations.</p>"

@@ -83,7 +83,7 @@
     "changes": 100,
     "elapsed_seconds": 0.004588
   },
-  "cloud_resources": "active, unchanged during portfolio verification",
+  "cloud_resources": "active, unchanged during release verification",
   "cleanup_executed": false,
   "local_http": {
     "mode": "local",

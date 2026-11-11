@@ -1,8 +1,8 @@
 # Roadmap
 
 The offline analyzer, synthetic retrieval and private analysis API are implemented
-and verified. Protected GitHub Actions deployment through WIF passed. Portfolio
-release verification passed for the documented source. The approved 2026-11-10
+and verified. Protected GitHub Actions deployment through WIF passed. Release
+verification passed for the documented source. The approved 2026-11-10
 window exercised hosted PR review, Eventarc indexing, real Google portal login
 and durable owned reports. Billing was disabled again after six analysis
 submissions, with the project retained. The 2026-11-11 follow-up completed a

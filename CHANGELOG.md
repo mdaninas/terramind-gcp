@@ -2,9 +2,15 @@
 
 ## Unreleased
 
+## 1.0.1 - 2026-11-11
+
+- Removed personal career positioning from release text, application UI and
+  documentation. Describe Terramind by its purpose and implemented capabilities.
+- Excluded local planning documents and agent instructions from source archives.
+
 ## 1.0.0 - 2026-11-11
 
-- Published the complete portfolio release with aligned package and API versions,
+- Published the complete release with aligned package and API versions,
   a source archive, Python wheel and SHA-256 checksums. Cloud billing remains
   disabled; release publication does not redeploy the hosted services.
 - Restricted source-distribution paths to reviewed project content so local

@@ -79,7 +79,7 @@ The recorded standalone benchmark normalized and reported 100 synthetic changes
 in 0.003826 seconds. The automated performance test also passed the two-second
 acceptance threshold. Timing depends on the machine and does not predict cloud latency.
 
-The portfolio verification subsequently used a fresh GitHub clone with a separate
+The release verification subsequently used a fresh GitHub clone with a separate
 virtual environment on 2026-11-10. Native uv commands and GNU Make 4.4.1 targets
 `setup`, `lint`, `test` and `demo-offline` all passed. The fresh-clone benchmark was
 0.004588 seconds for 100 changes. A real local HTTP analysis took 0.007 seconds and

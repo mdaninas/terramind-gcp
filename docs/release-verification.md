@@ -1,11 +1,11 @@
-# Portfolio release verification
+# Release verification
 
 Current operational status: after the checks below, the owner disabled project
 billing on 2026-11-10 (Asia/Jakarta) and retained the project. The console confirmed
 the change. Individual resource deletion was not performed or verified. See the
 [billing shutdown record](evaluations/billing-disabled-2026-11-10.json).
 
-The MVP implementation and its portfolio documentation are verified. The offline
+The MVP implementation and its documentation are verified. The offline
 reproduction used a fresh GitHub clone of source
 `280f6e339a39f11e1d20a5bf49b6a3324bfbdb81` on 2026-11-10 (Asia/Jakarta), with a
 separate virtual environment and no Google credentials supplied. Application code
@@ -151,5 +151,5 @@ plans. Follow the [cleanup order](cost-and-cleanup.md#cleanup-order) and verify 
 removal before claiming the project no longer has active resources.
 
 PR comments, Eventarc indexing, historical incident search as a product feature,
-new policies and a full dashboard remain deferred. Portfolio artifacts are ready
+new policies and a full dashboard remain deferred. Release artifacts are ready
 for review; release tagging and resource deletion are separate owner actions.

@@ -55,7 +55,7 @@ Use an isolated, approved demo project with billing configured. Confirm the proj
 ID, numeric project number, allowed region, existing Firestore databases and any
 organization policies. Inspect existing resources before changing a shared lab.
 
-For a new portfolio project, `terraform/project` manages project creation, billing
+For a new Terramind project, `terraform/project` manages project creation, billing
 linkage, audit configuration and a project-filtered monthly alert budget. Set its
 local variable file from the synthetic example, using an approved organization,
 existing billing account and that account's currency. Its state starts locally;

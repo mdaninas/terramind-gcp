@@ -1,6 +1,6 @@
 # Two-minute walkthrough
 
-Use this sequence for a short portfolio demonstration. All inputs are packaged
+Use this sequence for a short application demonstration. All inputs are packaged
 synthetic examples. Install dependencies before recording so setup time does not
 interrupt the walkthrough. No cloud access is needed for the default demonstration.
 

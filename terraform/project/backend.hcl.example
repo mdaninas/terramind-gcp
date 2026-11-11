@@ -1,2 +1,2 @@
-bucket = "terramind-portfolio-example-state"
+bucket = "terramind-demo-example-state"
 prefix = "terramind/project"

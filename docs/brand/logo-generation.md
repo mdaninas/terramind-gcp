@@ -20,7 +20,7 @@ the generator.
 
 ```text
 Use case: logo-brand
-Asset type: primary logo for Terramind, a personal software portfolio project that analyzes proposed Terraform changes for infrastructure risk and provides grounded AI explanations.
+Asset type: primary logo for Terramind, a Terraform change intelligence project that analyzes proposed Terraform changes for infrastructure risk and provides grounded AI explanations.
 Primary request: Generate one polished, production-ready Terramind logo using the Terraform logo as the visual basis. Borrow its recognizable design language of purple modular isometric parallelogram tiles, crisp angles, deliberate gaps and architectural structure. Develop a distinctive Terramind T symbol with a compact top crossbar and descending stem. Integrate a restrained intelligence motif through two or three simple connected nodes or negative-space branches within the tiled construction, with no literal brain illustration. The result should read first as a strong geometric T, then as connected infrastructure intelligence.
 Style/medium: precise flat vector-style logo artwork, clean solid color fills, exceptionally crisp smooth edges, professional developer-tool identity, visually balanced and legible at small sizes.
 Composition/framing: a single horizontal logo lockup, geometric symbol on the left and the exact wordmark "Terramind" on the right. Align the symbol optically with the wordmark. The symbol is moderately taller than the letters, with generous clear space and a carefully measured gap. Center the entire lockup in a wide canvas, with practical but not excessive transparent margins. Do not show multiple alternatives, a presentation board, or a mockup.

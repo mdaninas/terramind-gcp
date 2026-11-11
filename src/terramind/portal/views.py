@@ -24,7 +24,7 @@ def page(title: str, body: str, session: Session | None = None) -> str:
         '<link rel="icon" href="/assets/terramind-icon.png"></head><body>'
         '<header><a class="brand" href="/dashboard"><img src="/assets/terramind-logo.png" '
         'alt="Terramind" width="216" height="72"></a><nav><a href="/dashboard">Dashboard</a>'
-        f"{logout}</nav></header><main>{body}</main><footer>Synthetic portfolio data only. "
+        f"{logout}</nav></header><main>{body}</main><footer>Synthetic data only. "
         "Policy findings remain authoritative. Terramind never approves or applies infrastructure "
         "changes. Reports expire after 24 hours.</footer></body></html>"
     )
