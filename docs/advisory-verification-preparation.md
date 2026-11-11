@@ -1,10 +1,15 @@
 # Advisory verification preparation
 
+Completed follow-up: the approved 2026-11-11 [live verification](advisory-verification.md)
+passed the final strict smoke with validated core, Storage and Database
+advisories. Billing was disabled afterward. This page records the preparation
+and correction that preceded that result.
+
 The previous [hosted window](live-integrations-verification.md) returned valid
 core advice but fallback for Storage and Database hardening, and its last strict
 deployment smoke failed. The retained results cannot distinguish generation,
 deadline and validation failures. These changes prepare a diagnosable rerun;
-they do not establish that either live gap is resolved.
+their local results alone did not establish that either live gap was resolved.
 
 ## Prepared changes
 
@@ -32,7 +37,8 @@ they do not establish that either live gap is resolved.
 Google documents array bounds and string enums as supported structured-output
 fields, and also warns that complex schemas can be rejected. See
 [the provider's schema documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/control-generated-output#supported-schema-fields).
-Provider acceptance and live output quality still require the approved rerun.
+Provider acceptance and live output quality required the approved rerun, now
+recorded separately above.
 
 The first approved 2026-11-11 rerun validated Storage advice, but core generation
 was rejected with `INVALID_ARGUMENT` and Database advice failed its response
@@ -42,7 +48,8 @@ the unchanged strict validation. Unknown aliases, risk overrides and non-ASCII
 prose remain rejected. This reduces grammar size without removing sources or
 loosening the output contract. Prose instructions explicitly avoid terms rejected
 by the existing assertion guard. The precise earlier Database validation error
-was not retained, so this is a targeted mitigation pending the next live result.
+was not retained, so this is a targeted mitigation rather than an exact diagnosis.
+The next live result passed all three scenarios.
 
 ## Local verification
 
@@ -52,8 +59,9 @@ source hashes and finding coverage, and ensure diagnostic output excludes privat
 canaries. JSON Schema tests reject unsupported finding/citation identifiers for
 each scenario. Local results are not a live Gemini evaluation.
 
-Observed checks: 510 tests passed in 27.49 seconds; normalization/policy coverage
-was 97.19%. Ruff, strict mypy on 71 source files, schema/corpus drift checks,
+Initial preparation checks: 510 tests passed in 27.49 seconds. The compact-alias
+correction subsequently passed 517 tests in 16.68 seconds; normalization/policy
+coverage was 97.19%. Ruff, strict mypy on 71 source files, schema/corpus drift checks,
 actionlint, public-file privacy and whitespace checks passed. Source distribution
 and wheel builds passed, and the wheel contains the new diagnostics module.
 
@@ -70,11 +78,12 @@ The existing local API can exercise deterministic exports for one hardening pack
 uv run --locked python scripts/demo_cloud.py --local --url http://127.0.0.1:8080 --scenario storage-hardening
 ```
 
-## Next approved live window
+## Approved live procedure
 
-Billing remains disabled during preparation. Before any new metered operation,
-obtain explicit approval for a fresh bounded window and publish the reviewed
-source without a co-author trailer. Suggested commit: `Prepare advisory verification`.
+Billing remained disabled during preparation. The owner then explicitly approved
+the bounded follow-up, and the reviewed source was published as
+`Prepare advisory verification` without a co-author trailer. Future metered
+operations require a newly approved window.
 
 The default protected deployment still submits one core analysis. Selecting the
 new `verify_policy_packs` dispatch input runs this strict command instead:
@@ -98,5 +107,6 @@ limit. Restore disabled billing after testing and verify the association is empt
 
 Success requires real validated advisory output for both hardening packs and a
 green strict smoke, with unchanged deterministic findings and correct sources.
-Those outcomes remain pending; no billing, IAM, Terraform apply or paid model
-operation was performed during this preparation.
+Both outcomes passed during the approved follow-up. Preparation itself performed
+no billing, IAM, Terraform apply or paid model operation; the later image-only
+deployment and six paid analysis submissions are recorded in the live results.

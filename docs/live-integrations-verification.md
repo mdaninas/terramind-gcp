@@ -1,5 +1,10 @@
 # Hosted integration verification
 
+Historical record: the 2026-11-11 [advisory follow-up](advisory-verification.md)
+subsequently passed the strict deployment smoke and validated core, Storage and
+Database advisories. The results below describe the earlier window, including
+its retained failures.
+
 Live verification on 2026-11-10 uses synthetic data in the dedicated approved
 Google Cloud project. This record supplements the historical local checks and
 the historical [activation proposal](live-activation-plan.md). Real PR publishing,

@@ -5,9 +5,10 @@ and verified. Protected GitHub Actions deployment through WIF passed. Portfolio
 release verification passed for the documented source. The approved 2026-11-10
 window exercised hosted PR review, Eventarc indexing, real Google portal login
 and durable owned reports. Billing was disabled again after six analysis
-submissions, with the project retained. The latest image promotion succeeded but
-its strict advisory smoke failed; optional-pack live advisories used fallback.
-See the [hosted results](live-integrations-verification.md) for these limits.
+submissions, with the project retained. The 2026-11-11 follow-up completed a
+successful strict deployment smoke with validated core, Storage and Database
+advisories, then disabled billing again. See the [latest results](advisory-verification.md)
+and the historical [hosted results](live-integrations-verification.md).
 
 | Area | Scope | Status |
 | --- | --- | --- |
@@ -20,7 +21,7 @@ See the [hosted results](live-integrations-verification.md) for these limits.
 | Eventarc source indexing | Private generation-bound receiver, fenced ingestion and durable receipts | Live twelve-document synchronization, receipts, replay and expired-lease recovery verified |
 | Incident Memory | Local TF-IDF similarity over fabricated incidents with provenance and evidence labels | Implemented; four curated top-one retrieval cases passed |
 | User portal | Google OIDC, local demo login, owned reports and paginated filters | Real Google login, private Firestore reports, exports, filters, logout and revision persistence verified |
-| Optional policy packs | Cloud Storage access controls and Cloud SQL connectivity/TLS, four additional rules | Expected live findings and retrieval verified; successful live pack advisories unverified |
+| Optional policy packs | Cloud Storage access controls and Cloud SQL connectivity/TLS, four additional rules | Expected live findings, retrieval and validated advisories verified; strict smoke passed |
 
 ## Offline analyzer
 
@@ -112,7 +113,8 @@ checks, selected explicitly while the four core rules always remain active.
 See their [local verification](policy-packs-verification.md). The expanded
 twelve-document corpus was synchronized on GCP through Eventarc. Real Google login
 and four owned portal report flows passed. Cross-owner isolation and pagination
-beyond the four live reports remain covered by local tests. Core advisory delivery
-succeeded, while the latest strict deployment smoke and both optional-pack
-advisories fell back. No further analysis was run after the six-request limit.
-Billing is disabled; future paid evaluations require a newly approved window.
+beyond the four live reports remain covered by local tests. The later approved
+six-request window validated advisories for all three packaged scenarios and
+passed the strict deployment smoke. The updated portal passed real Google login;
+no additional portal analyses were submitted. Billing is disabled; future paid
+evaluations require a newly approved window.

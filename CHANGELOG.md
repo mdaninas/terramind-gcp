@@ -2,12 +2,19 @@
 
 ## Unreleased
 
+- Verified real core, Storage and Database Gemini advisories and a green protected
+  three-scenario deployment smoke on 2026-11-11. Promoted the same immutable image
+  to the private API, portal and receiver; rechecked Google login and logout.
+  Used six approved analysis submissions, retained the first failed run, disabled
+  billing again and stopped both proxies. See the [live results](docs/advisory-verification.md).
+- Added compact request-local finding/source aliases with canonical restoration
+  before unchanged strict validation. The correction passed 517 local tests and CI.
 - Prepared request-specific generation bounds and finding/citation enums, concise
   output instructions, and classified content-free advisory diagnostics. Policy
   validation and the existing call, deadline and token caps remain enforced.
 - Added an opt-in core/Storage/Database strict smoke with no submission retries,
   independent coverage/provenance checks and retained safe failure artifacts.
-  Local HTTP/model regressions do not establish a successful live model rerun.
+  The subsequent approved live run passed as recorded above.
 
 - Verified hosted synthetic PR publishing and rerun behavior, real Eventarc
   synchronization of twelve documents, durable receipts, replay deduplication
@@ -16,8 +23,8 @@
   reports, JSON/Markdown export, history filters, logout and persistence across
   Cloud Run revisions. Corrected proxy hostname configuration and the Google
   form navigation while retaining the strict same-origin form policy.
-- Recorded six analysis submissions, core advisory success, optional-pack safe
-  fallback and the failed latest strict advisory smoke separately. Disabled
+- Recorded the historical 2026-11-10 six analysis submissions, core advisory
+  success, optional-pack safe fallback and failed strict smoke separately. Disabled
   billing after testing, retained the project and stopped the private proxy.
   See the [hosted results](docs/live-integrations-verification.md).
 

@@ -1,14 +1,23 @@
 # Cost controls, rollback and cleanup
 
-Current update, 2026-11-10: the approved live integration window finished and
-**billing is disabled again**. At 15:35 UTC (22:35 Asia/Jakarta), an unlink and
+Current update, 2026-11-11: the approved advisory verification window finished and
+**billing is disabled again**. At 09:01 UTC (16:01 Asia/Jakarta), an unlink and
 independent read confirmed `billingEnabled: false` and no billing-account
 association. The console also showed that the project has no billing account.
 The project is retained; resource deletion and future data recoverability are
-not claimed. See the [hosted verification](live-integrations-verification.md) and
-[evidence](evaluations/live-integrations-2026-11-10.json). The local proxy was stopped.
+not claimed. See the [latest verification](advisory-verification.md) and
+[evidence](evaluations/advisory-live-2026-11-11.json). Both local proxies were stopped.
 
-The window applied the reviewed Eventarc and durable portal resources. Each of
+The follow-up used six of six approved analysis submissions: four validated
+advisories and two policy-preserving fallbacks. The final strict smoke passed
+all three scenarios. Image updates and CLI metadata reconciliation created or
+destroyed no resources and did not expand IAM. All three services retained zero
+minimum and one maximum instance. Real Google login on the updated portal passed;
+no further portal analysis was submitted. Accrued charges can appear later.
+
+## Historical integration window
+
+The 2026-11-10 window applied the reviewed Eventarc and durable portal resources. Each of
 the three Cloud Run services retained zero minimum and one maximum instance.
 Six analysis submissions included two validated advisories, three safe fallbacks
 and one no-change sample without retrieval/model calls. Twelve canonical source

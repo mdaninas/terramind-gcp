@@ -77,6 +77,9 @@ tests preserve severity and validated provenance. Incident Memory remains limite
 to four curated core-rule incident queries, so additional rules receive partial
 incident coverage, with no invented incident matches. Local lexical tests and a
 model double do not establish live Google embedding or Gemini answer quality.
+The separate approved [live verification](advisory-verification.md) subsequently
+validated both hardening advisories, retrieval provenance and a strict deployment
+smoke against the synchronized corpus.
 
 ## Implementation references
 

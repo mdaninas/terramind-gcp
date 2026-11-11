@@ -188,17 +188,14 @@ filters, logout and persistence across revisions were exercised on 2026-11-10.
 See the [hosted verification record](docs/live-integrations-verification.md).
 
 Current operational status: **billing is disabled and the project is retained**.
-The approved live window ended after six analysis submissions. The core portal
-sample returned a validated Gemini advisory; both hardening samples used visible
-fallback with their policy findings preserved. The latest deployment promoted its
-image successfully but failed its strict advisory smoke. Hosted services are
-paused. See the [evidence](docs/evaluations/live-integrations-2026-11-10.json) and
+The 2026-11-11 follow-up used six approved analysis submissions. The final
+protected deployment and strict smoke passed for core, Storage and Database
+scenarios with validated Gemini advisories, unchanged findings and checked
+sources. The API, receiver and portal used the same immutable image; real Google
+login on the updated portal passed. Hosted billable services are paused.
+See the [live advisory results](docs/advisory-verification.md),
+[evidence](docs/evaluations/advisory-live-2026-11-11.json) and
 [cost controls](docs/cost-and-cleanup.md). Resource deletion is not claimed.
-
-The subsequent [advisory verification preparation](docs/advisory-verification-preparation.md)
-adds bounded generation constraints, content-free failure diagnosis and an opt-in
-three-scenario strict smoke. These changes are locally tested and have not been
-deployed or rerun against paid models.
 
 Terraform configurations define the private Cloud Run service, Firestore vector
 index, runbook storage, scoped identities and runtime settings. GitHub Actions
@@ -256,11 +253,11 @@ backend or apply.
 | Integrations | [Synthetic PR review](docs/pr-integration.md), [Eventarc indexing](docs/eventarc-indexing.md), [integration checks](docs/integrations-verification.md) |
 | User workspace | [Incident Memory](docs/incident-memory.md), [user portal](docs/user-portal.md), [portal verification](docs/portal-verification.md) |
 | Additional policies | [Pack definitions and usage](docs/policy-packs.md), [local verification](docs/policy-packs-verification.md) |
-| Verification | [Hosted integrations](docs/live-integrations-verification.md), [evaluations](docs/evaluation.md), [retrieval checks](docs/retrieval-verification.md), [cloud foundation](docs/cloud-foundation-verification.md), [release checks](docs/release-verification.md) |
+| Verification | [Live advisories](docs/advisory-verification.md), [hosted integrations](docs/live-integrations-verification.md), [evaluations](docs/evaluation.md), [retrieval checks](docs/retrieval-verification.md), [cloud foundation](docs/cloud-foundation-verification.md), [release checks](docs/release-verification.md) |
 | Project | [Roadmap](docs/roadmap.md), [changelog](CHANGELOG.md), [security exceptions](docs/security-exceptions.md) |
 
 PR review, Eventarc indexing, synthetic incident similarity and the user portal
 are implemented, with local and hosted verification scopes documented separately.
 The twelve-document corpus was synchronized through real Eventarc delivery.
-Optional packs produced their expected findings on GCP; successful live advisory
-output for those two packs remains unverified. Billing is disabled after testing.
+Optional packs produced their expected findings and validated live advisories on
+GCP. The strict three-scenario smoke passed. Billing is disabled after testing.

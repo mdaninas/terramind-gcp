@@ -1,0 +1,174 @@
+{
+  "date": "2026-11-11",
+  "data": "synthetic only",
+  "application_source": "c8220f5de69a7496d4f2d1d3526090a1f411b939",
+  "image_digest": "sha256:d37a72be12c3f460e9ba9857936d94f7ebdd76edf764366ec545d88afe6bdb06",
+  "quality": {
+    "python_tests": 517,
+    "normalization_policy_coverage_percent": 97.19,
+    "strict_mypy_source_files": 71,
+    "source_ci_run": 42989767579,
+    "source_ci_result": "passed"
+  },
+  "delivery": {
+    "first_run": 42988189930,
+    "first_strict_smoke": "failed",
+    "latest_run": 42989951299,
+    "latest_result": "passed",
+    "latest_strict_smoke": "passed",
+    "protection_bypassed": false
+  },
+  "strict_smoke": {
+    "status": "passed",
+    "scenario_limit": 3,
+    "analysis_submission_limit": 3,
+    "analysis_submissions": 3,
+    "results": [
+      {
+        "mode": "cloud",
+        "scenario": "risk-demo",
+        "status": "passed",
+        "stage": "complete",
+        "analysis_submitted": true,
+        "anonymous_rejection_verified": true,
+        "analysis_request_seconds": 9.693,
+        "analysis_http_status": 201,
+        "findings_preserved": true,
+        "finding_count": 4,
+        "rag_status": "available",
+        "model_id": "gemini-3.5-flash",
+        "advisory_present": true,
+        "report_round_trip_verified": true,
+        "markdown_and_page_verified": true,
+        "source_count": 8
+      },
+      {
+        "mode": "cloud",
+        "scenario": "storage-hardening",
+        "status": "passed",
+        "stage": "complete",
+        "analysis_submitted": true,
+        "anonymous_rejection_verified": true,
+        "analysis_request_seconds": 3.199,
+        "analysis_http_status": 201,
+        "findings_preserved": true,
+        "finding_count": 2,
+        "rag_status": "available",
+        "model_id": "gemini-3.5-flash",
+        "advisory_present": true,
+        "report_round_trip_verified": true,
+        "markdown_and_page_verified": true,
+        "source_count": 2
+      },
+      {
+        "mode": "cloud",
+        "scenario": "database-hardening",
+        "status": "passed",
+        "stage": "complete",
+        "analysis_submitted": true,
+        "anonymous_rejection_verified": true,
+        "analysis_request_seconds": 2.913,
+        "analysis_http_status": 201,
+        "findings_preserved": true,
+        "finding_count": 2,
+        "rag_status": "available",
+        "model_id": "gemini-3.5-flash",
+        "advisory_present": true,
+        "report_round_trip_verified": true,
+        "markdown_and_page_verified": true,
+        "source_count": 4
+      }
+    ]
+  },
+  "usage": {
+    "analysis_submission_limit": 6,
+    "analysis_submissions": 6,
+    "validated_advisories": 4,
+    "policy_preserving_fallbacks": 2,
+    "additional_portal_analyses": 0,
+    "attempts": [
+      {
+        "source": "protected strict smoke",
+        "run_id": 42988189930,
+        "scenario": "risk-demo",
+        "result": "failed",
+        "reason": "provider_rejected"
+      },
+      {
+        "source": "protected strict smoke",
+        "run_id": 42988189930,
+        "scenario": "storage-hardening",
+        "result": "passed",
+        "reason": "validated"
+      },
+      {
+        "source": "protected strict smoke",
+        "run_id": 42988189930,
+        "scenario": "database-hardening",
+        "result": "failed",
+        "reason": "response_contract"
+      },
+      {
+        "source": "corrected protected strict smoke",
+        "run_id": 42989951299,
+        "scenario": "risk-demo",
+        "result": "passed",
+        "reason": "validated",
+        "seconds": 9.693
+      },
+      {
+        "source": "corrected protected strict smoke",
+        "run_id": 42989951299,
+        "scenario": "storage-hardening",
+        "result": "passed",
+        "reason": "validated",
+        "seconds": 3.199
+      },
+      {
+        "source": "corrected protected strict smoke",
+        "run_id": 42989951299,
+        "scenario": "database-hardening",
+        "result": "passed",
+        "reason": "validated",
+        "seconds": 2.913
+      }
+    ]
+  },
+  "runtime": {
+    "services_on_same_image": 3,
+    "ready_before_shutdown": true,
+    "minimum_instances_each": 0,
+    "maximum_instances_each": 1,
+    "receiver_ingress": "internal",
+    "new_resources": 0,
+    "destroyed_resources": 0,
+    "iam_or_oauth_scope_expanded": false,
+    "canonical_documents_matching_package": 12
+  },
+  "portal": {
+    "real_google_login_on_latest_image": true,
+    "existing_owned_reports_visible": 4,
+    "logout_returned_login_page": true,
+    "new_pack_advisories_verified_via": "private API shared analysis path",
+    "cross_owner_and_large_pagination": "local tests only"
+  },
+  "shutdown": {
+    "billing_enabled": false,
+    "billing_account_association": "empty",
+    "verified_at": "2026-11-11T09:01:30.375270+00:00",
+    "console_confirmed_no_billing_account": true,
+    "project_retained": true,
+    "individual_resource_deletion_verified": false,
+    "private_proxies_stopped": true,
+    "local_proxy_ports_no_longer_listening": [
+      8091,
+      8092
+    ]
+  },
+  "limitations": [
+    "Finite synthetic samples do not guarantee every future model response.",
+    "Earlier Database response-contract failure cause was not retained.",
+    "Concurrent stale-worker fencing remains covered by local tests.",
+    "Project retention does not establish future resource recoverability."
+  ]
+}

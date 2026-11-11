@@ -5,8 +5,10 @@ configuration, local synthetic demo accounts, owner-scoped reports, a dashboard
 and paginated history filters. Local API, cryptographic verifier and browser
 checks passed. Subsequent real Google login, private Cloud Run hosting, Firestore
 report persistence, exports, filters and logout were exercised on 2026-11-10.
-See the [hosted results and advisory limitations](live-integrations-verification.md)
-and the historical [local verification](portal-verification.md). Billing is disabled.
+The updated portal image also passed real Google login and logout on 2026-11-11.
+See the [latest advisory verification](advisory-verification.md), historical
+[hosted results](live-integrations-verification.md) and
+[local verification](portal-verification.md). Billing is disabled.
 
 ## Try the local synthetic demo
 
@@ -155,6 +157,11 @@ the OAuth client, scoped IAM and private resources were configured and tested.
 The core portal report returned a validated advisory; optional-pack reports used
 safe fallback. Six total analysis submissions were counted, including a no-change
 sample without retrieval/model calls. Billing was then disabled and the proxy stopped.
+
+The approved 2026-11-11 follow-up verified new core and optional-pack advisories
+through the private API, promoted the same image to the portal and rechecked
+Google login, the existing dashboard and logout. No new portal analyses were
+submitted. Billing was disabled again and both authenticated proxies were stopped.
 
 References: [Google OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect),
 [google-auth token verifier](https://googleapis.dev/python/google-auth/latest/reference/google.oauth2.id_token.html),
