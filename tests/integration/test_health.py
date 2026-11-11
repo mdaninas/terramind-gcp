@@ -16,7 +16,7 @@ def test_health_without_network(monkeypatch, path):
     with TestClient(create_app()) as client:
         response = client.get(path)
     assert response.status_code == 200
-    assert response.json() == {"status": "ok", "service": "terramind", "version": "0.1.0"}
+    assert response.json() == {"status": "ok", "service": "terramind", "version": "1.0.0"}
     assert response.headers["cache-control"] == "no-store"
     assert response.headers["x-content-type-options"] == "nosniff"
     assert response.headers["x-request-id"]

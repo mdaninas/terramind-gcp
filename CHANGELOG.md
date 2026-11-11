@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 1.0.0 - 2026-11-11
+
+- Published the complete portfolio release with aligned package and API versions,
+  a source archive, Python wheel and SHA-256 checksums. Cloud billing remains
+  disabled; release publication does not redeploy the hosted services.
+- Restricted source-distribution paths to reviewed project content so local
+  artifact directories cannot enter a release archive.
 - Verified real core, Storage and Database Gemini advisories and a green protected
   three-scenario deployment smoke on 2026-11-11. Promoted the same immutable image
   to the private API, portal and receiver; rechecked Google login and logout.

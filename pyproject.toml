@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "terramind"
-version = "0.1.0"
+version = "1.0.0"
 description = "AI-powered Terraform risk analysis and infrastructure intelligence on Google Cloud."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -50,6 +50,32 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/terramind"]
+
+[tool.hatch.build.targets.sdist]
+only-include = [
+    ".github",
+    "apps",
+    "docs",
+    "examples",
+    "knowledge-base",
+    "schemas",
+    "scripts",
+    "src",
+    "terraform",
+    "tests",
+    ".dockerignore",
+    ".env.example",
+    ".gitattributes",
+    ".gitignore",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "Dockerfile",
+    "Makefile",
+    "README.md",
+    "Terramind_GCP_PRD_v1.md",
+    "pyproject.toml",
+    "uv.lock",
+]
 
 [tool.ruff]
 target-version = "py312"
