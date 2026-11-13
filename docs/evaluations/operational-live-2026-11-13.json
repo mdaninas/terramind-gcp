@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-13",
+  "status": "approved bounded execution completed; budget email receipt unverified",
+  "data": "synthetic analysis inputs only",
+  "source_commit": "88602fbba9553e486be4b7f123dcd62b278d6a1b",
+  "application_version": "1.0.1",
+  "source_ci_run": 43372714959,
+  "protected_deployment_run": 43377459596,
+  "image_digest": "sha256:813cecbd0b78fa26b6f35a137018cf03fa0b22e825fd8791ce12c60a252d59e6",
+  "runtime": {
+    "ready_services_on_same_image": 3,
+    "minimum_instances_per_service": 0,
+    "maximum_instances_per_service": 1,
+    "private_invocation_retained": true,
+    "receiver_internal_ingress_retained": true,
+    "environment_review_preserved": true,
+    "cloud_iam_expanded": false
+  },
+  "execution_bounds": {
+    "analysis_submission_limit": 23,
+    "analysis_submissions": 23,
+    "core_smoke_submissions": 1,
+    "no_change_portal_submissions": 22,
+    "firestore_probe_invocations": 1,
+    "authenticated_health_gets": 3,
+    "interrupted_window_resumed_within_original_budget": true
+  },
+  "core_smoke": {
+    "status": "passed",
+    "analysis_http_status": 201,
+    "analysis_request_seconds": 9.24,
+    "findings_preserved": true,
+    "finding_count": 4,
+    "rag_status": "available",
+    "model_id": "gemini-3.5-flash",
+    "validated_advisory_present": true,
+    "source_count": 8,
+    "html_json_markdown_round_trip": "passed",
+    "anonymous_rejection": "passed"
+  },
+  "portal": {
+    "status": "passed",
+    "real_google_accounts": 2,
+    "oauth_scopes": ["openid", "email"],
+    "owner_a_reports": 21,
+    "owner_b_reports": 1,
+    "owner_a_pages": 2,
+    "owner_b_pages": 1,
+    "no_change_samples_requested_model_or_retrieval": false,
+    "checker_get_requests": 18,
+    "checker_max_get_requests": 32,
+    "checker_analysis_submissions": 0,
+    "stable_totals_unique_ids_disjoint_histories": "passed",
+    "own_html_json_markdown_reads": "passed",
+    "cross_owner_html_json_markdown_status": 404,
+    "anonymous_history_status": 401,
+    "owner_query_override_status": 400,
+    "both_sessions_revoked": true,
+    "revoked_session_history_status": 401
+  },
+  "notifications": {
+    "operator_email_channel_configured": true,
+    "normal_server_error_channel_attached": true,
+    "synthetic_monitoring_email_received": true,
+    "monitoring_email_received_local": "2026-11-13 13:36 Asia/Jakarta",
+    "normal_server_error_threshold_exercised": false,
+    "temporary_probe_policy_removed": true,
+    "budget_channel_attached": true,
+    "budget_display_name": "Terramind monthly alert",
+    "budget_currency": "IDR",
+    "budget_amount": 180000,
+    "budget_current_spend_thresholds": [0.5, 0.9, 1.0],
+    "budget_credit_exclusion_preserved": true,
+    "budget_project_scope_preserved": true,
+    "budget_default_recipients_preserved": true,
+    "budget_email_receipt": "not verified; no matching email observed",
+    "forced_spend_or_reduced_threshold": false,
+    "hard_cost_cap": false
+  },
+  "effective_policy_inspection": {
+    "read_successfully": [
+      "storage.publicAccessPrevention",
+      "run.allowedIngress",
+      "iam.allowedPolicyMemberDomains"
+    ],
+    "policies_changed": false,
+    "exhaustive_organization_audit": false
+  },
+  "ingestion_fencing": {
+    "status": "passed",
+    "mode": "real Firestore adapter, isolated synthetic sandbox",
+    "active_lease_rejected": true,
+    "stale_commit_fenced": true,
+    "current_commit_recorded": true,
+    "duplicate_receipt_skipped": true,
+    "owned_document_references": 3,
+    "sandbox_cleanup_verified": true,
+    "staged_chunks": 0,
+    "model_or_embedding_calls": 0,
+    "new_end_to_end_eventarc_race_test": false
+  },
+  "closeout": {
+    "temporary_second_portal_account_removed": true,
+    "temporary_second_oauth_test_user_removed": true,
+    "original_operator_retained": true,
+    "oauth_scopes_unchanged": true,
+    "oauth_lifetime_user_cap_reset": false,
+    "both_portal_sessions_revoked": true,
+    "proxy_ports_stopped": [8091, 8092, 8093],
+    "billing_closeout_completed_at_utc": "2026-11-13T07:28:55.200298+00:00",
+    "billing_enabled": false,
+    "billing_association_empty": true,
+    "console_no_linked_billing_account_verified": true,
+    "project_retained": true,
+    "resource_deletion_claimed": false,
+    "future_data_recoverability_claimed": false
+  },
+  "remaining_observations": [
+    "Budget email receipt under a genuine threshold event remains unverified."
+  ],
+  "limits": [
+    "The portal dataset verifies tested ownership and pagination boundaries, not large-scale capacity.",
+    "The Firestore probe staged no chunks and did not repeat end-to-end Eventarc embedding delivery.",
+    "Effective policy inspection covered three selected constraints only.",
+    "Monitoring email receipt does not prove budget delivery or exercise the normal server-error threshold.",
+    "Billing shutdown does not establish individual resource deletion, data recoverability or absence of accrued charges."
+  ]
+}

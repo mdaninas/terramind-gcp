@@ -73,7 +73,10 @@ does not establish resource deletion or future data recoverability. Accrued
 charges can appear later. Future paid operation requires a newly approved window.
 
 These samples establish successful live advisory delivery for all packaged
-scenarios. They do not guarantee every future model response. Cross-owner portal
-isolation, larger pagination datasets and concurrent stale-worker fencing remain
-covered by local tests rather than new live experiments. Public evidence excludes
+scenarios. They do not guarantee every future model response. At the end of this
+window, cross-owner portal isolation, larger pagination datasets and concurrent
+stale-worker fencing had only local coverage. The subsequent
+[2026-11-13 operational window](operational-verification.md) verified two Google
+owners with multi-page history and a separate real-Firestore fencing sandbox
+without staged chunks. Public evidence excludes
 credentials, account emails, raw plans, Terraform state and raw report storage.

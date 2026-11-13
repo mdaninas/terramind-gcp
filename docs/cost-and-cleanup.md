@@ -1,14 +1,27 @@
 # Cost controls, rollback and cleanup
 
-Current update, 2026-11-11: the approved advisory verification window finished and
-**billing is disabled again**. At 09:01 UTC (16:01 Asia/Jakarta), an unlink and
-independent read confirmed `billingEnabled: false` and no billing-account
-association. The console also showed that the project has no billing account.
-The project is retained; resource deletion and future data recoverability are
-not claimed. See the [latest verification](advisory-verification.md) and
-[evidence](evaluations/advisory-live-2026-11-11.json). Both local proxies were stopped.
+Current update, 2026-11-13: the approved operational window finished and
+**billing is disabled again**. Final cleanup at 07:28 UTC (14:28 Asia/Jakarta)
+independently confirmed `billingEnabled: false` and no billing-account association.
+The console also showed that the project has no billing account. The project is
+retained; resource deletion and future data recoverability are not claimed. See
+the [latest verification](operational-verification.md) and
+[evidence](evaluations/operational-live-2026-11-13.json). All workspace-owned
+proxies on ports 8091, 8092 and 8093 were stopped.
 
-The follow-up used six of six approved analysis submissions: four validated
+Exactly 23 approved analysis submissions were used: one validated core advisory
+smoke and 22 no-change portal samples without retrieval/model generation. Both
+Google owners, cross-owner report rejection and multi-page history passed.
+One isolated real-Firestore fencing probe cleaned its three owned references.
+Monitoring email was received. Temporary access and the probe policy were removed,
+both sessions were revoked and the permanent notification channel was retained.
+The existing budget's amount, scope and thresholds were preserved; actual budget
+email receipt remains unverified. All three private services retained zero minimum
+and one maximum instance on the promoted image. Accrued charges can appear later.
+
+## Historical advisory window
+
+The 2026-11-11 follow-up used six of six approved analysis submissions: four validated
 advisories and two policy-preserving fallbacks. The final strict smoke passed
 all three scenarios. Image updates and CLI metadata reconciliation created or
 destroyed no resources and did not expand IAM. All three services retained zero
@@ -82,13 +95,15 @@ The current demo uses a maximum of one Cloud Run instance and a monthly alert of
 IDR 180,000, approximately the approved USD 10 target when configured. The billing
 account uses IDR, so exchange-rate movements change the USD equivalent. The budget
 amount, project filter, gross-usage calculation and thresholds were verified using
-the Billing Budgets API. Notification delivery has not been tested. No automatic
+the Billing Budgets API. Budget email receipt remains unverified. No automatic
 shutdown is configured, and the alert does not stop spending.
 
-Optional email-channel attachment and a disabled-by-default synthetic delivery
-probe are now [prepared locally](operational-readiness.md#notifications).
-No recipient has been provisioned or notified by this preparation, and budget
-delivery remains unverified until an actual recipient confirms its notification.
+The approved [operational window](operational-verification.md) configured the
+operator email channel and attached it to the existing budget and normal
+server-error policy. A temporary 2xx probe produced a real Monitoring email and
+was then removed. This checks Monitoring delivery, not the server-error threshold
+or budget delivery. A focused mailbox search found no budget notification.
+No spend was forced and no threshold was reduced to trigger an email.
 
 The knowledge CLI has now made live embedding and Gemini requests during
 verification. Ten synthetic Markdown objects and ten vector records remain stored.

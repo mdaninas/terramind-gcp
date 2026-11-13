@@ -2,13 +2,20 @@
 
 ## Unreleased
 
+- Completed the approved 2026-11-13 operational window on trusted source `88602fb`:
+  protected image promotion, one core advisory smoke, 22 no-change portal reports,
+  two-account ownership/pagination checks and isolated real-Firestore fencing.
+- Verified Monitoring email receipt and budget channel configuration. Budget
+  email receipt remains unverified. Removed temporary access and the probe policy,
+  revoked both sessions, stopped proxies and independently verified billing off.
+  See the [operational results](docs/operational-verification.md).
 - Prepared optional operator email channels, budget attachment and a temporary
   successful-request notification probe, all disabled by default.
 - Added bounded read-only portal ownership/pagination checks, an opt-in isolated
   Firestore lease-fencing probe and an image-only Terraform promotion guard.
 - Updated historical release/deployment wording and documented the approved-window
-  prerequisites, test limits, evidence and billing shutdown procedure. These
-  operational checks have not been executed on GCP.
+  prerequisites, test limits, evidence and billing shutdown procedure. The initial
+  preparation made no cloud calls; subsequent live results are recorded above.
 ## 1.0.1 - 2026-11-11
 
 - Removed personal career positioning from release text, application UI and

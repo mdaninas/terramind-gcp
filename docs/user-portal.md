@@ -6,7 +6,10 @@ and paginated history filters. Local API, cryptographic verifier and browser
 checks passed. Subsequent real Google login, private Cloud Run hosting, Firestore
 report persistence, exports, filters and logout were exercised on 2026-11-10.
 The updated portal image also passed real Google login and logout on 2026-11-11.
-See the [latest advisory verification](advisory-verification.md), historical
+The 2026-11-13 window verified two real Google owners, 21 and one reports,
+two-page history, cross-owner export rejection and revocation of both sessions.
+See the [latest operational verification](operational-verification.md), earlier
+[advisory verification](advisory-verification.md), historical
 [hosted results](live-integrations-verification.md) and
 [local verification](portal-verification.md). Billing is disabled.
 
@@ -162,6 +165,15 @@ The approved 2026-11-11 follow-up verified new core and optional-pack advisories
 through the private API, promoted the same image to the portal and rechecked
 Google login, the existing dashboard and logout. No new portal analyses were
 submitted. Billing was disabled again and both authenticated proxies were stopped.
+
+The approved 2026-11-13 window promoted the wording correction and created 22
+no-change reports without retrieval or model generation. The read-only checker
+used 18 GETs to verify stable cursor traversal, disjoint histories, own exports,
+cross-owner 404s, anonymous 401 and owner-override rejection. Both Google sessions
+were revoked; subsequent reads using their cookies returned 401. Temporary access
+for the second account was removed from the portal and OAuth Testing, billing
+was disabled again and all workspace-owned proxies were stopped. This verifies
+the tested ownership boundaries, not large-scale capacity.
 
 References: [Google OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect),
 [google-auth token verifier](https://googleapis.dev/python/google-auth/latest/reference/google.oauth2.id_token.html),

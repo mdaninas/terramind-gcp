@@ -7,8 +7,12 @@ window exercised hosted PR review, Eventarc indexing, real Google portal login
 and durable owned reports. Billing was disabled again after six analysis
 submissions, with the project retained. The 2026-11-11 follow-up completed a
 successful strict deployment smoke with validated core, Storage and Database
-advisories, then disabled billing again. See the [latest results](advisory-verification.md)
-and the historical [hosted results](live-integrations-verification.md).
+advisories, then disabled billing again. The approved 2026-11-13 window added live
+two-account isolation, multi-page history, isolated Firestore fencing and Monitoring
+email verification. Billing is disabled again; budget email receipt remains
+unverified. See the [latest results](operational-verification.md), earlier
+[advisory results](advisory-verification.md) and historical
+[hosted results](live-integrations-verification.md).
 
 | Area | Scope | Status |
 | --- | --- | --- |
@@ -113,15 +117,20 @@ The [optional policy packs](policy-packs.md) add storage and database hardening
 checks, selected explicitly while the four core rules always remain active.
 See their [local verification](policy-packs-verification.md). The expanded
 twelve-document corpus was synchronized on GCP through Eventarc. Real Google login
-and four owned portal report flows passed. Cross-owner isolation and pagination
-beyond the four live reports remain covered by local tests. The later approved
+and four owned portal report flows passed. The later approved
 six-request window validated advisories for all three packaged scenarios and
 passed the strict deployment smoke. The updated portal passed real Google login;
 no additional portal analyses were submitted. Billing is disabled; future paid
 evaluations require a newly approved window.
 
-The [operational readiness preparation](operational-readiness.md) supplies
-optional notification configuration, read-only two-account/history checks,
-an isolated ingestion-fencing probe and an image-only promotion plan guard.
-These changes are prepared locally; they do not establish live notification
-delivery, larger hosted tests or deployment of the v1.0.1 wording correction.
+The approved [2026-11-13 operational window](operational-verification.md) promoted
+the v1.0.1 wording correction and verified two real Google owners with 21 and one
+reports, including two-page history and cross-owner HTML/JSON/Markdown rejection.
+One isolated real-Firestore fencing probe passed without staged chunks or model
+calls. Monitoring email was received and the existing budget's channel attachment
+was verified; actual budget email receipt remains unverified. All 23 approved
+analysis submissions were used, including one core smoke and 22 no-change samples.
+Temporary access and the probe policy were removed, both sessions revoked,
+proxies stopped and billing independently verified disabled again. The
+[operational procedure](operational-readiness.md) retains the preparation and
+future-window bounds; any new paid execution requires new approval.

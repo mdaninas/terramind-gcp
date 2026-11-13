@@ -188,13 +188,15 @@ filters, logout and persistence across revisions were exercised on 2026-11-10.
 See the [hosted verification record](docs/live-integrations-verification.md).
 
 Current operational status: **billing is disabled and the project is retained**.
-The 2026-11-11 follow-up used six approved analysis submissions. The final
-protected deployment and strict smoke passed for core, Storage and Database
-scenarios with validated Gemini advisories, unchanged findings and checked
-sources. The API, receiver and portal used the same immutable image; real Google
-login on the updated portal passed. Hosted billable services are paused.
-See the [live advisory results](docs/advisory-verification.md),
-[evidence](docs/evaluations/advisory-live-2026-11-11.json) and
+The 2026-11-13 operational window promoted the v1.0.1 wording correction to all
+three private services and completed 23 approved synthetic analyses: one core
+advisory smoke and 22 no-change portal reports. Two-account isolation, multi-page
+history and isolated real-Firestore fencing passed. Monitoring email receipt was
+verified; budget email receipt remains unverified. Temporary access and the probe
+policy were removed, both sessions revoked and local proxies stopped.
+See the [operational results](docs/operational-verification.md),
+[evidence](docs/evaluations/operational-live-2026-11-13.json), earlier
+[core/Storage/Database advisory results](docs/advisory-verification.md) and
 [cost controls](docs/cost-and-cleanup.md). Resource deletion is not claimed.
 
 Terraform configurations define the private Cloud Run service, Firestore vector
@@ -249,7 +251,7 @@ backend or apply.
 | --- | --- |
 | Usage | [Walkthrough](docs/demo-script.md), [analysis API](docs/analysis-api.md), [normalization](docs/normalization.md) |
 | Design | [Architecture](docs/architecture.md), [retrieval and explanations](docs/retrieval-and-explanations.md), [threat model](docs/threat-model.md) |
-| Operations | [GCP setup](docs/setup-gcp.md), [delivery](docs/delivery.md), [operational preparation](docs/operational-readiness.md), [cost and cleanup](docs/cost-and-cleanup.md) |
+| Operations | [GCP setup](docs/setup-gcp.md), [delivery](docs/delivery.md), [operational results](docs/operational-verification.md), [procedure](docs/operational-readiness.md), [cost and cleanup](docs/cost-and-cleanup.md) |
 | Integrations | [Synthetic PR review](docs/pr-integration.md), [Eventarc indexing](docs/eventarc-indexing.md), [integration checks](docs/integrations-verification.md) |
 | User workspace | [Incident Memory](docs/incident-memory.md), [user portal](docs/user-portal.md), [portal verification](docs/portal-verification.md) |
 | Additional policies | [Pack definitions and usage](docs/policy-packs.md), [local verification](docs/policy-packs-verification.md) |

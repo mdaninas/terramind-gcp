@@ -1,5 +1,7 @@
 {
   "date": "2026-11-13",
+  "record_scope": "historical preparation snapshot before the separately approved live execution",
+  "follow_up_record": "operational-live-2026-11-13.json",
   "status": "local preparation complete, publication authorized, cloud execution pending",
   "base_commit": "35192b8ffc40d0a047184ae2311a6bc2e59e5a1e",
   "published_release_reference": "v1.0.1",

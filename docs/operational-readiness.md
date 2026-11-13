@@ -1,5 +1,13 @@
 # Operational verification preparation
 
+The separately approved [live window](operational-verification.md) subsequently
+completed on 2026-11-13 using source `88602fb`. Image promotion, two-account
+pagination/ownership, real-Firestore sandbox fencing and Monitoring email delivery
+passed. Budget email receipt remains unverified. Billing is disabled again.
+The preparation snapshot below records what was known before execution; its
+pending statuses are historical. Procedures remain guidance for a newly approved
+future window, not authorization to repeat the completed tests.
+
 Prepared locally on 2026-11-13. The owner subsequently authorized commit and push
 of this preparation. Publication does not authorize the proposed cloud window.
 No release, billing change, cloud IAM change, real Terraform plan/apply,
@@ -8,12 +16,12 @@ Historical cloud results remain in the [live advisory record](advisory-verificat
 
 Published release [v1.0.1](https://github.com/mdaninas/terramind-gcp/releases/tag/v1.0.1)
 points to `35192b8ffc40d0a047184ae2311a6bc2e59e5a1e`. Its application wording
-corrections have not been promoted to the hosted image. The last verified hosted
+corrections had not yet been promoted at preparation time. The then-current hosted
 digest is `sha256:d37a72be12c3f460e9ba9857936d94f7ebdd76edf764366ec545d88afe6bdb06`.
-Billing was last independently verified disabled on 2026-11-11, with the project
+Billing had last been independently verified disabled on 2026-11-11, with the project
 retained. This preparation does not establish a fresh cloud inventory.
 
-## Review package
+## Preparation review package (before execution)
 
 | Remaining check | Prepared implementation | Live status |
 | --- | --- | --- |
@@ -93,8 +101,8 @@ existing billing account, currency, amount, project filter, thresholds and defau
 recipients. Stop if the plan would relink billing, replace the project or change
 unrelated settings. Confirm through a read that the selected channel is an email
 channel and that both policies reference the expected resource name.
-The released project configuration also contains display-name and purpose-label
-wording corrections that have not been applied. If they appear in the refreshed
+At preparation time, the released project configuration also contained unapplied
+display-name and purpose-label wording corrections. If such changes appear in a refreshed
 plan, identify them explicitly for separate review; do not include them silently
 in a notification-only approval.
 If an API returns a project-number resource name, first confirm the number-to-ID
@@ -189,10 +197,11 @@ recursive delete or touch existing runtime collections to clear the test.
 
 ## Image promotion and rollback
 
-After the owner reviews this work, choose an exact trusted source commit
-containing the v1.0.1 UI correction. The published tag currently identifies
-`35192b8ffc40d0a047184ae2311a6bc2e59e5a1e`; no new image digest exists for this
-preparation. The existing main-only workflow builds its own dispatch SHA, so
+For any future promotion, choose an exact reviewed trusted source commit.
+The published v1.0.1 tag identifies
+`35192b8ffc40d0a047184ae2311a6bc2e59e5a1e`; the subsequent live source and image
+are recorded in the [execution results](operational-verification.md).
+The existing main-only workflow builds its own dispatch SHA, so
 record that SHA explicitly. It must contain the intended release correction.
 Do not weaken environment review or WIF to dispatch from an untrusted ref.
 

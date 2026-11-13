@@ -12,9 +12,12 @@ real comments/checks and verified rerun deduplication. The optional
 [Eventarc receiver](eventarc-indexing.md) was deployed and real delivery/replay
 verified in the [hosted integration window](live-integrations-verification.md).
 The subsequent [advisory follow-up](advisory-verification.md) passed all three
-strict cloud scenarios. Published release v1.0.1 contains the UI wording
-correction; promotion of that correction is prepared in the
-[operational procedure](operational-readiness.md) and has not run.
+strict cloud scenarios. The approved
+[2026-11-13 operational window](operational-verification.md) promoted the v1.0.1
+wording correction from trusted source `88602fb` to the API, receiver and portal.
+Protected deployment and core smoke passed with the existing environment review
+preserved. The [operational procedure](operational-readiness.md) records the
+promotion guard and future-window requirements. Billing is disabled again.
 
 ## Pull request CI
 

@@ -5,8 +5,10 @@ Historical local verification record. Subsequent hosted features are recorded in
 [advisory follow-up](advisory-verification.md). Releases
 [v1.0.0](https://github.com/mdaninas/terramind-gcp/releases/tag/v1.0.0) and
 [v1.0.1](https://github.com/mdaninas/terramind-gcp/releases/tag/v1.0.1) were published
-on 2026-11-11. Remaining operational checks are prepared in the
-[readiness procedure](operational-readiness.md), with live results still pending.
+on 2026-11-11. Subsequent bounded operational checks completed in the
+[2026-11-13 live record](operational-verification.md); budget email receipt remains
+unverified. The [readiness procedure](operational-readiness.md) preserves the
+preparation and future-window requirements.
 
 After the historical checks below, the owner disabled project
 billing on 2026-11-10 (Asia/Jakarta) and retained the project. The console confirmed
@@ -151,9 +153,12 @@ model limitations and cost controls remain documented in the
 No claim of full scanner coverage, semantic AI correctness, hard spending limits or
 enterprise access isolation is made.
 
-Budget notification delivery, a Monitoring notification channel and organization
-inherited policies remain unverified operator checks. They are not silently
-reported as passing. Final shutdown requires review of the dedicated inventory,
+At the time of this historical verification, budget notification delivery,
+a Monitoring notification channel and inherited policies were unverified. The
+later [operational window](operational-verification.md) verified a configured
+channel, Monitoring email receipt and effective-policy reads for three selected
+constraints. Budget email receipt and exhaustive organization-policy auditing
+remain unverified. Full resource removal requires review of the dedicated inventory,
 delete protections, retained object/image versions and private Terraform destroy
 plans. Follow the [cleanup order](cost-and-cleanup.md#cleanup-order) and verify actual
 removal before claiming the project no longer has active resources.
