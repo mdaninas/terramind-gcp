@@ -39,3 +39,16 @@ run "reject_invalid_alert_amount" {
   variables { budget_units = 0 }
   expect_failures = [var.budget_units]
 }
+run "approved_budget_email_channel" {
+  command = plan
+  variables { monitoring_notification_channels = ["projects/terramind-synthetic-project/notificationChannels/123"] }
+  assert {
+    condition     = toset(google_billing_budget.portfolio[0].all_updates_rule[0].monitoring_notification_channels) == toset(["projects/terramind-synthetic-project/notificationChannels/123"]) && !google_billing_budget.portfolio[0].all_updates_rule[0].disable_default_iam_recipients
+    error_message = "The budget must attach the approved channel and retain existing recipients."
+  }
+}
+run "reject_foreign_budget_channel" {
+  command = plan
+  variables { monitoring_notification_channels = ["projects/other-project/notificationChannels/123"] }
+  expect_failures = [var.monitoring_notification_channels]
+}

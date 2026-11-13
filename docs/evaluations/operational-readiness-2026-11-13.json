@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-13",
+  "status": "local preparation complete, publication authorized, cloud execution pending",
+  "base_commit": "35192b8ffc40d0a047184ae2311a6bc2e59e5a1e",
+  "published_release_reference": "v1.0.1",
+  "data": "synthetic only",
+  "quality": {
+    "python_tests": 538,
+    "python_tests_result": "passed",
+    "normalization_policy_coverage_percent": 97.19,
+    "ruff": "passed",
+    "strict_mypy_source_files": 74,
+    "strict_mypy": "passed",
+    "schema_and_corpus_drift": "passed",
+    "terraform_project_mock_tests": 5,
+    "terraform_dev_mock_tests": 17,
+    "terraform_init_backend_false_and_validate": "passed, isolated copies without private variable files",
+    "checkov_passed": 63,
+    "checkov_failed": 0,
+    "checkov_existing_documented_skips": 4,
+    "hosted_ci_for_preparation": "not run during initial local preparation"
+  },
+  "prepared_checks": {
+    "notifications": "optional email channel and budget attachment; temporary 2xx delivery probe disabled by default",
+    "portal": "read-only two-owner history, pagination and HTML/JSON/Markdown ownership checks",
+    "ingestion": "default no-cloud-call preparation; explicit opt-in isolated adapter fencing probe with owned-document cleanup",
+    "promotion": "full image-only plan guard for exact dev and portal runtime identities",
+    "documentation": "historical results separated from current release publication and pending operations"
+  },
+  "preparation_actions": {
+    "scope": "initial local preparation, before the separately authorized publication",
+    "commit_created": false,
+    "push_performed": false,
+    "release_published": false,
+    "cloud_resources_provisioned": false,
+    "cloud_iam_changed": false,
+    "billing_changed": false,
+    "real_terraform_plan_or_apply": false,
+    "live_analysis_submissions": 0,
+    "live_model_calls": 0,
+    "live_firestore_probe_executed": false,
+    "notifications_sent": false
+  },
+  "pending_owner_inputs": [
+    "Review of the uncommitted diff and future source commit",
+    "Exact notification recipient",
+    "Second approved Google OAuth testing account",
+    "Approval for the bounded live window and private saved plans"
+  ],
+  "live_status": {
+    "notification_configuration": "not applied",
+    "monitoring_recipient_receipt": "not verified",
+    "budget_recipient_receipt": "not verified",
+    "two_google_owners_with_large_history": "not executed",
+    "real_firestore_adapter_fencing": "not executed",
+    "v1_0_1_wording_promoted_to_cloud": "not executed",
+    "billing": "last independently verified disabled on 2026-11-11, not rechecked in this preparation"
+  }
+}

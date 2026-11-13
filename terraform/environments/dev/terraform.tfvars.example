@@ -13,3 +13,7 @@ container_image = null
 enable_analysis_api = false
 enable_eventarc_indexing = false
 max_instances       = 1
+# Keep disabled until the recipient and the channel/budget changes are approved.
+notification_email    = null
+notification_channels = []
+enable_notification_probe = false

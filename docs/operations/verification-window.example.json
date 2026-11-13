@@ -1,0 +1,55 @@
+{
+  "status": "prepared",
+  "approval_granted": false,
+  "commit_and_push_authorized": false,
+  "published_source_reference": "35192b8ffc40d0a047184ae2311a6bc2e59e5a1e",
+  "future_reviewed_dispatch_sha": null,
+  "future_built_image_digest": null,
+  "project_id": "terramind-demo",
+  "region": "us-central1",
+  "data": "synthetic only",
+  "private_inputs_to_review": [
+    "Exact approved notification email recipient",
+    "Second approved Google OAuth testing account",
+    "Existing dev, portal and project Terraform variables and backends",
+    "Separate saved notification, allowlist and image-only plans"
+  ],
+  "submission_bounds": {
+    "protected_deployment_core_analysis": 1,
+    "portal_owner_a_no_change_reports": 21,
+    "portal_owner_b_no_change_reports": 1,
+    "analysis_submissions_total": 23,
+    "portal_read_only_http_requests": 32,
+    "portal_history_pages_per_owner": 4,
+    "fence_probe_invocations": 1,
+    "fence_probe_owned_documents": 3,
+    "fence_probe_model_calls": 0,
+    "temporary_notification_policies": 1,
+    "notification_health_gets": 3,
+    "notification_observation_minutes": 15
+  },
+  "defaults_to_preserve": {
+    "notification_email": null,
+    "notification_channels": [],
+    "enable_notification_probe": false,
+    "verify_policy_packs": false,
+    "min_instances": 0,
+    "max_instances": 1
+  },
+  "closeout": {
+    "remove_temporary_probe_after_approved_plan": true,
+    "verify_exact_sandbox_documents_removed": true,
+    "revert_second_account_if_temporary": true,
+    "logout_both_users_and_clear_session_environment": true,
+    "disable_billing_and_verify_empty_association": true,
+    "stop_known_workspace_proxies": true,
+    "retain_project": true
+  },
+  "pending_live_results": {
+    "monitoring_recipient_receipt": "not tested",
+    "budget_recipient_receipt": "not tested",
+    "two_google_owners_and_large_history": "not tested",
+    "real_firestore_adapter_fencing": "not tested",
+    "ui_correction_promoted_to_all_runtimes": "not deployed"
+  }
+}

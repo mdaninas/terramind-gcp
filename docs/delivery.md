@@ -7,9 +7,14 @@ analysis were verified on 2026-11-10 (Asia/Jakarta). See the
 [deployment record](api-delivery-verification.md). Project billing was subsequently
 disabled with owner approval. See the [current operating status](cost-and-cleanup.md).
 
-The separate manual [synthetic PR review](pr-integration.md) workflow is implemented
-and locally tested. Its comment/check publishing has not been run on GitHub.
-The optional [Eventarc receiver](eventarc-indexing.md) also remains undeployed.
+The separate manual [synthetic PR review](pr-integration.md) workflow published
+real comments/checks and verified rerun deduplication. The optional
+[Eventarc receiver](eventarc-indexing.md) was deployed and real delivery/replay
+verified in the [hosted integration window](live-integrations-verification.md).
+The subsequent [advisory follow-up](advisory-verification.md) passed all three
+strict cloud scenarios. Published release v1.0.1 contains the UI wording
+correction; promotion of that correction is prepared in the
+[operational procedure](operational-readiness.md) and has not run.
 
 ## Pull request CI
 

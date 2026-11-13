@@ -4,3 +4,5 @@ organization_id    = "123456789012"
 billing_account_id = "000000-000000-000000"
 budget_currency    = "USD"
 budget_units       = 10
+# After an approved channel creation, copy its resource name into private variables.
+monitoring_notification_channels = []

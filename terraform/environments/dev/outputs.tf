@@ -8,3 +8,7 @@ output "workload_identity_provider" { value = module.identity.workload_identity_
 output "service_url" {
   value = var.container_image == null ? null : module.cloud_run[0].uri
 }
+output "operator_notification_channel" {
+  description = "Optional channel resource name to review and pass to the separate project budget root."
+  value       = one(google_monitoring_notification_channel.operator[*].name)
+}

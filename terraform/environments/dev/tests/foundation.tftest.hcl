@@ -76,6 +76,60 @@ run "foundation_without_image" {
   }
 }
 
+run "notifications_disabled_by_default" {
+  command = plan
+  assert {
+    condition     = length(google_monitoring_notification_channel.operator) == 0 && length(google_monitoring_alert_policy.server_errors[0].notification_channels) == 0
+    error_message = "Default plans must not create a recipient or claim notification delivery."
+  }
+}
+
+run "approved_operator_channel" {
+  command = plan
+  variables { notification_email = "operator@example.invalid" }
+  assert {
+    condition     = length(google_monitoring_notification_channel.operator) == 1 && google_monitoring_notification_channel.operator[0].type == "email" && google_monitoring_notification_channel.operator[0].enabled
+    error_message = "Opt-in must create one enabled email channel."
+  }
+}
+
+run "existing_project_channel" {
+  command = plan
+  variables { notification_channels = ["projects/terramind-demo/notificationChannels/123"] }
+  assert {
+    condition     = contains(google_monitoring_alert_policy.server_errors[0].notification_channels, "projects/terramind-demo/notificationChannels/123")
+    error_message = "The alert must retain the approved existing channel."
+  }
+}
+
+run "reject_foreign_channel" {
+  command = plan
+  variables { notification_channels = ["projects/another-project/notificationChannels/123"] }
+  expect_failures = [var.notification_channels]
+}
+
+run "reject_invalid_recipient" {
+  command = plan
+  variables { notification_email = "invalid-recipient" }
+  expect_failures = [var.notification_email]
+}
+run "notification_probe_requires_explicit_channel" {
+  command = plan
+  variables { enable_notification_probe = true }
+  expect_failures = [var.enable_notification_probe]
+}
+run "notification_probe_uses_successful_requests" {
+  command = plan
+  variables {
+    enable_notification_probe = true
+    notification_channels     = ["projects/terramind-demo/notificationChannels/123"]
+  }
+  assert {
+    condition     = length(google_monitoring_alert_policy.notification_probe) == 1 && strcontains(google_monitoring_alert_policy.notification_probe[0].conditions[0].condition_threshold[0].filter, "2xx") && google_monitoring_alert_policy.notification_probe[0].conditions[0].condition_threshold[0].threshold_value == 0
+    error_message = "The temporary probe must use successful requests without manufacturing server failures."
+  }
+}
+
 run "reject_public_invoker" {
   command = plan
   variables { invoker_members = ["allUsers"] }

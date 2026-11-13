@@ -98,13 +98,24 @@ resource "google_logging_project_exclusion" "raw_request_urls" {
   depends_on  = [google_project_service.required]
 }
 
+resource "google_monitoring_notification_channel" "operator" {
+  count        = nonsensitive(var.notification_email != null) ? 1 : 0
+  project      = var.project_id
+  display_name = "Terramind operator notifications"
+  type         = "email"
+  enabled      = true
+  labels       = { email_address = var.notification_email }
+  user_labels  = local.labels
+  depends_on   = [google_project_service.required]
+}
+
 resource "google_monitoring_alert_policy" "server_errors" {
   count                 = var.container_image == null ? 0 : 1
   project               = var.project_id
   display_name          = "Terramind repeated server errors"
   combiner              = "OR"
   enabled               = true
-  notification_channels = var.notification_channels
+  notification_channels = distinct(concat(var.notification_channels, google_monitoring_notification_channel.operator[*].name))
   user_labels           = local.labels
   documentation {
     content   = "Review content-free Terramind application logs. Do not paste plans, prompts or credentials into incidents."
@@ -117,6 +128,37 @@ resource "google_monitoring_alert_policy" "server_errors" {
       duration        = "60s"
       comparison      = "COMPARISON_GT"
       threshold_value = 4
+      aggregations {
+        alignment_period     = "60s"
+        per_series_aligner   = "ALIGN_DELTA"
+        cross_series_reducer = "REDUCE_SUM"
+      }
+      trigger { count = 1 }
+    }
+  }
+  alert_strategy { auto_close = "1800s" }
+  depends_on = [module.cloud_run]
+}
+
+resource "google_monitoring_alert_policy" "notification_probe" {
+  count                 = var.enable_notification_probe ? 1 : 0
+  project               = var.project_id
+  display_name          = "Terramind synthetic notification delivery probe"
+  combiner              = "OR"
+  enabled               = true
+  notification_channels = distinct(concat(var.notification_channels, google_monitoring_notification_channel.operator[*].name))
+  user_labels           = merge(local.labels, { verification = "synthetic" })
+  documentation {
+    content   = "Synthetic delivery verification using successful API traffic. Trigger with health GETs, record recipient confirmation and remove this temporary policy."
+    mime_type = "text/markdown"
+  }
+  conditions {
+    display_name = "Successful API traffic observed during approved verification"
+    condition_threshold {
+      filter          = "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"${var.name_prefix}\" AND metric.type=\"run.googleapis.com/request_count\" AND metric.labels.response_code_class=\"2xx\""
+      duration        = "0s"
+      comparison      = "COMPARISON_GT"
+      threshold_value = 0
       aggregations {
         alignment_period     = "60s"
         per_series_aligner   = "ALIGN_DELTA"

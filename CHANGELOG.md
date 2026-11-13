@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Prepared optional operator email channels, budget attachment and a temporary
+  successful-request notification probe, all disabled by default.
+- Added bounded read-only portal ownership/pagination checks, an opt-in isolated
+  Firestore lease-fencing probe and an image-only Terraform promotion guard.
+- Updated historical release/deployment wording and documented the approved-window
+  prerequisites, test limits, evidence and billing shutdown procedure. These
+  operational checks have not been executed on GCP.
 ## 1.0.1 - 2026-11-11
 
 - Removed personal career positioning from release text, application UI and

@@ -1,6 +1,14 @@
 # Release verification
 
-Current operational status: after the checks below, the owner disabled project
+Historical local verification record. Subsequent hosted features are recorded in
+[live integrations](live-integrations-verification.md) and the
+[advisory follow-up](advisory-verification.md). Releases
+[v1.0.0](https://github.com/mdaninas/terramind-gcp/releases/tag/v1.0.0) and
+[v1.0.1](https://github.com/mdaninas/terramind-gcp/releases/tag/v1.0.1) were published
+on 2026-11-11. Remaining operational checks are prepared in the
+[readiness procedure](operational-readiness.md), with live results still pending.
+
+After the historical checks below, the owner disabled project
 billing on 2026-11-10 (Asia/Jakarta) and retained the project. The console confirmed
 the change. Individual resource deletion was not performed or verified. See the
 [billing shutdown record](evaluations/billing-disabled-2026-11-10.json).
@@ -150,6 +158,8 @@ delete protections, retained object/image versions and private Terraform destroy
 plans. Follow the [cleanup order](cost-and-cleanup.md#cleanup-order) and verify actual
 removal before claiming the project no longer has active resources.
 
-PR comments, Eventarc indexing, historical incident search as a product feature,
-new policies and a full dashboard remain deferred. Release artifacts are ready
-for review; release tagging and resource deletion are separate owner actions.
+At the time of these local checks, PR comments, Eventarc indexing, incident search,
+additional policies and the portal were deferred. They were subsequently
+implemented, with hosted and local verification scopes recorded separately above.
+Release publication is complete. Resource deletion was not requested; the owner
+chose to retain the project with billing disabled.

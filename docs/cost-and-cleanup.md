@@ -85,6 +85,11 @@ amount, project filter, gross-usage calculation and thresholds were verified usi
 the Billing Budgets API. Notification delivery has not been tested. No automatic
 shutdown is configured, and the alert does not stop spending.
 
+Optional email-channel attachment and a disabled-by-default synthetic delivery
+probe are now [prepared locally](operational-readiness.md#notifications).
+No recipient has been provisioned or notified by this preparation, and budget
+delivery remains unverified until an actual recipient confirms its notification.
+
 The knowledge CLI has now made live embedding and Gemini requests during
 verification. Ten synthetic Markdown objects and ten vector records remain stored.
 Identical re-ingestion reuses vectors and performs reads without embedding or

@@ -94,6 +94,29 @@ variable "notification_channels" {
   type        = list(string)
   default     = []
   description = "Existing Monitoring channel resource names. Empty means incidents have no notification delivery."
+  validation {
+    condition     = length(var.notification_channels) <= 5 && alltrue([for channel in var.notification_channels : can(regex("^projects/${var.project_id}/notificationChannels/[0-9]+$", channel))])
+    error_message = "Use at most five existing notification channels in the approved project."
+  }
+}
+variable "notification_email" {
+  type        = string
+  default     = null
+  description = "Optional approved email recipient. Null creates no channel. The address enters private Terraform state."
+  sensitive   = true
+  validation {
+    condition     = var.notification_email == null ? true : can(regex("^[^ @,]+@[^ @,]+\\.[^ @,]+$", var.notification_email))
+    error_message = "Use one explicitly approved email address or null."
+  }
+}
+variable "enable_notification_probe" {
+  type        = bool
+  default     = false
+  description = "Temporary alert on successful health traffic for an approved recipient-delivery test. Remove after verification."
+  validation {
+    condition     = !var.enable_notification_probe || (var.container_image != null && (nonsensitive(var.notification_email != null) || length(var.notification_channels) > 0))
+    error_message = "The notification probe requires an existing image and an explicitly configured channel."
+  }
 }
 variable "enable_analysis_api" {
   type        = bool

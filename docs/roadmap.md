@@ -88,8 +88,9 @@ See the [release verification record](release-verification.md).
 
 After verification, the owner chose to disable billing and retain the project.
 The console confirmed that billing was disabled. This stops billable services;
-individual resource deletion and recovery were not verified. Release tagging and
-any future full resource cleanup remain owner actions. No new cloud deployment
+individual resource deletion and recovery were not verified. Releases v1.0.0 and
+v1.0.1 were published on 2026-11-11. Any future full resource cleanup requires
+the owner's decision. No new cloud deployment
 or paid model evaluation was needed for the billing shutdown.
 
 Acceptance criteria: documented commands work for a new developer, no credentials
@@ -118,3 +119,9 @@ six-request window validated advisories for all three packaged scenarios and
 passed the strict deployment smoke. The updated portal passed real Google login;
 no additional portal analyses were submitted. Billing is disabled; future paid
 evaluations require a newly approved window.
+
+The [operational readiness preparation](operational-readiness.md) supplies
+optional notification configuration, read-only two-account/history checks,
+an isolated ingestion-fencing probe and an image-only promotion plan guard.
+These changes are prepared locally; they do not establish live notification
+delivery, larger hosted tests or deployment of the v1.0.1 wording correction.

@@ -68,6 +68,16 @@ variable "deletion_policy" {
   }
 }
 
+variable "monitoring_notification_channels" {
+  type        = list(string)
+  default     = []
+  description = "Up to five approved existing email channel names. Default billing/project recipients remain enabled."
+  validation {
+    condition     = length(var.monitoring_notification_channels) <= 5 && alltrue([for channel in var.monitoring_notification_channels : can(regex("^projects/${var.project_id}/notificationChannels/[0-9]+$", channel))])
+    error_message = "Use at most five email notification channels from this project."
+  }
+}
+
 resource "google_project" "portfolio" {
   name                = "Terramind"
   project_id          = var.project_id
@@ -124,7 +134,7 @@ resource "google_billing_budget" "portfolio" {
     }
   }
   all_updates_rule {
-    monitoring_notification_channels = []
+    monitoring_notification_channels = var.monitoring_notification_channels
     disable_default_iam_recipients   = false
     enable_project_level_recipients  = true
   }

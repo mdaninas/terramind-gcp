@@ -249,7 +249,7 @@ backend or apply.
 | --- | --- |
 | Usage | [Walkthrough](docs/demo-script.md), [analysis API](docs/analysis-api.md), [normalization](docs/normalization.md) |
 | Design | [Architecture](docs/architecture.md), [retrieval and explanations](docs/retrieval-and-explanations.md), [threat model](docs/threat-model.md) |
-| Operations | [GCP setup](docs/setup-gcp.md), [delivery](docs/delivery.md), [cost and cleanup](docs/cost-and-cleanup.md) |
+| Operations | [GCP setup](docs/setup-gcp.md), [delivery](docs/delivery.md), [operational preparation](docs/operational-readiness.md), [cost and cleanup](docs/cost-and-cleanup.md) |
 | Integrations | [Synthetic PR review](docs/pr-integration.md), [Eventarc indexing](docs/eventarc-indexing.md), [integration checks](docs/integrations-verification.md) |
 | User workspace | [Incident Memory](docs/incident-memory.md), [user portal](docs/user-portal.md), [portal verification](docs/portal-verification.md) |
 | Additional policies | [Pack definitions and usage](docs/policy-packs.md), [local verification](docs/policy-packs-verification.md) |
