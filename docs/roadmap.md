@@ -21,6 +21,11 @@ history-table compression, and captured synthetic mobile-width screenshots.
 These portal fixes have not been deployed. Budget email receipt remains the
 outstanding operational observation; resource deletion was not requested.
 
+The subsequent [interface refresh](ui-verification.md) improves the portal and
+standalone report hierarchy, navigation, severity presentation and keyboard use.
+The full 538-test quality gate and 62 responsive page/state combinations passed.
+The refreshed interface is verified locally and has not been deployed.
+
 | Area | Scope | Status |
 | --- | --- | --- |
 | Offline analysis | Local normalization, deterministic risk rules, JSON and Markdown reports | Implemented and verified locally |

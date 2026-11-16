@@ -47,7 +47,11 @@ and UUID to handle tied timestamps. Empty filters and empty histories have
 explicit UI states. Reports can be read as HTML, exported as a JSON bundle or
 downloaded as Markdown with the separately labeled incident context.
 
-![Local synthetic dashboard with two owned reports](images/portal-desktop.jpg)
+![Refreshed local dashboard with four synthetic reports](images/portal-ui-desktop.png)
+
+The [interface verification](ui-verification.md) records desktop/mobile screenshots,
+responsive geometry, keyboard navigation and the local analysis/export flow for
+this layout. The interface refresh has not been deployed.
 
 Actual local synthetic-login capture. This does not show a live Google sign-in,
 cloud analysis or hosted deployment.

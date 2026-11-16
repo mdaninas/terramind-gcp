@@ -84,7 +84,7 @@ in memory and discards them on restart.
 <details>
 <summary>View findings from a synthetic sample</summary>
 
-![Deterministic findings with observed facts and remediation](docs/images/findings-desktop.png)
+![Local risk report with observed facts and remediation](docs/images/report-ui-desktop.png)
 
 Actual findings from the local offline interface. This sample contains no
 model-generated advisory text.
@@ -230,9 +230,12 @@ uv run --locked python scripts/check.py
 With GNU Make installed, the equivalent check targets are `make lint` and `make test`.
 The [release verification record](docs/release-verification.md) documents command
 reproduction and package build results.
-The [latest local verification](docs/local-verification.md) records 538 passing
+The [local verification record](docs/local-verification.md) records 538 passing
 tests, 30 Terraform mock plans and responsive portal checks across five viewport
 widths. The local portal corrections have not been deployed.
+The subsequent [interface verification](docs/ui-verification.md) covers the
+refreshed portal and standalone report, with 62 responsive page/state combinations
+and the full 538-test quality gate. The interface refresh is also local only.
 
 Additional checks and local workflows:
 
@@ -258,7 +261,7 @@ backend or apply.
 | Integrations | [Synthetic PR review](docs/pr-integration.md), [Eventarc indexing](docs/eventarc-indexing.md), [integration checks](docs/integrations-verification.md) |
 | User workspace | [Incident Memory](docs/incident-memory.md), [user portal](docs/user-portal.md), [portal verification](docs/portal-verification.md) |
 | Additional policies | [Pack definitions and usage](docs/policy-packs.md), [local verification](docs/policy-packs-verification.md) |
-| Verification | [Latest local checks](docs/local-verification.md), [live advisories](docs/advisory-verification.md), [hosted integrations](docs/live-integrations-verification.md), [evaluations](docs/evaluation.md), [retrieval checks](docs/retrieval-verification.md), [cloud foundation](docs/cloud-foundation-verification.md), [release checks](docs/release-verification.md) |
+| Verification | [Interface checks](docs/ui-verification.md), [local checks](docs/local-verification.md), [live advisories](docs/advisory-verification.md), [hosted integrations](docs/live-integrations-verification.md), [evaluations](docs/evaluation.md), [retrieval checks](docs/retrieval-verification.md), [cloud foundation](docs/cloud-foundation-verification.md), [release checks](docs/release-verification.md) |
 | Project | [Roadmap](docs/roadmap.md), [changelog](CHANGELOG.md), [security exceptions](docs/security-exceptions.md) |
 
 PR review, Eventarc indexing, synthetic incident similarity and the user portal

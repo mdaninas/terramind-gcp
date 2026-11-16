@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Refreshed portal and standalone report interfaces with compact metrics,
+  workspace navigation, severity-specific labels, distinct finding status,
+  grouped evidence/remediation and improved history filters. Added skip links,
+  keyboard-accessible table scrolling, contrast fixes and reduced-motion support.
+  The full 538-test gate and 62 responsive page/state checks passed locally;
+  these interface changes are not deployed. See [verification](docs/ui-verification.md).
+
 - Corrected local portal evidence wrapping, overlapping filter controls and
   compressed history rows on narrow screens; served the packaged favicon for
   standalone JSON views. Verified seven views at five responsive widths and all

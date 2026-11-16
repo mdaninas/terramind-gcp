@@ -1,0 +1,432 @@
+{
+  "date": "2026-11-16",
+  "timezone": "Asia/Jakarta",
+  "scope": "local UI refresh in the existing Windows checkout, not a hosted deployment",
+  "base_source_sha": "b4573da15704b6c853fd1f0ea85b4818b3fe6bd3",
+  "source_hashes_sha256": {
+    "src/terramind/portal/views.py": "cfaadd6e494b3326acb8bb0962588fb85bf3e50577d1e5d751dfc9736e3d4d34",
+    "src/terramind/portal/assets/portal.css": "f13d7f6f66747d9edd41a1517e3509aae364c9997105bb8a0b6884857649a492",
+    "src/terramind/api/views.py": "660b85dd0a4d0fb4d929bb6ba2f22f36df8e570ab83f355c53912de56ed24c65",
+    "src/terramind/api/assets/report.css": "50b5325ea8ab050a6b2ae2c0db5400f4a661aa11cd1f87c89717693ef953bcc3"
+  },
+  "quality": {
+    "python_tests_passed": 538,
+    "python_test_seconds": 28.23,
+    "normalization_policy_branch_coverage_percent": 97.19,
+    "ruff": "passed",
+    "format_check": "passed",
+    "mypy": "passed, 74 source files",
+    "schema_and_packaged_corpus_drift": "passed",
+    "targeted_api_tests_passed": 43,
+    "public_file_privacy": "passed",
+    "local_document_and_image_links_checked": 108,
+    "source_and_selected_screenshot_hashes": "passed"
+  },
+  "browser": {
+    "mode": "responsive desktop Chromium, synthetic local data only",
+    "portal_checks": [
+      {
+        "view": "login",
+        "cases_passed": 6,
+        "viewport_widths": [
+          320,
+          360,
+          390,
+          768,
+          1024,
+          1440
+        ],
+        "client_widths": [
+          305,
+          345,
+          375,
+          768,
+          1024,
+          1440
+        ],
+        "document_widths": [
+          305,
+          345,
+          375,
+          768,
+          1024,
+          1440
+        ],
+        "findings": 0,
+        "page_evidence_control_overflow_heading_collision_or_dangling_anchors": false
+      },
+      {
+        "view": "dashboard-empty",
+        "cases_passed": 6,
+        "viewport_widths": [
+          320,
+          360,
+          390,
+          768,
+          1024,
+          1440
+        ],
+        "client_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "document_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "findings": 0,
+        "page_evidence_control_overflow_heading_collision_or_dangling_anchors": false
+      },
+      {
+        "view": "dashboard",
+        "cases_passed": 6,
+        "viewport_widths": [
+          320,
+          360,
+          390,
+          768,
+          1024,
+          1440
+        ],
+        "client_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "document_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "findings": 0,
+        "page_evidence_control_overflow_heading_collision_or_dangling_anchors": false
+      },
+      {
+        "view": "dashboard-filters",
+        "cases_passed": 6,
+        "viewport_widths": [
+          320,
+          360,
+          390,
+          768,
+          1024,
+          1440
+        ],
+        "client_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "document_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "findings": 0,
+        "page_evidence_control_overflow_heading_collision_or_dangling_anchors": false
+      },
+      {
+        "view": "core",
+        "cases_passed": 6,
+        "viewport_widths": [
+          320,
+          360,
+          390,
+          768,
+          1024,
+          1440
+        ],
+        "client_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "document_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "findings": 4,
+        "page_evidence_control_overflow_heading_collision_or_dangling_anchors": false
+      },
+      {
+        "view": "storage",
+        "cases_passed": 6,
+        "viewport_widths": [
+          320,
+          360,
+          390,
+          768,
+          1024,
+          1440
+        ],
+        "client_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "document_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "findings": 2,
+        "page_evidence_control_overflow_heading_collision_or_dangling_anchors": false
+      },
+      {
+        "view": "database",
+        "cases_passed": 6,
+        "viewport_widths": [
+          320,
+          360,
+          390,
+          768,
+          1024,
+          1440
+        ],
+        "client_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "document_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "findings": 2,
+        "page_evidence_control_overflow_heading_collision_or_dangling_anchors": false
+      },
+      {
+        "view": "no-change",
+        "cases_passed": 6,
+        "viewport_widths": [
+          320,
+          360,
+          390,
+          768,
+          1024,
+          1440
+        ],
+        "client_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "document_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "findings": 0,
+        "page_evidence_control_overflow_heading_collision_or_dangling_anchors": false
+      },
+      {
+        "view": "incident",
+        "cases_passed": 6,
+        "viewport_widths": [
+          320,
+          360,
+          390,
+          768,
+          1024,
+          1440
+        ],
+        "client_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "document_widths": [
+          305,
+          345,
+          375,
+          753,
+          1009,
+          1425
+        ],
+        "findings": 0,
+        "page_evidence_control_overflow_heading_collision_or_dangling_anchors": false
+      }
+    ],
+    "api_checks": [
+      {
+        "view": "api-preview",
+        "cases_passed": 4,
+        "viewport_widths": [
+          320,
+          390,
+          768,
+          1440
+        ],
+        "client_widths": [
+          305,
+          375,
+          753,
+          1425
+        ],
+        "document_widths": [
+          305,
+          375,
+          753,
+          1425
+        ],
+        "findings_evidence_panels_and_remediation_panels": 4,
+        "overflow_or_dangling_anchors": false
+      },
+      {
+        "view": "api-report",
+        "cases_passed": 4,
+        "viewport_widths": [
+          320,
+          390,
+          768,
+          1440
+        ],
+        "client_widths": [
+          305,
+          375,
+          753,
+          1425
+        ],
+        "document_widths": [
+          305,
+          375,
+          753,
+          1425
+        ],
+        "findings_evidence_panels_and_remediation_panels": 4,
+        "overflow_or_dangling_anchors": false
+      }
+    ],
+    "total_page_state_viewport_combinations": 62,
+    "portal_analysis_submissions": 4,
+    "api_analysis_submissions": 3,
+    "json_and_markdown_navigation_or_downloads": "passed in both interfaces",
+    "portal_core_export": {
+      "risk": "HIGH",
+      "findings": 4,
+      "statuses": [
+        "FAIL",
+        "FAIL",
+        "REVIEW",
+        "FAIL"
+      ],
+      "model": null
+    },
+    "portal_filters": {
+      "totals": [
+        "1",
+        "1",
+        "2"
+      ],
+      "filterPanelOpen": true,
+      "filterHint": "4 active",
+      "risks": [
+        "HIGH"
+      ]
+    },
+    "portal_keyboard_skip": "Tab then Enter focuses main-content",
+    "portal_table_keyboard_scroll_and_inset_focus": "passed",
+    "api_keyboard_skip_and_reduced_motion_anchor_navigation": "passed",
+    "portal_reduced_motion_disables_transitions": true,
+    "portal_expanded_incident_and_provenance_at_320": "passed, document width equals client width",
+    "reviewer_empty_history": "passed",
+    "cross_owner_html_json_markdown_statuses": [
+      404,
+      404,
+      404
+    ],
+    "history_after_both_logouts_status": 401,
+    "console_errors": 0,
+    "console_warnings": 0,
+    "reviewed_small_text_contrast_ratios": {
+      "portal_muted_on_white": 5.03,
+      "portal_muted_on_canvas": 4.7,
+      "portal_muted_on_table_header": 4.86,
+      "api_muted_on_white": 5.11
+    },
+    "selected_screenshots": [
+      {
+        "path": "docs/images/portal-ui-desktop.png",
+        "viewport_width": 1440,
+        "sha256": "371d8bf6b702edecd5aa03516842f6dab4660ef597cb9c5bfe094a8c1bd77029"
+      },
+      {
+        "path": "docs/images/portal-ui-mobile.png",
+        "viewport_width": 390,
+        "sha256": "1895ee1831db755bf7d66012765b7b8b8abcded27e638e766df1f96689828777"
+      },
+      {
+        "path": "docs/images/report-ui-desktop.png",
+        "viewport_width": 1440,
+        "sha256": "326f171d2087e2918d94d3fc620816d569880e231646c2a371f0cde953799629"
+      },
+      {
+        "path": "docs/images/report-ui-mobile.png",
+        "viewport_width": 390,
+        "sha256": "8d2089dd9f58be0414be1165865fc0147cfc117c7c8e13d7adc6a2bb724c626a"
+      }
+    ]
+  },
+  "provider_calls": 0,
+  "cloud_iam_billing_or_deployment_changes": false,
+  "closeout": {
+    "both_portal_demo_sessions_logged_out": true,
+    "dedicated_browsers_closed": true,
+    "local_qa_servers_stopped": true
+  },
+  "limits": [
+    "Not physical-device, touch, Safari or Firefox verification.",
+    "Scoped keyboard/contrast checks, not a full accessibility audit.",
+    "No new cloud model, real Google login or hosted deployment verification.",
+    "Policy engine, API schemas, authentication and persistence contracts unchanged."
+  ]
+}

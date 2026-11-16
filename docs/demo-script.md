@@ -24,16 +24,17 @@ has no cloud/model calls. Reports are held in memory and disappear on restart or
 | 0:40-1:10 | Scroll through findings and observed facts | Stable rule IDs, evidence, remediation and REVIEW status; no claim of deployed exposure or backup readiness |
 | 1:10-1:30 | Download Markdown and open View JSON | Both exports derive from the same saved report; offline retrieval is not_requested and model is null |
 | 1:30-1:45 | Show the published synthetic Gemini report | Advisory explanations cite reviewed documents and cannot change deterministic severity |
-| 1:45-2:00 | Show deployment and release evidence | 297 tests, 10/10 retrieval queries, protected WIF delivery, private API and documented cost/cleanup limits |
+| 1:45-2:00 | Show deployment and release evidence | 538 current local tests, historical 10/10 live retrieval queries, protected WIF delivery, private API and documented cost/cleanup limits |
 
 Suggested opening: "Terramind reviews proposed infrastructure changes using
 four deterministic GCP rules. Gemini explains those existing findings using
 retrieved synthetic runbooks. It never approves or applies a change."
 
-![Actual local report overview](images/report-desktop.png)
+![Actual refreshed local risk report](images/report-ui-desktop.png)
 
-The [finding details](images/findings-desktop.png) and [mobile capture](images/report-mobile.png)
-come from the same local offline report. They are actual browser captures, not
+The [mobile capture](images/report-ui-mobile.png) shows the same local offline
+report. See the [interface verification](ui-verification.md) for tested viewport
+widths, keyboard navigation and exports. These are actual browser captures, not
 mockups or a claim of cloud model execution.
 
 ## Reproduce the API and benign case

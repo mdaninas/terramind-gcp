@@ -1,5 +1,9 @@
 # Local verification and portal responsive layout
 
+Historical layout-correction record. The subsequent [interface refresh](ui-verification.md)
+updates the portal and standalone report; the measurements below retain their
+original source and scope.
+
 Verified on 2026-11-16 (Asia/Jakarta) in the existing Windows checkout. This
 follow-up reconciles stale documentation and completes the previously missing
 local mobile-width portal checks. All analysis inputs and accounts were synthetic.
