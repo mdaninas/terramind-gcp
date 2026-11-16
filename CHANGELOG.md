@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Added shared System, Light and Dark themes to the portal and standalone report,
+  with persisted same-origin preferences, OS/tab synchronization and dark logos.
+  Manual selection remains usable when browser storage is blocked; CSS follows
+  the device when JavaScript is unavailable. The full 539-test gate and 88
+  responsive theme cases passed locally. These changes have not been deployed;
+  see [theme verification](docs/theme-verification.md).
+
 - Refreshed portal and standalone report interfaces with compact metrics,
   workspace navigation, severity-specific labels, distinct finding status,
   grouped evidence/remediation and improved history filters. Added skip links,

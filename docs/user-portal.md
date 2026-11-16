@@ -15,6 +15,12 @@ See the [latest operational verification](operational-verification.md), earlier
 
 ## Try the local synthetic demo
 
+The header's **Color theme** selector offers **System**, **Light** and **Dark**;
+on mobile it appears as an appearance icon. System follows the device setting.
+Manual selection is remembered in the browser for the current origin and applies
+to login, dashboard, incident pages and owned reports. Only the theme name is
+stored, not account/session/report data. See [theme verification](theme-verification.md).
+
 Install the locked portal dependencies. In PowerShell, run:
 
 ```powershell

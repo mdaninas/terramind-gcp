@@ -242,7 +242,10 @@ def test_demo_preview_and_assets_never_run_analysis():
             "/demo",
             "/assets/report.css",
             "/assets/demo.js",
+            "/assets/theme.js",
+            "/assets/theme.css",
             "/assets/terramind-logo.png",
+            "/assets/terramind-logo-dark.png",
             "/assets/terramind-icon.png",
             "/assets/apple-touch-icon.png",
             "/favicon.ico",
@@ -254,6 +257,8 @@ def test_demo_preview_and_assets_never_run_analysis():
             assert response.headers["x-frame-options"] == "DENY"
             assert "default-src 'none'" in response.headers["content-security-policy"]
             assert "img-src 'self'" in response.headers["content-security-policy"]
+            assert "script-src 'self'" in response.headers["content-security-policy"]
+            assert "'unsafe-inline'" not in response.headers["content-security-policy"]
             if path.endswith(".png"):
                 assert response.headers["content-type"] == "image/png"
                 assert response.content.startswith(b"\x89PNG\r\n\x1a\n")

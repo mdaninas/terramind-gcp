@@ -3,6 +3,7 @@
 from html import escape
 
 from terramind.llm.contracts import finding_id
+from terramind.presentation import BRAND_IMAGES, THEME_CONTROL, THEME_SCRIPT, THEME_STYLESHEET
 from terramind.reports.store import valid_id
 from terramind.schemas.normalized import NormalizedPlan, serialize_plan
 from terramind.schemas.report import Report
@@ -113,12 +114,14 @@ def report_page(
         '<link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon">'
         '<link rel="icon" href="/assets/terramind-icon.png" type="image/png" sizes="512x512">'
         '<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" sizes="180x180">'
-        '<link rel="stylesheet" href="/assets/report.css"></head><body>'
+        f'{THEME_SCRIPT}<link rel="stylesheet" href="/assets/report.css">'
+        f"{THEME_STYLESHEET}</head><body>"
         '<a class="skip-link" href="#main-content">Skip to report</a>'
         '<header><a href="/demo" class="brand" aria-label="Terramind analysis preview">'
-        '<img src="/assets/terramind-logo.png" alt="Terramind" width="216" height="72"></a>'
+        f"{BRAND_IMAGES}</a>"
         '<div class="header-context"><span>Terraform change intelligence</span>'
-        '<span class="workspace-label">Analysis workspace</span></div></header>'
+        '<span class="workspace-label">Analysis workspace</span>'
+        f"{THEME_CONTROL}</div></header>"
         '<main id="main-content" tabindex="-1">'
         '<nav class="breadcrumb" aria-label="Breadcrumb">'
         '<a href="/demo">Analysis</a><span aria-hidden="true">/</span>'

@@ -209,9 +209,29 @@ def test_security_headers_and_logout_revoke_the_old_session(portal):
     assert response.headers["cache-control"] == "no-store"
     assert response.headers["referrer-policy"] == "strict-origin"
     assert "form-action 'self'" in response.headers["content-security-policy"]
+    assert "script-src 'self'" in response.headers["content-security-policy"]
+    assert "'unsafe-inline'" not in response.headers["content-security-policy"]
     client.post("/auth/logout", data={"csrf": csrf(client)}, headers={"Origin": ORIGIN})
     client.cookies.set("terramind_session", token)
     assert client.get("/api/history").status_code == 401
+
+
+def test_theme_assets_remain_local_without_creating_or_exposing_reports(portal):
+    client, _, _ = portal
+    for name, media_type in (
+        ("theme.js", "text/javascript"),
+        ("theme.css", "text/css"),
+        ("terramind-logo-dark.png", "image/png"),
+    ):
+        response = client.get(f"/assets/{name}")
+        assert response.status_code == 200
+        assert response.headers["content-type"].split(";")[0] == media_type
+        assert response.headers["cache-control"] == "no-store"
+        assert "default-src 'none'" in response.headers["content-security-policy"]
+    assert client.get("/assets/untrusted.js").status_code == 404
+    assert client.get("/api/history").status_code == 401
+    login(client)
+    assert client.get("/api/history").json()["totals"]["reports"] == 0
 
 
 class FakeGoogle:

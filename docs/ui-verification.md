@@ -1,5 +1,9 @@
 # Portal and report interface verification
 
+The subsequent [color-theme implementation](theme-verification.md) adds System,
+Light and Dark preferences to both interfaces. The refresh results below retain
+their original 2026-11-16 source and scope.
+
 The 2026-11-16 interface refresh updates the portal and standalone analysis
 report in the local checkout. It uses the existing violet/teal brand, local assets
 and system fonts. No new frontend framework, remote asset or browser token storage

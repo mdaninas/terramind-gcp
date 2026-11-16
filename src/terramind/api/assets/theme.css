@@ -1,0 +1,147 @@
+:root {
+  color-scheme: light;
+  --canvas: #f6f7fb;
+  --ink: #182c34;
+  --muted: #62717d;
+  --foreground: #334a56;
+  --surface: #ffffff;
+  --surface-subtle: #fafbfd;
+  --surface-alt: #f1f4f7;
+  --surface-hover: #f4f6f9;
+  --border: #e1e6ed;
+  --border-soft: #edf0f4;
+  --field-border: #8296a5;
+  --field-hover: #6d8998;
+  --teal: #0c635b;
+  --primary-hover: #084e48;
+  --on-primary: #ffffff;
+  --violet: #7145b8;
+  --accent-soft: #f1edf9;
+  --accent-border: #e5def2;
+  --accent-ink: #683da8;
+  --teal-soft: #f0f7f5;
+  --teal-border: #d8e9e2;
+  --teal-ink: #35665e;
+  --high-bg: #fff0e9;
+  --high-ink: #a04424;
+  --high-line: #c36c49;
+  --critical-bg: #fcebf0;
+  --critical-ink: #a4243d;
+  --critical-line: #b8435a;
+  --medium-bg: #fff5dc;
+  --medium-ink: #855711;
+  --medium-line: #cda344;
+  --low-bg: #edf3fb;
+  --low-ink: #325e8c;
+  --low-line: #6e99c8;
+  --neutral-bg: #eff2f6;
+  --neutral-ink: #536775;
+  --neutral-line: #a0adb6;
+  --focus: #8459c9;
+  --primary: var(--teal);
+  --accent: var(--violet);
+  --line: var(--border);
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #10161f;
+  --ink: #e7eef4;
+  --muted: #a8b8c6;
+  --foreground: #ccd8e3;
+  --surface: #17212d;
+  --surface-subtle: #1b2735;
+  --surface-alt: #1e2b3b;
+  --surface-hover: #223143;
+  --border: #314255;
+  --border-soft: #28384a;
+  --field-border: #60768e;
+  --field-hover: #8ca8bf;
+  --teal: #80d5c5;
+  --primary-hover: #a1e6d8;
+  --on-primary: #10251f;
+  --violet: #c5a2f5;
+  --accent-soft: #2c233e;
+  --accent-border: #51416d;
+  --accent-ink: #ceb6f3;
+  --teal-soft: #172f2c;
+  --teal-border: #2f514a;
+  --teal-ink: #a0d9ca;
+  --high-bg: #39271f;
+  --high-ink: #ffb899;
+  --high-line: #e3a17d;
+  --critical-bg: #3b1f2b;
+  --critical-ink: #ffabc1;
+  --critical-line: #e28caa;
+  --medium-bg: #362d18;
+  --medium-ink: #f5d88c;
+  --medium-line: #c7a352;
+  --low-bg: #1c3046;
+  --low-ink: #acd3ff;
+  --low-line: #6f9ec7;
+  --neutral-bg: #25313f;
+  --neutral-ink: #bdcbd6;
+  --neutral-line: #576b80;
+  --focus: #c5a2f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --canvas: #10161f;
+    --ink: #e7eef4;
+    --muted: #a8b8c6;
+    --foreground: #ccd8e3;
+    --surface: #17212d;
+    --surface-subtle: #1b2735;
+    --surface-alt: #1e2b3b;
+    --surface-hover: #223143;
+    --border: #314255;
+    --border-soft: #28384a;
+    --field-border: #60768e;
+    --field-hover: #8ca8bf;
+    --teal: #80d5c5;
+    --primary-hover: #a1e6d8;
+    --on-primary: #10251f;
+    --violet: #c5a2f5;
+    --accent-soft: #2c233e;
+    --accent-border: #51416d;
+    --accent-ink: #ceb6f3;
+    --teal-soft: #172f2c;
+    --teal-border: #2f514a;
+    --teal-ink: #a0d9ca;
+    --high-bg: #39271f;
+    --high-ink: #ffb899;
+    --high-line: #e3a17d;
+    --critical-bg: #3b1f2b;
+    --critical-ink: #ffabc1;
+    --critical-line: #e28caa;
+    --medium-bg: #362d18;
+    --medium-ink: #f5d88c;
+    --medium-line: #c7a352;
+    --low-bg: #1c3046;
+    --low-ink: #acd3ff;
+    --low-line: #6f9ec7;
+    --neutral-bg: #25313f;
+    --neutral-ink: #bdcbd6;
+    --neutral-line: #576b80;
+    --focus: #c5a2f5;
+  }
+}
+
+.brand .brand-dark { display: none; }
+:root[data-theme="dark"] .brand .brand-light { display: none; }
+:root[data-theme="dark"] .brand .brand-dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .brand .brand-light { display: none; }
+  :root:not([data-theme]) .brand .brand-dark { display: block; }
+}
+label.theme-control { position: relative; display: none; align-items: center; flex: 0 0 auto; margin: 0; }
+:root[data-theme] label.theme-control { display: inline-flex; }
+.theme-control .theme-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--foreground); pointer-events: none; }
+.theme-control .theme-select { width: 104px; min-height: 36px; border: 1px solid var(--field-border); border-radius: 8px; padding: 7px 18px 7px 31px; background: var(--surface); color: var(--foreground); font: 12px/1.5 "Segoe UI", system-ui, sans-serif; cursor: pointer; }
+.theme-control .theme-select:hover { border-color: var(--field-hover); }
+.theme-control .theme-select:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.theme-select option { background: var(--surface); color: var(--ink); font: 13px "Segoe UI", system-ui, sans-serif; }
+@media (max-width: 620px) {
+  .theme-control .theme-select { width: 36px; min-height: 36px; padding: 0; font-size: 0; appearance: none; }
+  .theme-control .theme-icon { left: 10px; }
+}

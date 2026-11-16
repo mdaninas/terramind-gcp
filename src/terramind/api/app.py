@@ -134,8 +134,11 @@ def create_app(service: AnalysisService | None = None) -> FastAPI:
             "/healthz",
             "/demo",
             "/assets/report.css",
+            "/assets/theme.css",
+            "/assets/theme.js",
             "/assets/demo.js",
             "/assets/terramind-logo.png",
+            "/assets/terramind-logo-dark.png",
             "/assets/terramind-icon.png",
             "/assets/apple-touch-icon.png",
             "/favicon.ico",
@@ -244,6 +247,19 @@ def create_app(service: AnalysisService | None = None) -> FastAPI:
             media_type="text/javascript",
         )
 
+    @application.get("/assets/theme.css")
+    async def theme_stylesheet() -> Response:
+        return Response(
+            files("terramind.api").joinpath("assets/theme.css").read_text(), media_type="text/css"
+        )
+
+    @application.get("/assets/theme.js")
+    async def theme_javascript() -> Response:
+        return Response(
+            files("terramind.api").joinpath("assets/theme.js").read_text(),
+            media_type="text/javascript",
+        )
+
     @application.get("/assets/terramind-logo.png")
     async def logo() -> Response:
         return Response(
@@ -255,6 +271,13 @@ def create_app(service: AnalysisService | None = None) -> FastAPI:
     async def icon() -> Response:
         return Response(
             files("terramind.api").joinpath("assets/terramind-icon.png").read_bytes(),
+            media_type="image/png",
+        )
+
+    @application.get("/assets/terramind-logo-dark.png")
+    async def dark_logo() -> Response:
+        return Response(
+            files("terramind.api").joinpath("assets/terramind-logo-dark.png").read_bytes(),
             media_type="image/png",
         )
 

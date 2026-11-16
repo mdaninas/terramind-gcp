@@ -6,6 +6,7 @@ from urllib.parse import urlencode
 
 from terramind.policies.catalog import RuleId
 from terramind.portal.store import HistoryFilters, PortalAnalysis, Session
+from terramind.presentation import BRAND_IMAGES, THEME_CONTROL, THEME_SCRIPT, THEME_STYLESHEET
 
 
 def _icon(name: str) -> str:
@@ -80,13 +81,15 @@ def page(title: str, body: str, session: Session | None = None) -> str:
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1">'
         f"<title>{escape(title)} | Terramind</title>"
+        f"{THEME_SCRIPT}"
         '<link rel="stylesheet" href="/assets/portal.css">'
+        f"{THEME_STYLESHEET}"
         '<link rel="icon" href="/assets/terramind-icon.png"></head><body>'
         '<a class="skip-link" href="#main-content">Skip to content</a>'
         '<header class="app-header"><div class="header-inner">'
         '<a class="brand" href="/dashboard" aria-label="Terramind dashboard">'
-        '<img src="/assets/terramind-logo.png" alt="Terramind" width="216" height="72"></a>'
-        f'{navigation}<div class="header-account">{account}</div></div></header>'
+        f"{BRAND_IMAGES}</a>"
+        f'{navigation}<div class="header-account">{THEME_CONTROL}{account}</div></div></header>'
         f'<main id="main-content" class="{"workspace" if signed_in else "public-page"}" '
         f'tabindex="-1">{body}</main>'
         '<footer class="app-footer"><span>Synthetic data only. '

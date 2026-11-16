@@ -154,7 +154,8 @@ def create_app(
                 "X-Content-Type-Options": "nosniff",
                 "X-Frame-Options": "DENY",
                 "Referrer-Policy": "strict-origin",
-                "Content-Security-Policy": "default-src 'none'; style-src 'self'; img-src 'self'; "
+                "Content-Security-Policy": "default-src 'none'; script-src 'self'; "
+                "style-src 'self'; img-src 'self'; "
                 "base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
             }
         )
@@ -409,7 +410,12 @@ def create_app(
                 files("terramind.portal").joinpath("assets/portal.css").read_bytes(),
                 media_type="text/css",
             )
-        if name in {"terramind-logo.png", "terramind-icon.png"}:
+        if name in {"theme.css", "theme.js"}:
+            return Response(
+                files("terramind.api").joinpath("assets", name).read_bytes(),
+                media_type="text/css" if name.endswith(".css") else "text/javascript",
+            )
+        if name in {"terramind-logo.png", "terramind-logo-dark.png", "terramind-icon.png"}:
             return Response(
                 files("terramind.api").joinpath("assets", name).read_bytes(), media_type="image/png"
             )

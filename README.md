@@ -78,6 +78,11 @@ Open [the local interface](http://127.0.0.1:8080/demo) and select
 resources, individual findings, evidence and remediation. Export it as Markdown
 or inspect the JSON response from the same page.
 
+Use **Color theme** in the header to choose **System**, **Light** or **Dark**.
+System follows your device; a manual choice is remembered for the current site.
+The portal and report share the same theme controls. See the
+[theme verification](docs/theme-verification.md) for screenshots and tested behavior.
+
 Local mode makes no Google service calls. It holds at most 128 expiring reports
 in memory and discards them on restart.
 
