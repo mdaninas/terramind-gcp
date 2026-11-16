@@ -70,8 +70,12 @@ Never put tokens in URLs, recordings, screenshots or browser storage.
 
 ## Close with limitations
 
-The analyzer covers four policies and synthetic demonstration data only. AI prose
-can be wrong even when citations are valid. The private demo has shared report
-access for authorized invokers, not per-user ownership. Cloud resources remain
-active with minimum zero and maximum one instance. Alerts do not stop spending;
-[cleanup](cost-and-cleanup.md#cleanup-order) remains an explicit operator task.
+The default analyzer covers four core policies; optional Storage and Database
+packs add four checks. Demonstrations use synthetic data only. AI prose can be
+wrong even when citations are valid. The private analysis API shares report
+access among authorized invokers; the separate user portal enforces report ownership.
+The last approved [operational window](operational-verification.md) verified
+billing disabled and the project retained. All three private services retained
+zero minimum and one maximum instance before shutdown. Alerts do not stop
+spending, and resource deletion is not claimed. Any future
+[cleanup](cost-and-cleanup.md#cleanup-order) requires a separate operator decision.

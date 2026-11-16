@@ -1,5 +1,11 @@
 {
   "verified_date": "2026-11-10",
+  "record_scope": "historical local verification before subsequent hosted and mobile follow-ups",
+  "follow_up_records": [
+    "live-integrations-2026-11-10.json",
+    "operational-live-2026-11-13.json",
+    "local-2026-11-16.json"
+  ],
   "timezone": "Asia/Jakarta",
   "base_source_sha": "018fc5dc139c7eda4719ea689898b317f8d02a6f",
   "source_scope": "existing Windows checkout with uncommitted portal and Incident Memory changes",

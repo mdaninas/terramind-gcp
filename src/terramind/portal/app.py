@@ -395,6 +395,13 @@ def create_app(
             )
         )
 
+    @application.get("/favicon.ico")
+    def favicon() -> Response:
+        return Response(
+            files("terramind.api").joinpath("assets/favicon.ico").read_bytes(),
+            media_type="image/x-icon",
+        )
+
     @application.get("/assets/{name}")
     def asset(name: str) -> Response:
         if name == "portal.css":

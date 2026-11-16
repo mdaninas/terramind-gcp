@@ -9,7 +9,7 @@ offline analyzer still runs with Pydantic alone and makes no cloud calls.
 
 | Component | Responsibility |
 | --- | --- |
-| `knowledge-base/runbooks/` and `knowledge-base/incidents/` | Eight synthetic runbooks and four fabricated tabletop incidents; the expanded corpus is locally verified and has not been ingested on GCP |
+| `knowledge-base/runbooks/` and `knowledge-base/incidents/` | Eight synthetic runbooks and four fabricated tabletop incidents; all twelve documents were synchronized on GCP through real Eventarc delivery |
 | `rag/corpus.py` | Bounded loading, strict synthetic metadata, heading-aware chunks and hashes |
 | `rag/ingestion.py` | Embed changed text, reuse matching profiles and synchronize stable chunk IDs |
 | `cloud/google.py` | Official Google SDK adapters for embeddings, Firestore, source storage and Gemini |
@@ -32,11 +32,13 @@ a tokenizer guarantee. Short sections remain short. Headings inside fenced code
 are retained as text. Duplicate heading slugs are rejected instead of creating
 ambiguous citations. A document is limited to 48 KiB and a corpus to 128 chunks.
 
-The supplied ten short documents currently produce ten chunks. The malicious
+The supplied twelve short documents currently produce twelve chunks. The malicious
 `tests/fixtures/prompt_injection.md` fixture is outside the ingestion directories.
 Synthetic labels and credential-marker checks are defensive controls, not a
 guarantee that arbitrary owner-supplied documents contain no private information.
 Only the reviewed repository corpus is approved for the cloud demonstration.
+See the [hosted synchronization record](live-integrations-verification.md) and
+[validated core/Storage/Database advisories](advisory-verification.md).
 
 ## Local demonstration
 

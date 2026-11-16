@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Corrected local portal evidence wrapping, overlapping filter controls and
+  compressed history rows on narrow screens; served the packaged favicon for
+  standalone JSON views. Verified seven views at five responsive widths and all
+  four offline scenarios, exports, session persistence, ownership and logout.
+  The changes are not deployed; see [local verification](docs/local-verification.md).
+- Reconciled release, corpus, advisory and operating-status documentation with
+  the existing evidence. Budget email receipt remains unverified.
+
 - Completed the approved 2026-11-13 operational window on trusted source `88602fb`:
   protected image promotion, one core advisory smoke, 22 no-change portal reports,
   two-account ownership/pagination checks and isolated real-Firestore fencing.

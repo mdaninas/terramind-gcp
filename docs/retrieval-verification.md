@@ -110,5 +110,8 @@ Prompt instructions and lexical approval guards are defense in depth; immutable
 findings, validated references and escaped rendering provide the enforceable
 boundaries. Runtime data/prediction roles, analysis routes, report storage,
 private presentation and protected deployment were subsequently activated and
-verified separately. Cloud resources and indexed synthetic documents remain active
-for development, with cleanup tracked for project shutdown.
+verified separately. The later twelve-document synchronization and all three
+packaged advisories passed the [hosted integration](live-integrations-verification.md)
+and [advisory follow-up](advisory-verification.md) checks. The latest
+[operational window](operational-verification.md) ended with billing independently
+verified disabled and the project retained; resource deletion is not claimed.

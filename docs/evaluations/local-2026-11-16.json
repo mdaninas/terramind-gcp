@@ -1,0 +1,626 @@
+{
+  "date": "2026-11-16",
+  "timezone": "Asia/Jakarta",
+  "record_scope": "local existing Windows checkout with uncommitted portal corrections and documentation",
+  "base_source_sha": "ae30bddc32d45fdaf57fd5425a50874a8eab9116",
+  "source_hashes_sha256": {
+    "src/terramind/portal/app.py": "faf209a265f6f3d9aae68cd4f43ecd8625675bfad4000aebb33e270af7a8f0d6",
+    "src/terramind/portal/assets/portal.css": "f60f178226324470ece5f11c6e4a5f17f09c5f760cdc856418aa9e94622f1ce2"
+  },
+  "data": "synthetic scenarios and disposable demo accounts only",
+  "quality": {
+    "command": ".venv/Scripts/python.exe scripts/check.py",
+    "python_version": "3.12.13",
+    "python_tests_passed": 538,
+    "python_test_seconds": 29.5,
+    "normalization_policy_branch_coverage_percent": 97.19,
+    "ruff": "passed",
+    "ruff_formatted_files": 159,
+    "strict_mypy": "passed",
+    "strict_mypy_source_files": 74,
+    "schema_and_packaged_corpus_drift": "passed",
+    "public_file_privacy": "passed",
+    "diff_whitespace": "passed",
+    "local_markdown_references_checked": 153,
+    "source_and_selected_screenshot_hashes": "passed"
+  },
+  "audit_checks_before_portal_corrections": {
+    "scope": "earlier audit in the same chat and date; Terraform and analyzer logic unchanged afterward",
+    "offline_demo_findings": 4,
+    "offline_demo_risk": "HIGH",
+    "retrieval_mode": "local-test-double",
+    "retrieval_hits_at_3": 10,
+    "retrieval_queries": 10,
+    "corpus_documents": 12,
+    "corpus_chunks": 12,
+    "benchmark_changes": 100,
+    "benchmark_seconds": 0.004066,
+    "terraform_format_and_four_root_validation": "passed",
+    "terraform_mock_plan_tests": {
+      "project": 5,
+      "bootstrap": 2,
+      "dev": 17,
+      "portal": 6
+    },
+    "terraform_scope": "isolated tracked-file copy, existing provider cache, no private variable/backend files, no apply or cloud calls"
+  },
+  "browser": {
+    "engine": "Chromium",
+    "version": "157.0.8103.78",
+    "mode": "headed desktop browser resized to responsive CSS viewports, not physical-device or touch testing",
+    "portal": "loopback-only, demo authentication, offline analysis, separate SQLite database",
+    "viewport_height": 800,
+    "page_viewport_combinations": 35,
+    "measurements": [
+      {
+        "page": "login",
+        "measurements": [
+          {
+            "viewport_width": 320,
+            "client_width": 305,
+            "document_width": 305,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 360,
+            "client_width": 345,
+            "document_width": 345,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 390,
+            "client_width": 375,
+            "document_width": 375,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 768,
+            "client_width": 768,
+            "document_width": 768,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 1280,
+            "client_width": 1280,
+            "document_width": 1280,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          }
+        ]
+      },
+      {
+        "page": "dashboard",
+        "measurements": [
+          {
+            "viewport_width": 320,
+            "client_width": 305,
+            "document_width": 305,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": 267,
+            "table_scroll_width": 720,
+            "table_overflow_contained": true
+          },
+          {
+            "viewport_width": 360,
+            "client_width": 345,
+            "document_width": 345,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": 307,
+            "table_scroll_width": 720,
+            "table_overflow_contained": true
+          },
+          {
+            "viewport_width": 390,
+            "client_width": 375,
+            "document_width": 375,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": 338,
+            "table_scroll_width": 720,
+            "table_overflow_contained": true
+          },
+          {
+            "viewport_width": 768,
+            "client_width": 753,
+            "document_width": 753,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": 687,
+            "table_scroll_width": 720,
+            "table_overflow_contained": true
+          },
+          {
+            "viewport_width": 1280,
+            "client_width": 1265,
+            "document_width": 1265,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": 1054,
+            "table_scroll_width": 1054,
+            "table_overflow_contained": true
+          }
+        ]
+      },
+      {
+        "page": "core-report",
+        "measurements": [
+          {
+            "viewport_width": 320,
+            "client_width": 305,
+            "document_width": 305,
+            "horizontal_page_overflow": false,
+            "findings": 4,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 360,
+            "client_width": 345,
+            "document_width": 345,
+            "horizontal_page_overflow": false,
+            "findings": 4,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 390,
+            "client_width": 375,
+            "document_width": 375,
+            "horizontal_page_overflow": false,
+            "findings": 4,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 768,
+            "client_width": 753,
+            "document_width": 753,
+            "horizontal_page_overflow": false,
+            "findings": 4,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 1280,
+            "client_width": 1265,
+            "document_width": 1265,
+            "horizontal_page_overflow": false,
+            "findings": 4,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "controls_outside_label": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          }
+        ]
+      },
+      {
+        "page": "storage-report",
+        "measurements": [
+          {
+            "viewport_width": 320,
+            "client_width": 305,
+            "document_width": 305,
+            "horizontal_page_overflow": false,
+            "findings": 2,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 360,
+            "client_width": 345,
+            "document_width": 345,
+            "horizontal_page_overflow": false,
+            "findings": 2,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 390,
+            "client_width": 375,
+            "document_width": 375,
+            "horizontal_page_overflow": false,
+            "findings": 2,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 768,
+            "client_width": 753,
+            "document_width": 753,
+            "horizontal_page_overflow": false,
+            "findings": 2,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 1280,
+            "client_width": 1265,
+            "document_width": 1265,
+            "horizontal_page_overflow": false,
+            "findings": 2,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          }
+        ]
+      },
+      {
+        "page": "database-report",
+        "measurements": [
+          {
+            "viewport_width": 320,
+            "client_width": 305,
+            "document_width": 305,
+            "horizontal_page_overflow": false,
+            "findings": 2,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 360,
+            "client_width": 345,
+            "document_width": 345,
+            "horizontal_page_overflow": false,
+            "findings": 2,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 390,
+            "client_width": 375,
+            "document_width": 375,
+            "horizontal_page_overflow": false,
+            "findings": 2,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 768,
+            "client_width": 753,
+            "document_width": 753,
+            "horizontal_page_overflow": false,
+            "findings": 2,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 1280,
+            "client_width": 1265,
+            "document_width": 1265,
+            "horizontal_page_overflow": false,
+            "findings": 2,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          }
+        ]
+      },
+      {
+        "page": "no-change-report",
+        "measurements": [
+          {
+            "viewport_width": 320,
+            "client_width": 305,
+            "document_width": 305,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 360,
+            "client_width": 345,
+            "document_width": 345,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 390,
+            "client_width": 375,
+            "document_width": 375,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 768,
+            "client_width": 753,
+            "document_width": 753,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 1280,
+            "client_width": 1265,
+            "document_width": 1265,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          }
+        ]
+      },
+      {
+        "page": "incident",
+        "measurements": [
+          {
+            "viewport_width": 320,
+            "client_width": 305,
+            "document_width": 305,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 360,
+            "client_width": 345,
+            "document_width": 345,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 390,
+            "client_width": 375,
+            "document_width": 375,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 768,
+            "client_width": 753,
+            "document_width": 753,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          },
+          {
+            "viewport_width": 1280,
+            "client_width": 1265,
+            "document_width": 1265,
+            "horizontal_page_overflow": false,
+            "findings": 0,
+            "evidence_overflow": false,
+            "controls_outside_page": 0,
+            "table_view_width": null,
+            "table_scroll_width": null,
+            "table_overflow_contained": null
+          }
+        ]
+      }
+    ],
+    "selected_screenshots": [
+      {
+        "path": "docs/images/portal-mobile-dashboard.png",
+        "viewport_width": 390,
+        "sha256": "f3f1a628d550fe3802ec9a9a32b23d66d9804b908220e32034b15ad28632961a"
+      },
+      {
+        "path": "docs/images/portal-mobile-database.png",
+        "viewport_width": 320,
+        "sha256": "665aba74bc0db503cbae97e62243c0eb137d0cf345c92386d942757ce6fd129d"
+      }
+    ],
+    "before_fix": {
+      "core_report_viewport_width": 320,
+      "client_width": 305,
+      "document_width": 353,
+      "risk_select_exceeded_its_label_and_overlapped_next_filter": true
+    },
+    "flows": {
+      "synthetic_analyst_login": "passed",
+      "synthetic_reviewer_login": "passed",
+      "analysis_submissions": 4,
+      "scenarios": {
+        "core": {
+          "risk": "HIGH",
+          "findings": 4
+        },
+        "storage": {
+          "risk": "MEDIUM",
+          "findings": 2
+        },
+        "database": {
+          "risk": "HIGH",
+          "findings": 2
+        },
+        "no_change": {
+          "risk": "NO_KNOWN_FINDINGS",
+          "findings": 0
+        }
+      },
+      "analyst_dashboard": {
+        "reports": 4,
+        "high_risk": 2,
+        "findings": 8
+      },
+      "high_filter": {
+        "reports": 2,
+        "findings": 6
+      },
+      "high_and_tm_gcp_007_filter": {
+        "reports": 1,
+        "findings": 2
+      },
+      "inclusive_2026_11_16_utc_filter_retained_matching_report": true,
+      "json_export": {
+        "risk": "HIGH",
+        "findings": 4,
+        "model": null,
+        "retrieval": "not_requested",
+        "incidentMatches": 3
+      },
+      "markdown_download_four_rule_ids": "passed",
+      "expanded_provenance_at_320": "passed",
+      "session_and_four_reports_survived_server_restart": true,
+      "reviewer_history_reports": 0,
+      "cross_owner_html_json_markdown_statuses": [
+        404,
+        404,
+        404
+      ],
+      "anonymous_history_after_each_logout_status": 401,
+      "favicon_status": 200,
+      "favicon_media_type": "image/x-icon",
+      "rechecked_json_page_console_errors": 0,
+      "rechecked_json_page_console_warnings": 0
+    }
+  },
+  "closeout": {
+    "both_demo_sessions_logged_out": true,
+    "dedicated_browser_closed": true,
+    "local_portal_stopped": true,
+    "operator_browser_sessions_touched": false
+  },
+  "cloud_actions": {
+    "provider_calls": 0,
+    "paid_model_or_embedding_calls": 0,
+    "billing_changes": 0,
+    "iam_changes": 0,
+    "terraform_apply": 0,
+    "deployment_or_release": false
+  },
+  "limits": [
+    "No physical phone, touch, Safari or Firefox testing.",
+    "No new live Google login or hosted portal verification.",
+    "These working-tree portal changes have not been deployed.",
+    "Package builds, dependency vulnerability scans, container builds and Checkov were not repeated.",
+    "No load test, exhaustive organization-policy audit or new end-to-end Eventarc race test.",
+    "Actual budget email receipt remains unverified.",
+    "Resource deletion was not requested; last cloud record retains the project with billing disabled."
+  ]
+}

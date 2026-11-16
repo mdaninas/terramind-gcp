@@ -1,5 +1,13 @@
 # Evaluation results
 
+Historical MVP baseline. Later feature and operational results are linked in the
+[roadmap](roadmap.md). The 2026-11-16 local recheck passed 538 tests with 97.19%
+normalization/policy coverage, all quality checks, four-root Terraform validation
+and 30 mock-provider tests. The local twelve-document retrieval double matched
+all ten curated queries. See the [local verification](local-verification.md).
+Those local checks made no cloud calls; the measurements
+below retain their original verification scope.
+
 Local checks used Python 3.12.13 on Windows; hosted CI used Python 3.12 on Linux.
 Cloud verification used a dedicated GCP project, Cloud Shell for the foundation
 and the local Google Cloud CLI plus GitHub Actions for analysis delivery. These

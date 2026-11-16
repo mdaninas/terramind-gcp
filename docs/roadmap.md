@@ -14,6 +14,13 @@ unverified. See the [latest results](operational-verification.md), earlier
 [advisory results](advisory-verification.md) and historical
 [hosted results](live-integrations-verification.md).
 
+The 2026-11-16 [local follow-up](local-verification.md) passed 538 Python tests,
+30 Terraform mock-provider plans and portal geometry checks for seven views at
+five viewport widths. It corrected long evidence wrapping, filter overlap and
+history-table compression, and captured synthetic mobile-width screenshots.
+These portal fixes have not been deployed. Budget email receipt remains the
+outstanding operational observation; resource deletion was not requested.
+
 | Area | Scope | Status |
 | --- | --- | --- |
 | Offline analysis | Local normalization, deterministic risk rules, JSON and Markdown reports | Implemented and verified locally |

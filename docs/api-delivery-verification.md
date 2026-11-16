@@ -1,14 +1,15 @@
 # API and delivery verification
 
-Current operational status: project billing was subsequently disabled with owner
-approval on 2026-11-10 (Asia/Jakarta), retaining the project. The checks below are
-historical deployment evidence. See the [shutdown record](evaluations/billing-disabled-2026-11-10.json).
+Historical deployment evidence from 2026-11-10 (Asia/Jakarta). The latest approved
+2026-11-13 [operational window](operational-verification.md) subsequently verified
+image promotion and a core advisory smoke, then independently confirmed billing
+disabled with the project retained. Individual resource deletion is not claimed.
 
 The private analysis API is deployed and verified on GCP. On 2026-11-10
 (Asia/Jakarta), the protected GitHub workflow exchanged its identity through WIF,
 published an immutable image and passed an authenticated end-to-end analysis.
-All verification data was synthetic. Resources remain active for development;
-final resource cleanup has not been executed.
+All verification data was synthetic. At the time of these checks, resources were
+active for development. The subsequent billing-disabled state is recorded above.
 
 ## Files and decisions
 
@@ -156,8 +157,9 @@ it does not stop spending. No automatic shutdown or background generation is
 configured. Storage, reads and model use remain metered.
 
 Application walkthrough/screenshots and fresh-clone reproduction were subsequently
-completed in the [release verification record](release-verification.md). Release
-tagging and final resource cleanup remain owner actions. Budget notification
-delivery, a Monitoring notification channel and organization-inherited policies
-are not verified by these checks. Resources were last documented as active;
-cleanup has not been executed.
+completed in the [release verification record](release-verification.md), and
+releases v1.0.0 and v1.0.1 were published on 2026-11-11. The later
+[operational window](operational-verification.md) verified a Monitoring email
+channel, email receipt and three selected effective policies. Budget email receipt
+and exhaustive inherited-policy/log-sink auditing remain unverified. The owner
+retained the project with billing disabled; resource deletion was not requested.

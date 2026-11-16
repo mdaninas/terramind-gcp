@@ -3,9 +3,12 @@
 The four `gcp-core` rules always run. Two optional packs add four deterministic
 change checks. They are implemented and tested locally with synthetic data.
 The expanded twelve-document corpus was synchronized on GCP, and hosted portal
-samples returned the expected pack findings with available retrieval. Their live
-advisories used fallback, so successful generated pack explanations remain
-unverified. See the [hosted record](live-integrations-verification.md).
+samples returned the expected pack findings with available retrieval. The initial
+2026-11-10 window used advisory fallback. The approved 2026-11-11 follow-up
+validated generated Storage and Database explanations and passed the strict
+three-scenario deployment smoke. See the historical
+[hosted record](live-integrations-verification.md) and subsequent
+[advisory results](advisory-verification.md).
 
 | Pack | Rule | Trigger | Severity and status |
 | --- | --- | --- | --- |

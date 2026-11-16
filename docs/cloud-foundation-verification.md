@@ -1,5 +1,10 @@
 # Cloud foundation verification
 
+Historical foundation record. Subsequent analysis delivery, release publication
+and bounded cloud checks are recorded in the [roadmap](roadmap.md). The latest
+[operational window](operational-verification.md) ended on 2026-11-13 with billing
+independently verified disabled and the project retained.
+
 This record captures the foundation and liveness deployment. The service was deployed
 with owner approval in a new,
 dedicated Terramind project on 2026-11-09 (Asia/Jakarta). Cloud Run authentication,
@@ -135,11 +140,16 @@ Private plans, logs, backend settings and inventory remain outside version contr
 
 ## Remaining work and operational limits
 
-The deployment is active for development. Cleanup has not been executed; follow
-the [cleanup procedure](cost-and-cleanup.md) after verification is complete.
-No automatic shutdown is configured. Budget email delivery, server-error alert
-delivery, federation exchange, protected GitHub environments and organization-level
-IAM/log-sink inheritance have not been verified. The server-error policy currently
-has no notification channel. The subsequent retrieval and Gemini CLI checks are
-recorded in [retrieval verification](retrieval-verification.md). Analysis endpoints
-and deployment workflows remain subsequent work.
+At the time of this foundation verification, resources were active and the
+server-error policy had no notification channel. Federation exchange, protected
+deployment and the analysis API subsequently passed
+[delivery verification](api-delivery-verification.md). Retrieval and Gemini CLI
+results are recorded in [retrieval verification](retrieval-verification.md).
+
+The 2026-11-13 [operational window](operational-verification.md) verified a
+Monitoring email channel, synthetic notification receipt and three selected
+effective policies. It did not exercise the normal server-error threshold.
+Budget email receipt and exhaustive organization IAM/log-sink inheritance remain
+unverified. Billing was disabled again and the owner retained the project.
+No automatic cost shutdown or full resource deletion is claimed. Any future
+resource removal follows the [cleanup procedure](cost-and-cleanup.md).

@@ -3,6 +3,10 @@
 Historical local record. Subsequent real Google login, Firestore report workflows
 and revision persistence are documented in the
 [hosted verification](live-integrations-verification.md).
+The previously incomplete mobile visual check was completed in the
+[2026-11-16 local follow-up](local-verification.md), with responsive layout
+corrections, screenshots and explicit browser/device limits. The observations
+below retain their original 2026-11-10 scope.
 
 The local Incident Memory and user portal implementations were verified on
 2026-11-10 (Asia/Jakarta), in the existing Windows checkout based on
